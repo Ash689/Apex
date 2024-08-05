@@ -93,6 +93,13 @@
             }
         }
 
+        $(function() {
+            $("#dateOfBirth").datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: 0
+            });
+        });
+
         document.getElementById('info-button').title = "Include a picture! This will be reviewed and moderated before submission.";
     </script>
 

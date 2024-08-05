@@ -99,6 +99,12 @@
             }
         }
 
+        $(function() {
+            $("#dateOfBirth").datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: 0
+            });
+        });
         
         document.getElementById('info-button').title = "E.g. 4 years of teaching, ranging from starting from scratch up to exam prep.";
     </script>
