@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor | Booking</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/static/booking.css">
+    <link rel="stylesheet" href="/static/standardStyle.css">
+</head>
+<body>
+    <div id="navbarTutor"></div>
+    <div id="message" class="message"></div>
+    <br><br><br><br><br>
+    
+    <div class="container">
+        <form action="/tutor/newBooking" method="POST">
+            <h2>New Booking</h2>
+            <table id="booking-form">
+                <tbody>
+                    <tr>
+                        <td>Lesson or Revision</td>
+                        <td>
+                            <button type="button" id="revisionToggle" class="secondary-button" data-state="No">Tutoring Lesson</button>
+                            <input type="hidden" id="revision" name="revision" value="no">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Select Subject</td>
+                        <td>
+                            <input id = "subject" name = "subject" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Select Date</td>
+                        <td>
+                            <input type="text" id="bookingDate" name="bookingDate" maxlength = "13" required readonly>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Select Time</td>
+                        <td>
+                            <select id="bookingTime" name="bookingTime" required>
+                                <option value="" disabled selected>Select your time</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Duration (minutes)</td>
+                        <td>
+                            <input id="duration" name="duration" type = "number" min="5" max="180" required>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Price
+                            <span id = "info-button" class="info-button">ℹ️</span>
+                        </td>
+                        <td>
+                            <input id="newPrice" name="bookingPrice" type = "number" step = "0.01" min="1" max="100" required> <!-- Hidden input to store the actual value -->
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Recurring Lesson</td>
+                        <td>
+                            <button type="button" id="recurringToggle" class="secondary-button" data-state="No">No</button>
+                            <input type="hidden" id="recurring" name="recurring" value="No"> <!-- Hidden input to store the actual value -->
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <button type="submit" class="button">Submit Booking</button>
+        </form>
+        <br><br>
+    </div>
+    <div id="footer" class="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        document.getElementById('duration').value = 40;
+        document.getElementById('recurringToggle').addEventListener('click', function() {
+            var recurringValue = document.getElementById('recurring');
+            var recurringButton = document.getElementById('recurringToggle');
+            // Check if the register button text is "Get Started"
+            if (recurringValue.value === 'No') {
+                recurringValue.value = 'Yes';
+                recurringButton.textContent = "Yes";
+                recurringButton.style = "background-color: #9d1a34; color: #efefef";
+            } else {
+                recurringButton.style = "";
+                recurringValue.value = 'No';
+                recurringButton.textContent = "No";
+            }
+        });
+
+
+        document.getElementById('revisionToggle').addEventListener('click', function() {
+            var revisionValue = document.getElementById('revision');
+            var revisionButton = document.getElementById('revisionToggle');
+            // Check if the register button text is "Get Started"
+            if (revisionValue.value === 'no') {
+                revisionValue.value = 'yes';
+                revisionButton.className = "tertiary-button";
+                revisionButton.textContent = "Recurring Session";
+            } else {
+                revisionButton.className = "";
+                revisionValue.value = 'no';
+                revisionButton.textContent = "Tutoring Lesson";
+            }
+        });
+    </script>
+    <script src="/script/standardScript.js"></script>
+    <script src="/script/tutorScript.js"></script>
+    <script>
+
+        const timeSelect = document.getElementById('bookingTime');
+
+        // Clear existing options except the first one
+        while (timeSelect.options.length > 1) {
+            timeSelect.remove(1);
+        }
+
+        // Populate with new options
+        for (let hour = 0; hour < 24; hour++) {
+            for (let minute = 0; minute < 60; minute += 15) {
+                let time = ('0' + hour).slice(-2) + ':' + ('0' + minute).slice(-2);
+                let option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                timeSelect.appendChild(option);
+            }
+        }
+        
+        document.getElementById('info-button').title = "Tutoring Lesson: Prices range from £10 to £40" + "\n" + "Revision Session: Prices range from £5 to £12" + "\n" + "Introduction Session: Free";
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+</body>
+</html>

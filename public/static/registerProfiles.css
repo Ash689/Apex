@@ -1,0 +1,290 @@
+@font-face {
+    font-family: 'Dancing Script';
+    src: url('../fonts/DancingScript-VariableFont_wght.ttf') format('truetype');
+}
+
+body {
+    background-color: #edc03b;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    color: #1d3151;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+    font-family: Helvetica, sans-serif;
+    overflow: auto; /* Allow scrolling */
+}
+.header {
+    background-color: #ffffff;
+    padding: 20px;
+    border-bottom: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 5%;
+    transform: translate(-50%, -20%);
+    transition: top 1s ease, transform 1s ease;
+    z-index: 1;
+
+    display: flex; /* Added */
+    justify-content: space-between; /* Added */
+    align-items: center; /* Added */
+}
+
+.header h1 {
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 76px;
+    margin: 0;
+}
+
+#student-form-container {
+    background-color: #efefef;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 150px;
+    font-size: 20px;
+}
+
+.form-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.personal-info, .qualifications, .expected-tuition {
+    flex: 1;
+    min-width: 300px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.profile-pic{
+    height:120px;
+    width:200px;
+    padding: 10px;
+}
+.profile-pic img{
+   
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px 0px #c1c1c1;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+}
+
+
+.float-label-field {
+    border: none;
+    outline: none;
+    position: relative;
+    margin: 0 0 20px 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+.float-label-field input {
+    border: none;
+    outline: none;
+    padding: 5px 5px 8px 0px;
+    width: 100%;
+    font-size: 18px;
+    border-bottom: solid 1.5px #161414;
+    background-color: #efefef;
+}
+
+.float-label-field label {
+    opacity: 0.5;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    transition: all 0.2s ease;
+    font-size: 18px;
+}
+
+.float-label-field.focus label {
+    color: #edc03b;
+}
+
+.float-label-field.focus input {
+    border-bottom: solid 1.5px #edc03b;
+}
+
+.float-label-field.float label {
+    opacity: 1;
+    top: -8px;
+    font-size: 60%;
+    transition: all 0.2s ease;
+    font-weight: bold;
+}
+
+button {
+    background-color: #edc03b;
+    color: #161414;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    width:900px;
+}
+
+button:hover {
+    background-color: #1d3151;
+    color: #efefef;
+}
+
+h2 {
+    text-align: left;
+    font-size: 32px;
+}
+
+h3 {
+    margin-bottom: 20px;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+p {
+    font-size: 18px;
+}
+
+.footer {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-top: 2px solid #cccccc;
+    font-size: 14px;
+    color: #666666;
+    width: 100%;
+    text-align: center;
+    /* position: fixed; */
+    bottom: 0;
+}
+/* Hide the default file input button */
+input[type="file"] {
+    display: none;
+}
+
+/* Style for the custom file input button */
+.custom-file-input {
+    background-color: #edc03b;
+    color: #161414;
+    border: none;
+    cursor: pointer;
+    font-weight: 400;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    width:700px;
+}
+
+.custom-file-input:hover {
+    background-color: #1d3151;
+    color: #efefef;
+}
+
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Custom button style */
+.button {
+    background-color: #edc03b; /* Green */
+    border: none;
+    color: #161414;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width:400px;
+}
+
+.button:hover {
+    background-color: #1d3151;
+    color: #efefef;
+}
+
+.logout-button {
+    background-color: #edc03b; /* Green */
+    border: none;
+    color: #161414;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: auto;
+}
+
+.logout-button:hover {
+    background-color: #1d3151;
+    color: #efefef;
+}

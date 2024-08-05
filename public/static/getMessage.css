@@ -1,0 +1,173 @@
+.message-item {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    margin-bottom: 10px;
+
+    word-wrap: break-word; /* Break long words to the next line */
+    word-break: break-all; /* Break words at arbitrary points */
+}
+
+.container{
+    width: 100%;
+}
+
+.booking-item {
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 80%;
+    font-size: 14px;
+}
+
+.booking-item button{
+    width: 200px;
+}
+
+.messaging {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    height: 100%;
+}
+
+.messaging textarea {
+    width: 3000px;
+}
+
+a:visited, a:hover, a:active {
+    font-size: 12px;
+}
+
+.booking {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+    width: 30%;
+    overflow-y: auto;
+    max-height: 75vh; 
+}
+
+.profile-bar2{
+    font-size: 10px;
+    overflow-y: auto;
+    min-height: 75vh;
+    max-height: 75vh;
+}
+
+.message-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+    width: 70%;
+}
+  
+
+
+.left-message h3, .right-message h3 {
+    padding: 5px 10px;
+    background-color: #e5e5e5;
+    width: auto;
+}
+  
+.profile-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-container img {
+    margin-right: 20px;
+}
+
+.profile-info h3, .profile-info p {
+    margin: 5px 0;
+}
+
+.button-container button{
+    width: 300px;
+}
+
+.button-container form {
+    margin: 5px 0;
+}
+
+.message-box{
+    display: flex;
+}
+.message-box button{
+    width: 150px;
+    height: auto;
+}
+
+
+.left-message-container, .right-message-container {
+    width: 100%;
+    display: flex;
+    margin: 5px 0;
+}
+
+.left-message-container {
+    justify-content: flex-start;
+}
+
+.right-message-container {
+    justify-content: flex-end;
+}
+
+.message-item {
+    max-width: 45%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+}
+
+.left-message-container .message-item h3{
+    border-radius: 10px 10px 10px 0;
+}
+
+.right-message-container .message-item h3{
+    border-radius: 10px 10px 0 10px;
+}
+
+.reportStyle p{
+    font-size: 14px;
+}
+
+.reportStyle h3{
+    font-size: 18px;
+}
+
+.reportStyle ul{
+    font-size: 12px;
+}
+
+.report-form{
+    top: 356px; 
+    right: 42px; 
+    position: absolute;
+}
+
+.profile-bar {
+    background-color: #fff;
+    flex-basis: 25%;
+    padding: 20px;
+    border: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 75vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+} 

@@ -1,0 +1,423 @@
+@font-face {
+    font-family: 'Dancing Script';
+    src: url('../fonts/DancingScript-VariableFont_wght.ttf') format('truetype');
+}
+
+body {
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    color: #1d3151;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+    font-family: Helvetica, sans-serif;
+    overflow: auto; /* Prevent scrolling */
+}
+
+.container{
+    /* background-color: #efefef; */
+    width: 90%;
+    height: auto;
+    /* padding: 5%; */
+}
+
+.container2{
+    display: flex;
+}
+
+
+#navbar {
+    margin-top: 12%;
+    margin-left: 100px;
+    width: 100%;
+    font-size: 14px;
+    text-decoration: none;
+    color: #1d3151;
+}
+#navbar a{
+    margin-left: 60px;
+    text-decoration: none;
+    color: inherit;
+}
+
+
+.header {
+    background-color: #ffffff;
+    border-bottom: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: top 1s ease, transform 1s ease;
+    height: auto;
+    text-align: center;
+    position:absolute;
+    margin-top: 2%;
+    left: 0%;
+    width: 350px;
+}
+
+.header h6 a, a:visited, a:hover, a:active {
+    font-size: 38px;
+    color: #efefef;
+    text-decoration: none;
+}
+
+.header h1 a:hover {
+    color: #a8a8ec;
+}
+
+.header h1 a {
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 38px;
+    color: #dc143c; 
+    text-decoration: none;
+    margin: 0;
+}
+
+.welcome-message {
+    font-size:14px;
+}
+
+a{
+    text-decoration: none;
+    text-decoration: underline;
+    font-size: 14px;
+    color: #1d3151; 
+}
+
+a:visited, a:hover, a:active {
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 14px;
+    color: #1d3151; 
+    text-decoration: none;
+    margin: 0;
+}
+.current{
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 14px;
+    color: #1d3151; 
+    text-decoration: none;
+    margin: 0;
+}
+
+
+button {
+    background-color: #dc143c;
+    color: #ffffff;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+    background-color: #9d1a34;
+    color: #efefef;
+}
+
+button:active {
+    background-color: #4d0c19;
+    color: #efefef;
+}
+
+.logout-button {
+    position: absolute;
+    font-weight: 600;
+    border-radius: 5px;
+    background-color: #efefef;
+    border: none;
+    color: #1d3151;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    width: auto;
+    font-weight: 600;
+    top: 9%;
+    right: 1%;
+}
+
+.logout-button:hover {
+    background-color: #dc143c;
+    color: #efefef;
+}
+.logout-button:active {
+    background-color: #9d1a34;
+    color: #efefef;
+}
+
+.footer {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-top: 2px solid #cccccc;
+    font-size: 14px;
+    color: #666666;
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+    /* height: 12px; */
+}
+
+input, button {
+    margin: 10px 0;
+    padding: 8px;
+    /* width: calc(100% - 20px); */
+    width: 100%;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 38px;
+    color: #1d3151;
+    font-family: 'Dancing Script', sans-serif;
+}
+
+input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    outline: none;
+}
+
+.form-container{
+    align-items: center;
+}
+
+p{
+    font-size: 14px;
+}
+
+.secondary-button {
+    background-color: #efefef;
+    color: #1d3151;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.secondary-button:hover {
+    background-color: #dc143c;
+    color: #efefef;
+}
+
+.secondary-button:active {
+    background-color: #9d1a34;
+    color: #efefef;
+}
+
+.tertiary-button {
+    background-color: #1d3151;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tertiary-button:hover {
+    background-color: #244e91;
+    color: #efefef;
+}
+
+.tertiary-button:active {
+    background-color: #101b2c;
+    color: #efefef;
+}
+
+.disabled-button {
+    background-color: #dc143c7a;
+    border: 2px solid #dc143c; 
+    cursor: not-allowed;
+    pointer-events: none; 
+    position: relative; 
+}
+
+.disabled-button-revision {
+    background-color: #1d31517a;
+    border: 2px solid #1d3151; 
+    cursor: not-allowed;
+    pointer-events: none; 
+    position: relative; 
+}
+
+
+
+.message {
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 15px;
+    
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    font-size: 14px;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+.float-label-field {
+    border: none;
+    outline: none;
+    position: relative;
+    margin: 0 0 20px 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+.float-label-field input {
+    border: none;
+    outline: none;
+    padding: 5px 5px 8px 0px;
+    width: 100%;
+    font-size: 14px;
+    border-bottom: solid 1.5px #dc143c;
+    background-color: #fff;
+}
+
+.float-label-field label {
+    opacity: 0.5;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.float-label-field.focus label {
+    color: #dc143c;
+}
+
+.float-label-field.focus input {
+    border-bottom: solid 1.5px #dc143c;
+}
+
+.float-label-field.float label {
+    opacity: 1;
+    top: -8px;
+    font-size: 60%;
+    transition: all 0.2s ease;
+    font-weight: bold;
+}
+
+.info-button {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 1.2em;
+    vertical-align: middle;
+    color: #888;
+}
+
+.info-button:hover::after {
+    content: attr(title);
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    top: -5px;
+    left: 100%;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0.8;
+}
+
+textarea {
+    font-family: Arial, sans-serif;
+}
+
+#tutor-profile h3{
+    text-decoration: none;
+    font-style: italic; 
+}
+
+.colour-pad {
+    position: absolute;
+    z-index: 10;
+    width: 10px;
+    height: 60px;
+    top: 0;
+    left: 7%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.colour-pad2 {
+    position: absolute;
+    z-index: 11;
+    width: 40px;
+    background-color: #dc143c;
+    height: 10px;
+    top: 55px;
+    left: 7%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-container {
+    position: relative;
+}
+.autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    max-height: 100px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    font-size: 12px;
+}
+.autocomplete-suggestion {
+    padding: 8px;
+    cursor: pointer;
+}
+.autocomplete-suggestion:hover {
+    background: #ddd;
+}
+.autocomplete-suggestion.selected {
+    background: #bbb;
+}
+
+
+#parent-form-container {
+    /* background-color: #efefef; */
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    max-height: 600px;
+    /* margin: 0 auto; */
+    /* margin-top: 150px; */
+    font-size: 25px;
+    text-align: center;
+}

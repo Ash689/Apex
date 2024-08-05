@@ -1,0 +1,64 @@
+.strikeout {
+    text-decoration: line-through;
+}
+
+.selected-tick {
+    background-color: green;
+    color: white;
+}
+.selected-cross {
+    background-color: red;
+    color: white;
+}
+
+/* Add any additional CSS styles here */
+.topic-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.topic-row button {
+    font-size: 1rem;
+    width: auto;
+}
+.message {
+    margin-top: 20px;
+    color: red;
+}
+
+.display-container {
+    display: flex;
+    align-items: center;
+}
+
+.day-container {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+h2 {
+    text-align: left;
+    font-size: 32px;
+}
+
+.profile-bar {
+    background-color: #fff;
+    flex-basis: 25%;
+    padding: 20px;
+    border: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 75vh;
+    display: flex;
+    justify-content: space-between; /* Space between profile and buttons */
+    align-items: center; /* Center items vertically */
+    padding: 20px;
+}
+
+.subjectTab{
+    margin-left: 400px;
+    width: 30%;
+    background-color: #fff;
+}

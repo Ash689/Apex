@@ -1,0 +1,72 @@
+.form-container{
+    align-items: center;
+}
+
+.tutor-list{
+    background-color: #ffffff;
+    padding: 20px;
+    border-bottom: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    /* position: absolute; */
+    margin-bottom: 4%;
+    margin-left: 50%;
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Adjust this to fit your design */
+    width: 550px;
+    text-align: right;
+}
+
+/* Tutor Container Styling */
+.tutorContainer {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 3;
+}
+
+/* Tutor Info and Image */
+.tutor {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.tutorImage {
+    width: 200px;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+
+.tutorInfo {
+    flex-grow: 1;
+}
+
+.tutorInfo h3, .tutorInfo p {
+    margin: 5px 0;
+}
+
+/* Actions Styling */
+.tutorActions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+button{
+    width: auto;
+}
+
+
+.findTutor-colour {
+    width: 50%;
+    position: absolute;
+    z-index: 2;
+    background-color: orange;
+}

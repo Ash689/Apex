@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor | Register</title>
+    <link rel="stylesheet" href="/static/standardStyle.css">
+    <link rel="stylesheet" href="/static/formStyle.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 id="header-title"><a href="welcome.html">Apex Tuition</a></h1>
+        </div>
+        
+        <div id="parent-form-container">
+            <h3>Tutor - Register</h3>
+            <div id="message" class="message"></div>
+            <form id="parent-form" action="/tutor/register" method="POST">
+                <fieldset class='float-label-field'>
+                    <label for="txtEmail">Email</label>
+                    <input id="txtEmail" type="email" name="email" required><br><br>
+                </fieldset>
+                <fieldset class='float-label-field'>
+                    <label for="txtPassword">Password</label>
+                    <input id="txtPassword" type="password" name="password" maxlength="15" required><br><br>
+                </fieldset>
+                <fieldset class='float-label-field'>
+                    <label for="txtPassword2">Re-enter password</label>
+                    <input id="txtPassword2" type="password" name="repassword" maxlength="15" required><br><br>
+                </fieldset>
+                <button id = "submitBtn" class = "disabled-button" type="submit" disabled>Enter</button>
+            </form>
+            <button id= "parent-btn-login" class = "secondary-button">Login Here</button>
+            <p>Not a tutor? Register as a student <a href="/student/register.html">here</a>
+        </div>
+        <br><br>
+    </div>
+    <div id="footer" class="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/script/standardScript.js"></script>
+    <script src="/script/validateRegistration.js"></script>
+    <script>
+
+        const emailField = document.getElementById('txtEmail');
+        const passwordField = document.getElementById('txtPassword');
+        const rePasswordField = document.getElementById('txtPassword2');
+        const submitBtn = document.getElementById('submitBtn');
+        const messageDiv = document.getElementById('message');
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePassword(password) {
+            const errors = [];
+            const minLength = 8;
+            if (password.length < minLength) {
+                errors.push(`- Minimum length: ${minLength}`);
+            }
+            if (!/[0-9]/.test(password)) {
+                errors.push('- Includes a number');
+            }
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                errors.push('- Includes a special character');
+            }
+            if (!/[A-Z]/.test(password)) {
+                errors.push('- Includes a capital letter');
+            }
+            return errors;
+        }
+
+        function checkFormValidity() {
+            const email = emailField.value;
+            const password = passwordField.value;
+            const repassword = rePasswordField.value;
+            const errors = [];
+
+            if (!validateEmail(email)) {
+                errors.push("Invalid Email");
+            }
+            
+            const passwordErrors = validatePassword(password);
+            if (passwordErrors.length > 0) {
+                errors.push("Password needs to meet the following conditions:<br>" + passwordErrors.join('<br>'));
+            }
+            
+            if (password !== repassword) {
+                errors.push("Passwords don't match");
+            }
+
+            if (errors.length === 0) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('disabled-button');
+                messageDiv.innerHTML = '✓';
+                messageDiv.classList.add('success');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('disabled-button');
+                messageDiv.innerHTML = errors.join("<br>");
+                messageDiv.classList.add('error');
+            }
+        }
+
+        emailField.addEventListener('input', checkFormValidity);
+        passwordField.addEventListener('input', checkFormValidity);
+        rePasswordField.addEventListener('input', checkFormValidity);
+
+        document.getElementById('parent-btn-login').addEventListener('click', function() {
+            window.location.href = '/tutor/login.html';
+        });
+    </script>
+</body>
+</html>

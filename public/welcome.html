@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" style = >
+    <title>Tutor</title>
+    <link rel="stylesheet" href="/static/standardStyle.css">
+    <link rel="stylesheet" href="/static/welcomeStyle.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 id="header-title">Apex Tuition</h1>
+        </div>
+
+        <div id="intro-section">
+            <div class="testimonial">
+                <p>Been tutoring here for 5 years and I love it! <span>- Sam</span></p>
+            </div>
+            <img id = "P1" src="images/P1.jpg" alt="Books">
+            <img id = "P2" src="images/P2.jpg" alt="Books">
+            <img id = "P3" src="images/P3.jpg" alt="Books">
+            <img id = "P4" src="images/P4.jpg" alt="Books">
+            <img id = "P5" src="images/P5.jpg" alt="Books">
+        </div>
+        
+        <div id="container">
+            <div id="parent-form-container">
+                <h3>Student</h3>
+                <button id = "parent-btn-login">Login</button>
+                <div id = "student-part">
+                    <button id="parent-btn-register">Get Started</button>
+                </div>
+            </div>
+            <div id="tutor-form-container">
+                <h3>Tutor</h3>
+                <button id="tutor-btn-login">Login</button>
+                <div id = "tutor-part">
+                    <button id = "tutor-btn-register">Get Started</button>
+                </div>
+            </div>
+        </div>
+        <div class = "bridge">
+            <h3>Join us!</h3>
+        </div>
+        <div class="extra">
+            <div class="extra-text">
+                <h3>Reviews:</h3>
+                <ul>
+                    <li>Our tutoring service has received outstanding reviews across various platforms.</li>
+                    <li>Parents and students praise our dedicated tutors, personalized approach, and significant improvement in academic performance.</li>
+                    <li>Testimonials highlight the engaging and supportive learning environment.</li>
+                    <li>Consistent 5-star ratings and positive feedback affirm our commitment to excellence in education.</li>
+                </ul>
+            </div>
+            <!-- Placeholder image for reviews -->
+            <div class="extra-images">
+                <img src="images/P1.jpg" alt="Reviews Image">
+            </div>
+        </div>
+
+        <!-- Prices Section -->
+        <div class="extra">
+            <div class="extra-text">
+                <h3>Prices:</h3>
+                <ul>
+                    <li>We offer highly competitive and affordable pricing.</li>
+                    <li>Our pricing structure takes only a small commission, benefiting tutors directly.</li>
+                    <li>Ensures best value for money while supporting skilled educators.</li>
+                    <li>Goal: to make top-notch tutoring services accessible without financial strain.</li>
+                </ul>
+            </div>
+            <!-- Placeholder image for prices -->
+            <div class="extra-images">
+                <img src="images/P1.jpg" alt="Prices Image">
+            </div>
+        </div>
+
+        <!-- Whiteboard Section -->
+        <div class="extra">
+            <div class="extra-text">
+                <h3>Whiteboard:</h3>
+                <ul>
+                    <li>Intuitive whiteboard space enhances online learning experience.</li>
+                    <li>User-friendly and interactive, allowing seamless drawing, writing, and idea sharing.</li>
+                    <li>Supports various educational tools and resources.</li>
+                    <li>Enhances engagement and understanding for productive sessions.</li>
+                </ul>
+            </div>
+            <!-- Placeholder image for whiteboard -->
+            <div class="extra-images">
+                <img src="images/P1.jpg" alt="Whiteboard Image">
+            </div>
+        </div>
+
+        <!-- Homework Section -->
+        <div class="extra">
+            <div class="extra-text">
+                <h3>Homework:</h3>
+                <ul>
+                    <li>Comprehensive homework system with robust database and marking capabilities.</li>
+                    <li>Tutors can assign and evaluate homework efficiently.</li>
+                    <li>Provides detailed feedback to help students improve.</li>
+                    <li>Tracks progress and tailors learning paths to specific needs.</li>
+                    <li>Organized approach fosters continuous academic growth.</li>
+                </ul>
+            </div>
+            <!-- Placeholder image for homework -->
+            <div class="extra-images">
+                <img src="images/P1.jpg" alt="Homework Image">
+            </div>
+        </div>
+
+        <!-- Revision Sessions Section -->
+        <div class="extra">
+            <div class="extra-text">
+                <h3>Revision Sessions:</h3>
+                <ul>
+                    <li>Designed to mimic traditional tuition class environment with added flexibility and cost-effectiveness.</li>
+                    <li>Group setting benefits from collective knowledge while maintaining a silent study atmosphere.</li>
+                    <li>Tutors available to answer questions and provide guidance.</li>
+                    <li>Excellent opportunity for thorough review and preparation.</li>
+                    <li>Effective learning at a fraction of the cost of private tuition.</li>
+                </ul>
+            </div>
+            <!-- Placeholder image for revision sessions -->
+            <div class="extra-images">
+                <img src="images/P1.jpg" alt="Revision Sessions Image">
+            </div>
+        </div>
+        <br>
+    </div>
+    <div id="footer" class="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.scrollTo(0, 0); // Scroll to the top of the page
+            }, 0); // This slight delay helps ensure it scrolls after the page has fully loaded
+        };
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                var introSection = document.getElementById('intro-section');
+                introSection.classList.add('hidden'); // Hide the intro section
+
+                setTimeout(function() {
+                    introSection.style.display = 'none'; // Remove the intro section from display after transition
+
+                    var formContainer = document.getElementById('parent-form-container');
+                    formContainer.style.opacity = '1'; // Show the form container
+                    formContainer.style.transform = 'translateY(0)'; // Move it back to original position
+
+                    formContainer = document.getElementById('tutor-form-container');
+                    formContainer.style.opacity = '1'; // Show the form container
+                    formContainer.style.transform = 'translateY(0)'; // Move it back to original position
+
+                    var header = document.querySelector('.header');
+                    header.style.top = '10%'; // Move the header upwards
+                }, 1000); // Wait for the transition to complete before hiding
+            }, 3000);
+        });
+
+
+        var studentCred = document.getElementById('student-part');
+        var tutorCred = document.getElementById('tutor-part');
+
+
+        document.getElementById('parent-btn-login').addEventListener('click', function() {
+            var loginButton = document.getElementById('parent-btn-login');
+
+            // Check if the register button text is "Get Started"
+            if (loginButton.textContent === 'Login') {
+                studentCred.innerHTML = `
+                    <form id="parent-form" class="hidden" action = "/student/login" method = "POST">
+                        <fieldset class='float-label-field'>
+                            <label for="txtEmail">Email</label>
+                            <input type="email" name="email" required><br><br>
+                        </fieldset>
+                        <fieldset class='float-label-field'>
+                            <label for="txtPassword">Password</label>
+                            <input type="password" name="password" maxlength="15" required><br><br>
+                        </fieldset>
+                        <button type="submit">Enter</button>
+                    </form>
+                `;
+                loginButton.textContent = "Back";
+                document.getElementById('parent-form-container').style.maxHeight = '450px';
+            } else {
+                studentCred.innerHTML = `
+                    <button id="parent-btn-register">Get Started</button>
+                `;
+                document.getElementById('parent-form-container').style.maxHeight =  '200px';
+                loginButton.textContent = "Login";
+            }
+        });
+
+        document.getElementById('tutor-btn-login').addEventListener('click', function() {
+            var loginButton = document.getElementById('tutor-btn-login');
+
+            // Check if the register button text is "Get Started"
+            if (loginButton.textContent === 'Login') {
+                tutorCred.innerHTML = `
+                    <form id="tutor-form" class="hidden" action = "/tutor/login" method = "POST">
+                        <fieldset class='float-label-field'>
+                            <label for="txtEmail">Email</label>
+                            <input type="email" name="email" required><br><br>
+                        </fieldset>
+                        <fieldset class='float-label-field'>
+                            <label for="txtPassword">Password</label>
+                            <input type="password" name="password" maxlength="15" required><br><br>
+                        </fieldset>
+                        <button type="submit">Enter</button>
+                    </form>
+                `;
+                loginButton.textContent = 'Back';
+                document.getElementById('tutor-form-container').style.maxHeight = '450px';
+            } else {
+                tutorCred.innerHTML = `
+                    <button id = "tutor-btn-register">Get Started</button>
+                `;
+                document.getElementById('tutor-form-container').style.maxHeight =  '200px';
+                loginButton.textContent = 'Login';
+            }
+        });
+
+        document.getElementById('parent-btn-register').addEventListener('click', function() {
+            window.location.href = './student/register.html';
+        });
+
+        document.getElementById('tutor-btn-register').addEventListener('click', function() {
+            window.location.href = './tutor/register.html';
+        });
+        $('head').append('<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">');
+
+        $('input').focus(function(event) {
+            $(this).closest('.float-label-field').addClass('float').addClass('focus');
+        });
+
+        $('input').blur(function() {
+            $(this).closest('.float-label-field').removeClass('focus');
+            if (!$(this).val()) {
+                $(this).closest('.float-label-field').removeClass('float');
+            }
+        });
+
+        
+    </script>
+</body>
+</html>

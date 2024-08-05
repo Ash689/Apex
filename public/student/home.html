@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student | Home</title>
+    <link rel="stylesheet" href="/static/homeStyle.css">
+    <link rel="stylesheet" href="/static/standardStyle.css">
+</head>
+<body>
+    <div id="navbarStudent"></div>
+    <br><br><br><br><br>
+    <div id = "message" class="message"></div>
+    <div class="container">
+        <div id = "everything" class="everything">
+            <div id="profile" class="profile-bar"></div>
+            <div id = "profile5">
+
+                <br><br><br><br>
+
+                <div id="profile4" class="profile-bar">
+                    <table id="bookingsTable">
+    
+                        <tbody id="bookings"></tbody>
+                    </table>
+                </div>
+                <!-- <div id="profile2" class="profile-bar"></div>
+                <div id="profile3" class="profile-bar"></div> -->
+                <div id="profile6" class="profile-bar"></div>
+                <div id="profile7" class="profile-bar"></div>
+
+            </div>
+        </div>
+    </div>
+    <br><br><br><br>
+    <div id="footer" class="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/script/standardScript.js"></script>
+    <script src="/script/studentScript.js"></script>
+    <script src="/script/bookingButtons.js"></script>
+    <script src="/script/bookingDateFormat.js"></script>
+    <script>
+        const bookingTableBody = document.getElementById('bookings');
+        fetch('/student/apiprofile')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                messageElement.textContent = data.error;
+                messageElement.classList.add('error');
+            } else {
+                const profileElement = document.getElementById('profile');
+                profileElement.innerHTML = `
+                    <img id="P1" alt="${data.f_originalname}" src="/uploads/profileFiles/student/${data.f_filename}" alt="Profile Image">
+                    <form action="/student/changePic" method="POST" enctype="multipart/form-data">
+                        <input id="profile-photo" type="file" name="profile-photo" accept="image/*">
+                        <button type="submit" class="secondary-button">Update Picture</button>
+                    </form>
+                    <h3>Name: ${data.fullName}</h3>
+                    <p>Email: ${data.email}</p>
+                `;
+                data.subjects.forEach(subject => {
+                    const subjectElement = document.createElement('div');
+                    subjectElement.classList.add('profile-bar2');
+                    subjectElement.innerHTML = `
+                        <p>${subject.examBoard} ${subject.qualification} ${subject.subject}</p>
+                    `;
+                    profileElement.appendChild(subjectElement);
+                });
+
+                profileElement.innerHTML += `
+                    <form action="/student/configSubject.html" method="GET">
+                        <button class ="secondary-button" type="submit">Add/Edit Subjects</button>
+                    </form>
+                `;
+
+                const profile6Element = document.getElementById('profile6');
+                profile6Element.innerHTML = `
+                    <p>Lessons Complete:</p>
+                    <h3>${data.lessonCount} lessons done!</h3>
+                `;
+
+                const profile7Element = document.getElementById('profile7');
+                profile7Element.innerHTML = `
+                    <p>Revision Sessions Complete:</p>
+                    <h3>${data.revisionCount} sessions done!</h3>
+                `;
+            }
+        })
+        .catch(error => {
+            messageElement.textContent = 'Failed to load profile.';
+            messageElement.classList.add('error');
+        });
+
+        fetch('/viewDayBookings')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                messageElement.textContent = data.error;
+                messageElement.classList.add('error');
+            } else {
+                const bookings = data.bookings;
+                if (bookings.length === 0) {
+                    bookingTableBody.innerHTML = '<tr><td colspan="6">No bookings today.</td></tr>';
+                } else {
+                    const dateRow = document.createElement('tr');
+                    dateRow.innerHTML = `<td colspan="5" style="font-weight: bold; background-color: #  ;">Today's Bookings:</td>`;
+                    bookingTableBody.appendChild(dateRow);
+
+                    bookings.forEach(booking => {
+                        const row = document.createElement('tr');
+                        const disableLaunchButton = shouldDisableLaunchButton(booking.date, booking.time, booking.duration);
+                        
+                        row.innerHTML = `
+                            <td>                                    
+                                <form action="/getBookingID2" method="POST">
+                                    <input type="hidden" name="bookingId" value="${booking._id}">
+                                    <a href="#" onclick="this.closest('form').submit();" style="font-style: italic; text-decoration: none;">${booking.tutorName}</a>
+                                </form>
+                            </td>
+                            <td>${booking.time}</td>
+                            <td>
+                                ${!booking.revisionSession ? `
+                                    ${booking.subject}
+                                ` : 'Revision Session'}
+                            </td>
+                            <td>
+                                ${!booking.studentConfirmed ? `
+                                    Price: £${booking.price}
+                                    <form action="/student/confirmLesson" method="POST">
+                                        <input type="hidden" name="returnUrl" value="home">
+                                        <input type="hidden" name="bookingId" value="${booking._id}">
+                                        <button type="submit">Confirm</button>
+                                    </form>
+                                ` : ''}
+                                ${!booking.tutorConfirmed ? `
+                                    Lesson to be confirmed by Tutor
+                                    <form action="/cancelChanges" method="POST">
+                                        <input type="hidden" name="returnUrl" value="studentHome">
+                                        <input type="hidden" name="bookingId" value="${booking._id}">
+                                        <button type="submit" class="secondary-button">Cancel Changes</button>
+                                    </form>
+                                ` : ''}
+                                ${booking.studentConfirmed && booking.tutorConfirmed ? `
+                                    <form action="/student/launchLesson" method="POST">
+                                        <input type="hidden" name="bookingId" value="${booking._id}">
+                                        <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" type="submit" ${disableLaunchButton ? 'disabled' : ''}>Launch</button>
+                                    </form>
+                                ` : ''}
+                                <form action="/getBookingID" method="POST">
+                                    <input type="hidden" name="bookingId" value="${booking._id}">
+                                    <button type="submit" class="secondary-button">Edit Booking</button>
+                                </form>
+                            </td>
+                        `;
+                        bookingTableBody.appendChild(row);
+                    });
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching bookings:', error);
+            messageElement.textContent = 'Failed to show bookings';
+            messageElement.classList.add('error');
+        });
+        
+    </script>
+</body>
+</html>

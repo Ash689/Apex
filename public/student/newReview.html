@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student | Tutor Review</title>
+    <link rel="stylesheet" href="/static/lessonReport.css">
+    <link rel="stylesheet" href="/static/standardStyle.css">
+    <!-- Added Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .star-rating {
+            direction: rtl;
+            display: inline-block;
+            font-size: 2em;
+            unicode-bidi: bidi-override;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ddd;
+            font-size: 2rem;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .star-rating input:checked ~ label,
+        .star-rating input:checked ~ label ~ label {
+            color: #f5b301;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f5b301;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbarStudent"></div>
+    <div id="message" class="message"></div>
+    <br><br><br><br><br>
+    <div class="container">
+        <div id="tutor-profile" class="profile-bar"></div>
+        <div id="parent-form-container" class="hidden-section">
+            <form action="/student/reviewSubmit" id="parent-form" class="hidden" method="POST">
+                <h2>Write Review</h2>
+                <table id="profile-form">
+                    <tbody>
+                        <tr>
+                            <td>Score</td>
+                            <td>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="score" value="5">
+                                    <!-- Replaced text with Font Awesome star icon -->
+                                    <label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star4" name="score" value="4">
+                                    <!-- Replaced text with Font Awesome star icon -->
+                                    <label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star3" name="score" value="3">
+                                    <!-- Replaced text with Font Awesome star icon -->
+                                    <label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star2" name="score" value="2">
+                                    <!-- Replaced text with Font Awesome star icon -->
+                                    <label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star1" name="score" value="1">
+                                    <!-- Replaced text with Font Awesome star icon -->
+                                    <label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Write Review:</td>
+                            <td>
+                                <textarea name="review" id="review" style="width: 100%" maxlength="300"></textarea><br><br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="submit-button-container">
+                    <button type="submit">Submit Review</button>
+                </div>
+            </form>
+        </div>
+        <br><br>
+    </div>
+    <div id="footer" class="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/script/standardScript.js"></script>
+    <script src="/script/studentScript.js"></script>
+    <script>
+        
+    fetch('/student/getTutorProfile2')
+        .then(response => response.json())
+        .then(data => {
+            const messageElement = document.getElementById('message');
+            if (data.error) {
+                messageElement.textContent = data.error;
+                messageElement.classList.add('error');
+            } else {
+                const profileElement = document.getElementById('tutor-profile');
+                const profileImage = data.profileImage ? data.profileImage : 'images/P1.jpg';
+
+                // Building the subjects and qualifications string
+                const subjectsAndQualifications = data.recipient.subjects.map(subject => 
+                    `${subject.subject} (${subject.qualification})`
+                ).join(', ');
+
+                // Check if lesson exists
+                const lessonExists = data.lesson !== "";
+
+                // Building the profile info
+                const profileInfo = `
+                    <form action="/student/getTutorProfile" method="POST">
+                        <input type="hidden" name="recipientEmail" value="${data.recipient.email}">
+                        <h3>Name: <a href="#" onclick="this.closest('form').submit();">${data.recipient.fullName}</a></h3>
+                    </form>
+                    ${lessonExists ? `<p>Subject: ${data.lesson.subject}</p><p>Lesson Plan: ${data.lesson.plan}</p>` : `<p>Subjects: ${subjectsAndQualifications}</p>`}
+                `;
+
+                profileElement.innerHTML = `
+                    <div style="display:flex;" class="profile-container">
+                        <img id="P1" style="width: 200px" alt="${data.recipient.f_originalname}" src="/uploads/profileFiles/tutor/${data.recipient.f_filename}" alt="Profile Image">
+                        <div style="padding-left: 20px" class="profile-info">
+                            ${profileInfo}
+                        </div>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = 'Failed to load profile.';
+            messageElement.classList.add('error');
+            console.error(error);
+        });
+    </script>
+</body>
+</html>

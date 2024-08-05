@@ -1,0 +1,101 @@
+@font-face {
+    font-family: 'Dancing Script';
+    src: url('../fonts/DancingScript-VariableFont_wght.ttf') format('truetype');
+}
+
+/* .container{
+    background-color: #fffce2;
+    width: auto;
+} */
+/*
+#parent-form-container2{
+    background-color: #fffce2;
+    width: auto;
+}
+    */
+
+.header {
+    top: -0.5%;
+}
+
+
+#parent-form-container {
+    background-color: #efefef;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    max-height: 600px;
+    margin: 0 auto;
+
+    font-size: 20px;
+    text-align: center;
+}
+    /* margin-top: 150px; */
+
+#parent-form-container2 {
+    display: flex;
+}
+
+.homework-container{
+    background-color: #fff;
+}
+
+.hPictureInput {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    height: 50%;
+}
+#fileList{
+    max-height: 600px;
+    width: 50%;
+
+}
+
+#fileList button{
+    width: 20%;
+}
+
+.current{
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 18px;
+    color: #1d3151; 
+    text-decoration: none;
+    margin: 0;
+}   
+
+a:visited, a:hover, a:active {
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 18px;
+    color: #1d3151; 
+    text-decoration: none;
+    margin: 0;
+}
+
+
+textarea {
+    width: 400px;
+}
+
+
+input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    outline: none;
+}
+
+.form-container{
+    align-items: center;
+}
+
+img {
+    width: 200px;
+}
+
+.fileList {
+    overflow-y: auto;
+    max-height: 275vh; 
+}

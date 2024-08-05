@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student | Login</title>
+    <link rel="stylesheet" href="/static/standardStyle.css">
+    <link rel="stylesheet" href="/static/formStyle.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 id="header-title"><a href="welcome.html">Apex Tuition</a></h1>
+        </div>
+
+        <div id="parent-form-container" class="hidden-section">
+            <h3>Student - Login</h3>
+            <div id="message" class="message"></div>
+            <form action="/student/login" id="parent-form" class="hidden" method="POST">
+                <fieldset class='float-label-field'>
+                    <label for="txtEmail">Email</label>
+                    <input id="txtEmail" type="email" name="email" required><br><br>
+                </fieldset>
+                <fieldset class='float-label-field'>
+                    <label for="txtPassword">Password</label>
+                    <input type="password" name="password" id="txtPassword" maxlength="15" required><br><br>
+                </fieldset>
+                <button type="submit">Enter</button>
+            </form>
+            <button id="parent-btn-register" class = "secondary-button">Register Here</button>
+            <p>Not a student? Login as a tutor <a href="/tutor/login.html">here</a>
+        </div>
+        <br><br>
+    </div>
+    <div id="footer" class="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/script/standardScript.js"></script>
+    <script>
+        document.getElementById('parent-btn-register').addEventListener('click', function() {
+            window.location.href = '/student/register.html';
+        });
+    </script>
+</body>
+</html>

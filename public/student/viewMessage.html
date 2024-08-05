@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student | Messages</title>
+    <link rel="stylesheet" href="/static/standardStyle.css">
+    <link rel="stylesheet" href="/static/getMessage.css">
+</head>
+
+<body>
+    <div id="navbarStudent"></div>
+    <div id="message" class="message"></div>
+    <br><br><br><br><br>
+    <div class="container">
+
+        <div id="tutor-profile" class="profile-bar"></div>
+
+        <div class="messaging">
+            <div class="message-section">
+                <div id="profile" class="profile-bar2"></div>
+                <form action="/student/sendMessage" class = "message-box" id="parent-form" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="document">
+                    <textarea  id="message-input" type="text" name="content" required maxlength="2000"></textarea><br><br>
+                    <button type="submit">Enter</button>
+                </form>
+            </div>
+            <div id="booking" class="booking"></div>
+        </div>
+        <br><br><br><br><br><br><br><br><br><br>
+    </div>
+    <div id="footer" class="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/script/standardScript.js"></script>
+    <script src="/script/studentScript.js"></script>
+    <script src="/script/bookingButtons.js"></script>
+    <script src="/script/bookingDateFormat.js"></script>
+    <script>
+        fetch('/student/getMessage')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                messageElement.textContent = data.error;
+                messageElement.classList.add('error');
+            } else {
+                const messages = data.messages;
+                const profileElement = document.getElementById('profile');
+                if (messages.length === 0) {
+                    messageElement.innerHTML = '<p>No messages found.</p>';
+                } else {
+                    messages.forEach(message => {
+                        const messageContainer = document.createElement('div');
+                        const messageContent = document.createElement('div');
+                        const createdAt = new Date(message.createdAt);
+                        const formattedDate = `${createdAt.toLocaleDateString()} ${createdAt.toLocaleTimeString()}`;
+                        
+                        messageContent.innerHTML = `
+                            <h3>${message.content}</h3>
+                        `;
+                        if (message.filename){
+                            const downloadLink = document.createElement('a');
+                            downloadLink.href = `/uploads/messageFiles/${message.fromStudent ? 'student' : 'tutor' }/${message.filename}`;
+                            downloadLink.textContent = `Download ${message.originalname}`;
+                            downloadLink.download = message.originalname;
+                            messageContent.appendChild(downloadLink);
+                        }
+                        messageContent.innerHTML += `
+                            <p style="font-size: 12px">${formattedDate}</p>
+                        `;
+                        messageContent.classList.add('message-item');
+                        
+                        if (!message.fromStudent) {
+                            messageContainer.classList.add('left-message-container');
+                        } else {
+                            messageContainer.classList.add('right-message-container');
+                        }
+                        
+                        messageContainer.appendChild(messageContent);
+                        profileElement.appendChild(messageContainer);
+                    });
+                }
+                profileElement.scrollTop = profileElement.scrollHeight;
+            }
+        })
+        .catch(error => {
+            messageElement.textContent = 'Failed to load messages.';
+            messageElement.classList.add('error');
+        });
+
+        fetch('/student/getTutorProfile2')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                messageElement.textContent = data.error;
+                messageElement.classList.add('error');
+            } else {
+                const profileElement = document.getElementById('tutor-profile');
+                const profileImage = data.profileImage ? data.profileImage : 'images/P1.jpg';
+
+                // Building the subjects and qualifications string
+                const subjectsAndQualifications = data.recipient.subjects.map(subject => 
+                    `${subject.subject} (${subject.qualification})`
+                ).join(', ');
+
+                // Check if lesson exists
+                const lessonExists = data.lesson !== "";
+
+                // Building the profile info
+                const profileInfo = `
+                    <form action="/student/findTutorProfile" method="POST">
+                        <input type="hidden" name="recipientEmail" value="${data.recipient.email}">
+                        <h3>Name: <a href="#" onclick="this.closest('form').submit();">${data.recipient.fullName}</a></h3>
+                    </form>
+                    ${lessonExists ? `<p>Subject: ${data.lesson.subject}</p><p>Lesson Plan: ${data.lesson.plan}</p>` : `<p>Subjects: ${subjectsAndQualifications}</p>`}
+                `;
+
+                profileElement.innerHTML = `
+                    <div class="profile-container">
+                        <img id="P1" style="width: 200px" alt="${data.recipient.f_originalname}" src="/uploads/profileFiles/tutor/${data.recipient.f_filename}" alt="Profile Image">
+                        <div class="profile-info">
+                            ${profileInfo}
+                        </div>
+                    </div>
+
+                    <div class="button-container">
+                        <form action="/student/viewHomework.html">
+                            <button class = "secondary-button" type="submit">Homework</button>
+                        </form>
+                        <form action="/student/newReview.html">
+                            <button class = "secondary-button" type="submit">Add Review</button>
+                        </form>
+                        <form action="/student/report.html" class="report-form" style = "top: 320px; width: 20px">
+                            <button style = "width: auto; height: 29px;" type="submit">Report</button>
+                        </form>
+                    </div>
+                `;
+
+            }
+        })
+        .catch(error => {
+            messageElement.textContent = 'Failed to load profile.';
+            messageElement.classList.add('error');
+            console.error(error);
+        });
+
+        fetch('/viewIndividualBookings')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                messageElement.textContent = data.error;
+                messageElement.classList.add('error');
+            } else {
+                const bookingElement = document.getElementById('booking');
+                const bookings = data.bookings;
+                if (bookings.length === 0 || !bookings) {
+                    bookingElement.innerHTML = '<p>No bookings found.</p>';
+                } else {
+                    bookings.forEach(booking => {
+                        const individualBookingElement = document.createElement('div');
+                        individualBookingElement.classList.add('booking-item');
+                        const date = new Date(booking.date);
+                        const dateString = date.toISOString().split('T')[0];
+                        const formattedDate = formatDate(dateString);
+                        const disableLaunchButton = shouldDisableLaunchButton(booking.date, booking.time, booking.duration);
+                            
+                        individualBookingElement.innerHTML = `
+                            <p style = "font-size: 14px">${formattedDate}</p>
+                            <p style = "font-size: 14px">${booking.time}</p>
+                            ${!booking.revisionSession ? `<p style = "font-size: 12px">${booking.subject}</p>` : `<p style = "font-size: 12px">Revision Session</p>`}
+                            ${!booking.studentConfirmed ? `
+                                Price: £${booking.price}
+                                <form action="/student/confirmLesson" method="POST">
+                                    <input type="hidden" name="returnUrl" value="viewMessage">
+                                    <input type="hidden" name="bookingId" value="${booking._id}">
+                                    <button type="submit">Confirm</button>
+                                </form>
+                            ` : ''}
+                            ${!booking.tutorConfirmed ? `
+                                Lesson to be confirmed by Tutor
+                                <form action="/cancelChanges" method="POST">
+                                    <input type="hidden" name="returnUrl" value="viewMessageStudent">
+                                    <input type="hidden" name="bookingId" value="${booking._id}">
+                                    <button type="submit" class="secondary-button">Cancel Changes</button>
+                                </form>
+                            ` : ''}
+                            ${booking.studentConfirmed && booking.tutorConfirmed ? `
+                                <form action="/student/launchLesson" method="POST">
+                                    <input type="hidden" name="bookingId" value="${booking._id}">
+                                        <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" type="submit" ${disableLaunchButton ? 'disabled' : ''}>Launch</button>
+                                </form>
+                            ` : ''}
+                            <form action="/getBookingID" method="POST">
+                                <input type="hidden" name="bookingId" value="${booking._id}">
+                                <button type="submit" class="secondary-button">Edit Booking</button>
+                            </form>
+                            <p>-------------------------</p>
+                        `;
+                        bookingElement.appendChild(individualBookingElement);
+                    });
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching bookings:', error);
+            messageElement.textContent = 'Failed to show bookings';
+            messageElement.classList.add('error');
+        });
+    </script>
+</body>
+</html>

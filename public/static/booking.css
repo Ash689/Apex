@@ -1,0 +1,56 @@
+.profile-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.message-item {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+}
+
+.message-item:hover {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+.float-label-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+.float-label-field label {
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    pointer-events: none;
+    transition: 0.2s;
+    color: #999;
+}
+.float-label-field input, .float-label-field select {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: 0.2s;
+}
+.float-label-field input:focus, .float-label-field select:focus {
+    border-color: #77aaff;
+}
+.float-label-field input:not(:placeholder-shown) + label,
+.float-label-field select:not(:placeholder-shown) + label,
+.float-label-field input:focus + label,
+.float-label-field select:focus + label {
+    top: -20px;
+    left: 10px;
+    font-size: 14px;
+    color: #77aaff;
+}
