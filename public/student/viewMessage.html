@@ -108,7 +108,7 @@
                 // Building the profile info
                 const profileInfo = `
                     <form action="/student/findTutorProfile" method="POST">
-                        <input type="hidden" name="recipientEmail" value="${data.recipient.email}">
+                        <input type="hidden" name="recipientEmail" value="${data.recipient._id}">
                         <h3>Name: <a href="#" onclick="this.closest('form').submit();">${data.recipient.fullName}</a></h3>
                     </form>
                     ${lessonExists ? `<p>Subject: ${data.lesson.subject}</p><p>Lesson Plan: ${data.lesson.plan}</p>` : `<p>Subjects: ${subjectsAndQualifications}</p>`}
