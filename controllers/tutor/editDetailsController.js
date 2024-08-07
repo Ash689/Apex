@@ -15,10 +15,14 @@ exports.config = async (req, res) => {
 
     const dobError = validateDateOfBirth(dateOfBirth, 18);
     if (dobError) {
-      return res.redirect(`/tutor/config.html?message=${encodeURIComponent(dobError)}&type=error`);
+      return res.redirect(`/tutor/configProfile.html?message=${encodeURIComponent(dobError)}&type=error`);
     }
     
-    let user = await findUser(req, res, "config", req.session.user._id);
+    if(!req.file){
+      return res.redirect(`/student/configProfile.html?message=Please upload profile picture&type=error`);
+    }
+    
+    let user = await findUser(req, res, "configProfile", req.session.user._id);
     
 
     // Update the necessary fields
@@ -38,7 +42,7 @@ exports.config = async (req, res) => {
     res.redirect('/tutor/configSubject.html');
   } catch (error){
     console.error(error);
-    res.redirect('/tutor/config.html?message=Server error.&type=error');
+    res.redirect('/tutor/configSubject.html?message=Server error.&type=error');
   
   }
 };
@@ -187,6 +191,10 @@ exports.changeTuitionType = async(req, res) => {
   const { newTuitionType } = req.body;
 
   try {
+
+    if (newTuitionType.length < 10 || newTuitionType > 100){
+      res.redirect('/tutor/home.html?message=Text must be between 10 - 100 characters.&type=error');
+    }
     let user = await findUser(req, res, "home", req.session.user._id);
 
     // Update the necessary fields

@@ -4,6 +4,10 @@ const { body } = require('express-validator');
 const controller = require('../../controllers/tutor/editDetailsController');
 const multer = require('multer');
 const path = require('path');
+const sessionCheckTutor = require('../../middleware/sessionCheckTutor'); // Adjust the path as necessary
+
+router.use(sessionCheckTutor);
+
 
 const storageTutorPicture = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -59,6 +63,22 @@ router.post('/changeTuitionType', (req, res) => {
 
 router.post('/changeAvailability', (req, res) => {
   controller.changeAvailability(req, res);
+});
+
+router.post('/forgotPassword', [
+  body('email').trim().escape(),
+], (req, res) => {
+  controller.forgotPassword(req, res);
+});
+
+router.post('/changePassword', [
+  body('password').trim().escape(),
+], (req, res) => {
+  controller.changePassword(req, res);
+});
+
+router.get('/getEmail', (req, res) => {
+  controller.getEmail(req, res);
 });
 
 module.exports = router;

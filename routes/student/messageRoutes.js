@@ -4,6 +4,9 @@ const multer = require('multer');
 const { body } = require('express-validator');
 const controller = require('../../controllers/student/messageController');
 const path = require('path');
+const sessionCheckStudent = require('../../middleware/sessionCheckStudent'); // Adjust the path as necessary
+
+router.use(sessionCheckStudent);
 
 const storageMessageStudent = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -42,6 +45,10 @@ router.post('/reviewSubmit', [
   body('review').trim().escape(),
 ], (req, res) => {
   controller.reviewSubmit(req, res);
+});
+
+router.get('/countMessage/', (req, res) => {
+  controller.countMessage(req, res);
 });
 
 module.exports = router;

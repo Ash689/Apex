@@ -1,7 +1,7 @@
 // updateTutors.js
 require('dotenv').config(); // Add this line at the top
 const mongoose = require('mongoose');
-const Message = require('./models/tutorUser');
+const Message = require('./models/studentUser');
 
 async function updateStuff() {
   // MongoDB Connection
@@ -10,7 +10,7 @@ async function updateStuff() {
     useUnifiedTopology: true,
   });
   
-  await Message.updateMany({}, { $set: { number: null } });
+  await Message.updateMany({}, { $set: { resetPasswordToken: null, resetPasswordExpires: null } });
 
   console.log('All messages updated with read field');
   

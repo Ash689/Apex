@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/bookingController');
+const sessionCheck = require('../middleware/sessionCheck'); // Adjust the path as necessary
+
+router.use(sessionCheck);
 
 router.get('/getBookingProfile', (req, res) => {
   controller.getBookingProfile(req, res);

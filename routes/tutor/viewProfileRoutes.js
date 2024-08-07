@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../../controllers/tutor/viewProfileController');
+const sessionCheckTutor = require('../../middleware/sessionCheckTutor'); // Adjust the path as necessary
+
+router.use(sessionCheckTutor);
+
 
 router.get('/apiprofile', (req, res) => {
     controller.apiprofile(req, res);

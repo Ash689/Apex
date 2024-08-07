@@ -21,7 +21,7 @@
                 <div id = "reportName"></div>
                 <div class="autocomplete-container">
                     <p>Please enter the report category:</p>
-                    <input name="topics" class="notesContainerInput" autocomplete="off">
+                    <input name="topics" class="notesContainerInput" autocomplete="off" required>
                     <div class="autocomplete-suggestions" id="suggestions"></div>
                 </div>
                 <input type="file" name="document">
@@ -46,7 +46,7 @@
                 messageElement.classList.add('error');
             } else {
                 const profileElement = document.getElementById('tutor-profile');
-                const profileImage = data.profileImage ? data.profileImage : 'images/P1.jpg';
+                const profileImage = data.profileImage ? data.profileImage : '../images/P1.jpg';
                 const tutorName = document.getElementById("reportName");
 
                 // Building the subjects and qualifications string

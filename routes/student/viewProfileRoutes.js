@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../../controllers/student/viewProfileController');
+const sessionCheckStudent = require('../../middleware/sessionCheckStudent'); // Adjust the path as necessary
+
+router.use(sessionCheckStudent);
 
 router.get('/apiprofile', (req, res) => {
     controller.apiprofile(req, res);

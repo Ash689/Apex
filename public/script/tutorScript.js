@@ -70,13 +70,11 @@ fetch('/tutor/userName')
     });
 })
 .catch(error => {
-    messageElement.textContent = 'Failed to load profile.';
-    messageElement.classList.add('error');
-    // window.location.href = '/public/tutor/login.html?message=Please log in.&type=error';
+    window.location.href = '/tutor/login.html?message=Please log in.&type=error';
 });
 
 
-fetch('/countMessage/t')
+fetch('/tutor/countMessage')
 .then(response => response.json())
 .then(data => {
     if (data.error) {
@@ -97,5 +95,5 @@ fetch('/countMessage/t')
 }).catch(error => {
     messageElement.textContent = 'Failed to load message count.';
     messageElement.classList.add('error');
-    // window.location.href = '/public/tutor/login.html?message=Please log in.&type=error';
+    window.location.href = '/tutor/login.html?message=Please log in.&type=error';
 });

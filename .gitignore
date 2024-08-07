@@ -1,1 +1,11 @@
 .env
+/homeworkFiles/student/*
+/messageFiles/student/*
+/profileFiles/student/*
+/homeworkFiles/tutor/*
+/messageFiles/tutor/*
+/profileFiles/tutor/*
+updateStuff.js
+index11.js
+index12.js
+index13.js

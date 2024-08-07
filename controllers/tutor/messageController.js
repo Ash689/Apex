@@ -12,8 +12,6 @@ exports.sendMessage = async (req, res) => {
   }
   const { content } = req.body;
 
-  console.log(content);
-
   try{
     let recipient = await findUser(req, res, "viewMessage", req.session.recipientID, true);
 
@@ -164,5 +162,22 @@ exports.sendReport = async(req, res) => {
   } catch (error) {
     console.error(error);
     return res.redirect('/tutor/report.html?message=Failed to send message .&type=error');
+  }
+};
+
+
+exports.countMessage = async(req, res) => {
+  try {
+    // Count unread messages
+    let unreadMessagesCount = await Message.countDocuments({
+      receiver: req.session.user._id,
+      tutorRead: false
+    });
+
+    res.json({ count: unreadMessagesCount });
+  } catch (error) {
+    console.error(error);
+    let messagePage = window.location.href;
+    res.redirect(`${messagePage}?message=Error getting message count.&type=success`) 
   }
 };

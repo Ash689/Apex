@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutor | Setup</title>
     <link rel="stylesheet" href="/static/standardStyle.css">
-    <link rel="stylesheet" href="/static/lessonReport.css">
+    <link rel="stylesheet" href="/static/formStyle.css">
 </head>
 <body>
     <div style = "top: 2%;" class="header">
@@ -21,7 +21,7 @@
             <h2>Tutor - Profile Set Up</h2>
             <!-- Main Table -->
             <div class="profile-pic">
-                <img alt="User Pic" src="images/P1.jpg" id="profile-image" height="200"><br><br>
+                <img alt="User Pic" src="../images/P1.jpg" id="profile-image" height="200"><br><br>
                 <label for="profile-photo" class="custom-file-input">Choose File</label>
                 <input id="profile-photo" type="file" name="profile-photo" onchange="previewFile()" accept="image/*">
             </div>
@@ -36,7 +36,7 @@
                     <tr>
                         <td>Date of birth</td>
                         <td>
-                            <input type="date" id="dateOfBirth" name="dateOfBirth" required readonly>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
                         </td>
                     </tr>
                     <tr>
@@ -74,7 +74,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="/script/tutorScript.js"></script>
+    <script src="/script/standardScript.js"></script>
     <script>
         document.getElementById('profile-photo').addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -101,12 +101,12 @@
             }
         }
 
-        $(function() {
-            $("#dateOfBirth").datepicker({
-                dateFormat: "yy-mm-dd",
-                minDate: 0
-            });
-        });
+        // $(function() {
+        //     $("#dateOfBirth").datepicker({
+        //         dateFormat: "yy-mm-dd",
+        //         maxDate: 0
+        //     });
+        // });
         
         document.getElementById('info-button').title = "E.g. 4 years of teaching, ranging from starting from scratch up to exam prep.";
     </script>

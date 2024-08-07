@@ -10,7 +10,6 @@ exports.sendMessage = async (req, res) => {
     return res.redirect('/student/viewMessage.html?message=Invalid input.&type=error');
   }
   const { content } = req.body;
-  console.log(content);
 
   try {
     let recipient = await findUser(req, res, "viewMessage", req.session.recipientID, true);
@@ -187,5 +186,21 @@ exports.reviewSubmit = async(req, res) => {
   } catch (error) {
       console.error(error);
       return res.redirect('/student/newReview.html?message=Server Error.&type=error');
+  }
+};
+
+exports.countMessage = async(req, res) => {
+  try {
+    // Count unread messages
+    let unreadMessagesCount = await Message.countDocuments({
+      receiver: req.session.user._id,
+      studentRead: false
+    });
+
+    res.json({ count: unreadMessagesCount });
+  } catch (error) {
+    console.error(error);
+    let messagePage = window.location.href;
+    res.redirect(`${messagePage}?message=Error getting message count.&type=success`) 
   }
 };

@@ -5,24 +5,17 @@ const Booking = require('../../models/booking');
 
 exports.apiprofile = async (req, res) => {
     const user = await findUser(req, res, "home", req.session.user._id);
-
-    if (user) {
-      res.json(user);
-    }
+    res.json(user);
 };
 
 exports.userName = async (req, res) => {
     try {
-        if (!req.session.user._id){
-            return res.redirect('/student/login.html?message=Error, Please log in.&type=error');
-        } else {
-            let user = await findUser(req, res, "home", req.session.user._id);
-            res.json({
+        let user = await findUser(req, res, "home", req.session.user._id);
+        res.json({
             fullName: user.fullName,
             email: user.email,
             subjects: user.subjects
-            });
-        }
+        });
         
     } catch (error) {
         console.error(error);
@@ -45,6 +38,7 @@ exports.viewProfile = async(req, res) => {
     try {
         let user = await findUser(req, res, "viewTutorProfile", req.session.recipientID, true);
         res.json({
+            _id: user._id,
             f_originalname: user.f_originalname,
             f_filename: user.f_filename,
             fullName: user.fullName,

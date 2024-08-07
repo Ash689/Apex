@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const authController = require('../controllers/loginRegisterController');
+const sessionCheck = require('../middleware/sessionCheck'); 
+
 
 router.post('/student/register', [
   body('email').trim().escape(),
@@ -39,10 +41,6 @@ router.post('/tutor/login', [
 
 router.get('/tutor/logout', (req, res) => {
   authController.logout(req, res, 'tutor');
-});
-
-router.get('/countMessage/:user', (req, res) => {
-  authController.countMessage(req, res);
 });
 
 module.exports = router;

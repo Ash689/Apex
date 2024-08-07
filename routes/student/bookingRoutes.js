@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const controller = require('../../controllers/student/bookingController');
+const sessionCheckStudent = require('../../middleware/sessionCheckStudent'); // Adjust the path as necessary
+
+router.use(sessionCheckStudent);
 
 router.post('/confirmLesson', (req, res) => {
   controller.confirmLesson(req, res);

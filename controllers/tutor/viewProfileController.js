@@ -5,11 +5,8 @@ const { body, validationResult } = require('express-validator');
 
 exports.apiprofile = async (req, res) => {
   try {
-
     const user = await findUser(req, res, "home", req.session.user._id);
-    if (user) {
-      res.json(user);
-    }
+    res.json(user);
   } catch (error) {
     console.error('Error in apiprofile:', error);
     return res.redirect('/tutor/home.html?message=Server error.&type=error');
@@ -18,18 +15,15 @@ exports.apiprofile = async (req, res) => {
 
 exports.userName = async (req, res) => {
     try {
-      if (!req.session){
-        return res.redirect('/tutor/login.html?message=Error, Please log in.&type=error');
-      } else{
-        let user = await findUser(req, res, "home", req.session.user._id);
-        res.json({
-          fullName: user.fullName,
-          email: user.email,
-          price: user.price,
-          lessonCount: user.lessonCount,
-          subjects: user.subjects
-        });
-      }
+      let user = await findUser(req, res, "home", req.session.user._id);
+      res.json({
+        fullName: user.fullName,
+        email: user.email,
+        price: user.price,
+        lessonCount: user.lessonCount,
+        subjects: user.subjects
+      });
+      
     } catch (error) {
         console.error(error);
         return res.redirect('/tutor/login.html?message=Error, Please log in.&type=error');
@@ -37,9 +31,9 @@ exports.userName = async (req, res) => {
 };
 
 exports.getID = async (req, res) => {
-    const { recipientEmail } = req.body;
-    req.session.recipientID = recipientEmail;
-    res.redirect('/tutor/viewMessage.html');
+  const { recipientEmail } = req.body;
+  req.session.recipientID = recipientEmail;
+  res.redirect('/tutor/viewMessage.html');
 };
 
 exports.getBookingProfile = async(req,res) => {

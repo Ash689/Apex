@@ -4,6 +4,9 @@ const multer = require('multer');
 const { body } = require('express-validator');
 const controller = require('../../controllers/tutor/bookingController');
 const path = require('path');
+const sessionCheckTutor = require('../../middleware/sessionCheckTutor'); // Adjust the path as necessary
+
+router.use(sessionCheckTutor);
 
 router.post('/confirmLesson', (req, res) => {
   controller.confirmLesson(req, res);

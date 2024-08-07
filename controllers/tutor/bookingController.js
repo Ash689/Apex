@@ -249,7 +249,7 @@ exports.lessonReportSubmit = async (req, res) => {
           isText: true
         });
         await file.save();
-      } else {
+      } else if (req.file){
 
         const file = new HomeworkFile({
           homework: homework._id,
@@ -289,23 +289,21 @@ exports.newBooking = async(req, res) => {
   if (!errors.isEmpty()) {
     return res.redirect('/tutor/newBooking.html?message=Invalid input.&type=error');
   }
-
   const { revision, subject, bookingDate, bookingTime, recurring, bookingPrice, duration } = req.body;
   try {
     let recipient = await findUser(req, res, "newBooking", req.session.recipientID, true);
     const bookingStartDateTime = new Date(`${bookingDate}T${bookingTime}:00.000Z`);
     const bookingEndDateTime = new Date(bookingStartDateTime.getTime() + duration * 60 * 1000);
-    // Check if the booking start time is in the past
     const now = new Date();
     if (bookingStartDateTime < now) {
       return res.redirect('/tutor/newBooking.html?message=Booking time cannot be in the past.&type=error');
     }
-
     // Check for initial booking conflict
     if (await hasConflictingBooking(req.session.user._id, recipient._id, bookingStartDateTime, bookingEndDateTime, null)) {
       return res.redirect('/tutor/newBooking.html?message=This time slot is not available.&type=error');
     }
-
+    let name = await findUser(req, res, "newBooking", req.session.user._id);
+    
     let recurringChoice = (recurring === "Yes");
     let revisionChoice = (revision === "yes");
     const recurringID = uuidv4();
@@ -314,7 +312,7 @@ exports.newBooking = async(req, res) => {
       let booking = new Booking({
         tutor: req.session.user._id,
         student: recipient._id,
-        tutorName: req.session.user.fullName,
+        tutorName: name.fullName,
         studentName: recipient.fullName,
         subject: subject, 
         date: startDateTime,
@@ -324,7 +322,6 @@ exports.newBooking = async(req, res) => {
         recurringID: recurringChoice ? recurringID : null,
         revisionSession: revisionChoice ? true : false,
       });
-
 
       await booking.save();
       // await createBooking.save();

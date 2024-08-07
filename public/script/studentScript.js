@@ -19,70 +19,53 @@ fetch('/student/navbar.html')
             }
         })
     });
+}).catch(error => console.error('Error loading the navbar:', error));
 
-    fetch('/countMessage/s')
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            // Handle error case
-            messageElement.textContent = data.error;
-            messageElement.classList.add('error');
-        } else {
-            if (data.count > 0){
-                const messageCountElement = document.getElementById('messageCounter');
-                if (data.count > 9){
-                    messageCountElement.innerHTML += "*";
-                } else {
-                    
-                    messageCountElement.innerHTML += `[${data.count}]`;
-                }
+fetch('/student/countMessage')
+.then(response => response.json())
+.then(data => {
+    if (data.error) {
+        // Handle error case
+        messageElement.textContent = data.error;
+        messageElement.classList.add('error');
+    } else {
+        if (data.count > 0){
+            const messageCountElement = document.getElementById('messageCounter');
+            if (data.count > 9){
+                messageCountElement.innerHTML += "*";
+            } else {
+                
+                messageCountElement.innerHTML += `[${data.count}]`;
             }
         }
-    })
+    }
+}).catch(error => {
+    window.location.href = '/student/login.html?message=Please log in.&type=error';
+});
 
-    // Now fetch the username information
-    fetch('/student/userName')
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            // Handle error case
-            messageElement.textContent = data.error;
-            messageElement.classList.add('error');
-        } else {
-            // Update welcome-message with user's full name
-            const profileElement = document.getElementById('welcome-message');
-            profileElement.innerHTML = `<h3>${data.fullName}</h3>`;
-            // Ensure welcome-message is visible
-            profileElement.style.display = 'block';
-        }
 
-        // Show and configure logout button
-        const logoutButton = document.getElementById('logout-button');
-        logoutButton.style.display = 'inline-block'; // Show the button
+fetch('/student/userName')
+.then(response => response.json())
+.then(data => {
+    if (data.error) {
+        // Handle error case
+        messageElement.textContent = data.error;
+        messageElement.classList.add('error');
+    } else {
+        // Update welcome-message with user's full name
+        const profileElement = document.getElementById('welcome-message');
+        profileElement.innerHTML = `<h3>${data.fullName}</h3>`;
+        // Ensure welcome-message is visible
+        profileElement.style.display = 'block';
+    }
 
-        logoutButton.addEventListener('click', function() {
-            window.location.href = '/student/logout';
-        });
-    })
-    .catch(error => {
-        window.location.href = '/student/login.html?message=Please log in.&type=error';
-    });
-
-})
-.catch(error => {
-    console.error('Error loading the navbar:', error)
-    // Handle error when fetching username
-    messageElement.textContent = 'Failed to load profile.';
-    messageElement.classList.add('error');
-
-    // Show and configure logout button for login redirect
+    // Show and configure logout button
     const logoutButton = document.getElementById('logout-button');
-    logoutButton.textContent = "Log in";
     logoutButton.style.display = 'inline-block'; // Show the button
 
     logoutButton.addEventListener('click', function() {
-        window.location.href = '/student/login.html';
+        window.location.href = '/student/logout';
     });
-
+}).catch(error => {
     window.location.href = '/student/login.html?message=Please log in.&type=error';
 });

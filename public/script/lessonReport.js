@@ -10,9 +10,6 @@ document.getElementById('generateQuestionButton').addEventListener("click", asyn
         return;
     }
 
-    console.log(aiHomeworkNumber);
-    console.log(aiHomeworkTopic);
-
     const aiHomeworkContainer = document.getElementById('ai_homework');
     const generatedQuestionsTextarea = document.createElement('textarea');
     generatedQuestionsTextarea.id = "generatedQuestions";
@@ -31,7 +28,6 @@ document.getElementById('generateQuestionButton').addEventListener("click", asyn
             ],
             model: 'gpt-3.5-turbo',
         });
-        console.log(chatCompletion.choices[0].message);
 
         generatedQuestionsTextarea.value = chatCompletion.choices.map(choice => choice.message.content).join('\n');
 

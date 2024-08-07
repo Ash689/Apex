@@ -24,7 +24,9 @@ const studentSchema = new mongoose.Schema({
   f_mimetype: String,
   f_size: Number,
   f_uploadDate: { type: Date, default: Date.now },
-  flag: {type: Boolean, default: false}
+  flag: {type: Boolean, default: false},
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date }
 });
 
 module.exports = mongoose.model('Student', studentSchema);

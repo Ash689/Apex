@@ -16,7 +16,7 @@
     width: 100%;
     box-sizing: border-box;
     background-color: #f2f2f2;
-    height: 700px;
+    height: auto;
     z-index: 2;
     display: flex;
     justify-content: space-around;
@@ -101,18 +101,45 @@
     font-size: 30px;
 }
 
+.bridge2 {
+    color: #1d3151;
+    padding: 20px;
+    border-radius: 10px;
+    
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    width: 100%; /* Adjust width as needed */
+    height: auto; /* Adjust height to be larger than width */
+    margin: 50px auto; /* Center horizontally with margin */
+    /* text-align: left; */
+    box-sizing: border-box;
+}
+
 .bridge {
-    display: flex;
-    background-color: #ffffff;
+    /* display: flex; */
+    background-color: #dc143c;
+    color: #ffffff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     opacity: 1;
     width: 100%px; /* Adjust width as needed */
-    height: 150px; /* Adjust height to be larger than width */
+    height: auto; /* Adjust height to be larger than width */
     margin: 50px auto; /* Center horizontally with margin */
-    text-align: left;
+    /* text-align: left; */
     box-sizing: border-box;
+}
+
+.bridge h1{
+    display: inline-block;
+    font-size: 25px;
+    /* transform: rotate(-5deg); */
+}
+
+.bridge h2{
+    color: #fff;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
 }
 
 .extra {
@@ -124,21 +151,22 @@
     opacity: 1;
     transition: opacity 1s ease, transform 1s ease;
     transform: translateY(0);
-    width: 1000px; /* Adjust width as needed */
-    height: 400px; /* Adjust height to be larger than width */
-    margin: 50px auto; /* Center horizontally with margin */
+    width: 90%;
+    /* height: 400px; */
+    height: auto;
+    margin: 50px auto;
     text-align: left;
     box-sizing: border-box;
 }
 
 .extra-text, .extra-images {
-    flex: 1;
+    /* flex: 1; */
     padding: 20px;
     box-sizing: border-box;
 }
 
 .extra-images img {
-    width: 100%;
+    width: 50%;
     height: auto;
     margin-bottom: 20px;
 }
@@ -247,4 +275,9 @@
 
 .tutor-form-container{
     max-width: 500px;
+}
+
+.text-emphasis{
+    font-weight: 500; 
+    color: #dc143c;
 }

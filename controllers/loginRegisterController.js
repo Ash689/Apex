@@ -10,7 +10,7 @@ exports.registerUser = async (req, res, userType) => {
     return res.redirect(`/${userType}/register.html?message=Invalid input.&type=error`);
   }
 
-  const { email, password, repassword } = req.body;
+  const { email, password} = req.body;
 
   try {
     const userModel = userType === 'tutor' ? tutorUser : studentUser;
@@ -21,19 +21,18 @@ exports.registerUser = async (req, res, userType) => {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
-
+    let email2 = email.toLowerCase().trim();
     // Create new user
     user = new userModel({
-      email,
+      email: email2,
       password: hashedPassword,
     });
 
     await user.save();
 
-
     req.session.user = {
       _id: user._id,
-      role: userType === "tutor",
+      role: userType
     };
 
     // Redirect based on profile existence
@@ -56,7 +55,7 @@ exports.loginUser = async (req, res, userType) => {
   const { email, password } = req.body;
   try {
     const userModel = userType === 'tutor' ? tutorUser : studentUser;
-    let user = await userModel.findOne({ email: email });
+    let user = await userModel.findOne({ email: email.toLowerCase().trim() });
     if (!user) {
       return res.redirect(`/${userType}/login.html?message=User not found.&type=error`);
     }
@@ -64,14 +63,13 @@ exports.loginUser = async (req, res, userType) => {
     if (!isMatch) {
       return res.redirect(`/${userType}/login.html?message=Invalid credentials.&type=error`);
     }
-
     req.session.user = {
       _id: user._id,
       role: userType,
     };
-
     if (user.town) {
       if (user.subjects.length === 0) {
+
         res.redirect(`/${userType}/configSubject.html`);
       } else {
         res.redirect(`/${userType}/home.html`);
@@ -98,25 +96,4 @@ exports.logout = async (req, res, userType) => {
     ? res.redirect(`/tutor/login.html?message=Successfully logged out.&type=success`) 
     : res.redirect(`/student/login.html?message=Successfully logged out.&type=success`);
   });
-};
-
-exports.countMessage = async(req, res) => {
-  try {
-    const { user } = req.params;
-
-    // Determine the read field based on the `user` parameter
-    const readField = user === "t" ? 'tutorRead' : 'studentRead';
-    // Count unread messages
-    let unreadMessagesCount = await Message.countDocuments({
-      receiver: req.session.user._id,
-      [readField]: false
-    });
-
-    res.json({ count: unreadMessagesCount });
-  } catch (error) {
-    console.error(error);
-    return req.session.user.role === "tutor" 
-    ? res.redirect(`/tutor/login.html?message=Please log in .&type=success`) 
-    : res.redirect(`/student/login.html?message=Please log in.&type=success`);
-  }
 };

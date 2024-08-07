@@ -46,7 +46,9 @@
                 const messages = data.messages;
                 const profileElement = document.getElementById('profile');
                 if (messages.length === 0) {
-                    messageElement.innerHTML = '<p>No messages found.</p>';
+                    const messageContent = document.createElement('div');
+                    messageContent.innerHTML = '<p>No messages found.</p>';
+                    profileElement.appendChild(messageContent);
                 } else {
                     messages.forEach(message => {
                         const messageContainer = document.createElement('div');
@@ -95,7 +97,7 @@
                 messageElement.classList.add('error');
             } else {
                 const profileElement = document.getElementById('tutor-profile');
-                const profileImage = data.profileImage ? data.profileImage : 'images/P1.jpg';
+                const profileImage = data.profileImage ? data.profileImage : '../images/P1.jpg';
 
                 // Building the subjects and qualifications string
                 const subjectsAndQualifications = data.recipient.subjects.map(subject => 

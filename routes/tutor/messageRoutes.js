@@ -4,6 +4,10 @@ const multer = require('multer');
 const { body } = require('express-validator');
 const controller = require('../../controllers/tutor/messageController');
 const path = require('path');
+const sessionCheckTutor = require('../../middleware/sessionCheckTutor'); // Adjust the path as necessary
+
+router.use(sessionCheckTutor);
+
 
 const storageMessageTutor = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -35,6 +39,10 @@ router.post('/sendReport', upload.single('document'), [
   body('topics').trim().escape(),
 ], (req, res) => {
   controller.sendReport(req, res);
+});
+
+router.get('/countMessage/', (req, res) => {
+  controller.countMessage(req, res);
 });
 
 

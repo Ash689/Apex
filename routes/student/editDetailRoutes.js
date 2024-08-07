@@ -4,7 +4,9 @@ const { body } = require('express-validator');
 const controller = require('../../controllers/student/editDetailsController');
 const multer = require('multer');
 const path = require('path');
+const sessionCheckStudent = require('../../middleware/sessionCheckStudent'); // Adjust the path as necessary
 
+router.use(sessionCheckStudent);
 
 const storageStudentPicture = multer.diskStorage({
   destination: (req, file, cb) => {

@@ -5,9 +5,6 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const path = require('path');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const sessionCheckStudent = require('./middleware/sessionCheckStudent');
-const sessionCheckTutor = require('./middleware/sessionCheckTutor');
-const sessionCheck = require('./middleware/sessionCheck');
 
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -35,7 +32,7 @@ app.use(session({
   cookie: {
     maxAge: 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: false,
     sameSite: 'strict'
   }
 }));
@@ -45,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //----------------
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100
+  max: 200
 });
 app.use(limiter);
 
@@ -73,6 +70,11 @@ app.get('/', (req, res) => {
 // Middleware to serve static files
 app.use('/uploads', express.static('uploads'));
 
+
+app.use('/', require('./routes/entryRoutes'));
+
+
+app.use('/student', require('./routes/student/forgotPasswordRoutes'));
 app.use('/student', require('./routes/student/bookingRoutes'));
 app.use('/student', require('./routes/student/editDetailRoutes'));
 app.use('/student', require('./routes/student/findTutorRoutes'));
@@ -80,14 +82,13 @@ app.use('/student', require('./routes/student/homeworkRoutes'));
 app.use('/student', require('./routes/student/messageRoutes'));
 app.use('/student', require('./routes/student/viewProfileRoutes'));
 
+app.use('/tutor', require('./routes/tutor/forgotPasswordRoutes'));
 app.use('/tutor', require('./routes/tutor/bookingRoutes'));
 app.use('/tutor', require('./routes/tutor/editDetailRoutes'));
 app.use('/tutor', require('./routes/tutor/homeworkRoutes'));
 app.use('/tutor', require('./routes/tutor/messageRoutes'));
 app.use('/tutor', require('./routes/tutor/viewProfileRoutes'));
 
-
-app.use('/', require('./routes/entryRoutes'));
 app.use('/', require('./routes/bookingRoutes'));
 
 

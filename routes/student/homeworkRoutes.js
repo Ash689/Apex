@@ -4,6 +4,9 @@ const { body } = require('express-validator');
 const multer = require('multer');
 const controller = require('../../controllers/student/homeworkController');
 const path = require('path');
+const sessionCheckStudent = require('../../middleware/sessionCheckStudent'); // Adjust the path as necessary
+
+router.use(sessionCheckStudent);
 
 const storageStudent = multer.diskStorage({
   destination: (req, file, cb) => {

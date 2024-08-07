@@ -25,9 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
         var header = document.querySelector('.header');
         header.style.top = '-7%'; // Move the header upwards
-    }, 0); // Wait for the transition to complete before hiding
-
-    
+    }, 0); // Wait for the transition to complete before hiding    
 });
 
 $(function() {
@@ -72,16 +70,10 @@ $('input').blur(function() {
     }
 });
 
-fetch('/footer')
-.then(() => {
-    const footerElement = document.getElementById('footer');
-    footerElement.innerHTML = `
-        <p>&copy; 2024 Tutoring. All rights reserved.</p>
-    `;
-})
-.catch(error => {
-    console.error('Error fetching footer:', error);
-});
+const footerElement = document.getElementById('footer');
+footerElement.innerHTML = `
+    <p>&copy; 2024 Tutoring. All rights reserved.</p>
+`;
 
 
 

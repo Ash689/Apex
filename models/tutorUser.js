@@ -42,6 +42,8 @@ const tutorSchema = new mongoose.Schema({
   f_size: Number,
   f_uploadDate: { type: Date, default: Date.now },
   flag: {type: Boolean, default: false},
+  resetPasswordToken: { type: String, default: null },
+  resetPasswordExpires: { type: Date, default: null }
 });
 
 module.exports = mongoose.model('Tutor', tutorSchema);

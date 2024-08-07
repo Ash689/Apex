@@ -47,8 +47,10 @@
             } else {
                 const messages = data.messages;
                 const profileElement = document.getElementById('read-message');
-                if (messages.length === 0) {
-                    messageElement.innerHTML = '<p>No messages found.</p>';
+                if (messages.length === 0) {            
+                    const messageContent = document.createElement('div');
+                    messageContent.innerHTML = '<p>No messages found.</p>';
+                    profileElement.appendChild(messageContent);
                 } else {
                     messages.forEach(message => {
                         const messageContainer = document.createElement('div');
@@ -98,7 +100,7 @@
                 messageElement.classList.add('error');
             } else {
                 const profileElement = document.getElementById('student-profile');
-                const profileImage = data.profileImage ? data.profileImage : 'images/P1.jpg';
+                const profileImage = data.profileImage ? data.profileImage : '../images/P1.jpg';
 
                 // Check if a lesson exists
                 const lessonExists = data.lesson !== "";

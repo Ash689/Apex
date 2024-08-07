@@ -13,7 +13,12 @@ exports.config = async (req, res) => {
     try {
         const dobError = validateDateOfBirth(dateOfBirth, 6);
         if (dobError) {
-            return res.redirect(`/student/configProfile.html?message=${encodeURIComponent(dobError)}&type=error`);
+          return res.redirect(`/student/configProfile.html?message=${encodeURIComponent(dobError)}&type=error`);
+        }
+
+        if(!req.file){
+          return res.redirect(`/student/configProfile.html?message=Please upload profile picture&type=error`);
+
         }
 
         let user = await findUser(req, res, "configProfile", req.session.user._id);
@@ -120,3 +125,4 @@ exports.changePic = async (req, res) => {
       res.redirect('/student/home.html?message=Error, please upload a valid image.&type=error');
     }
 };
+

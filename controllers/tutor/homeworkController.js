@@ -181,7 +181,7 @@ exports.addHomework = async(req, res) => {
     });
     await file.save();
 
-  } else {
+  } else  if (req.file) {
     const file = new HomeworkFile({
       homework: homework._id,
       filename: req.file.filename,

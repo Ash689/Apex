@@ -49,7 +49,8 @@ function checkFormValidity() {
     if (errors.length === 0) {
         submitBtn.disabled = false;
         submitBtn.classList.remove('disabled-button');
-        messageDiv.innerHTML = '';
+        messageDiv.innerHTML = '✓';
+        messageDiv.classList.add('success');
     } else {
         submitBtn.disabled = true;
         submitBtn.classList.add('disabled-button');
