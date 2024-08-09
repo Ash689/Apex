@@ -3,36 +3,9 @@ const studentUser = require('../../models/studentUser');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 require('dotenv').config();
-const nodemailer = require('nodemailer');
+const generateToken = require('../../utils/generateToken'); // Assuming you have a utility function for this
+const sendResetEmail = require('../../utils/passwordEmail');
 
-function generate8DigitToken() {
-  return Math.floor(10000000 + Math.random() * 90000000).toString();
-}
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASSWORD
-  }
-});
-
-async function sendResetEmail(userEmail, token) {
-  const mailOptions = {
-    from: process.env.EMAIL, // Replace with your email
-    to: userEmail,
-    subject: 'Password Reset',
-    text: `Your password reset token is ${token}. It will expire in 15 mins.`
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log('Password reset email sent to:', userEmail);
-  } catch (error) {
-    console.error('Error sending email:', error);
-    throw error;
-  }
-}
 
 exports.forgotPassword = async (req, res) => {
   const errors = validationResult(req);
@@ -46,13 +19,12 @@ exports.forgotPassword = async (req, res) => {
 
     let user = await studentUser.findOne({email: email});
     if(user){
-      const token = generate8DigitToken();
+      const token = generateToken();
       user.resetPasswordToken = token;
       user.resetPasswordExpires = Date.now() + 60*15*10000; // 1 hour
       await user.save();
       req.session.email = email;
-      console.log(token);
-      // await sendResetEmail(email, token);
+      await sendResetEmail(email, token);
     }
     res.json({ success: true });
 
@@ -119,7 +91,7 @@ exports.getEmail = async (req, res) => {
   try{
     res.json({email: req.session.email});
   } catch (error) {
-      console.error("Error saving profile: ", error);
-      res.redirect('/student/newPassword.html?message=Server error.&type=error');
+    console.error("Error saving profile: ", error);
+    res.redirect('/student/login.html?message=Error, please log in.&type=error');
   }
 };

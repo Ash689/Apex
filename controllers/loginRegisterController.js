@@ -21,7 +21,7 @@ exports.registerUser = async (req, res, userType) => {
     }
 
     // Hash password
-    const hashedPassword = bcrypt.hash(password, parseInt(process.env.SALT));
+    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
     let email2 = email.toLowerCase().trim();
     // Create new user
     user = new userModel({
