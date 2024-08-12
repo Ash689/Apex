@@ -152,10 +152,9 @@ a:visited, a:hover, a:active {
     font-size: 12px;
 }
 
-.report-form{
-    top: 356px; 
-    right: 42px; 
-    position: absolute;
+.report-button {
+    bottom: 0%;
+    height: 29px;
 }
 
 .profile-bar {

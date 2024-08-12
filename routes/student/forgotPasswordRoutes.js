@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const controller = require('../../controllers/student/forgotPasswordController');
-const sessionCheckStudent = require('../../middleware/sessionCheckPasswordStudent'); // Adjust the path as necessary
+const sessionCheckPassword = require('../../middleware/sessionCheckPasswordStudent'); 
+const sessionCheckVerify = require('../../middleware/sessionCheckVerifyStudent'); 
 
 router.post('/forgotPassword', [
   body('email').trim().escape(),
@@ -20,9 +21,20 @@ router.post('/changePassword', [
   controller.changePassword(req, res);
 });
 
-router.get('/getEmail', sessionCheckStudent, (req, res) => {
+router.get('/getEmailReset', sessionCheckPassword, (req, res) => {
   controller.getEmail(req, res);
 });
 
+router.get('/getEmailVerify', sessionCheckVerify, (req, res) => {
+  controller.getEmailVerify(req, res);
+});
+
+router.get('/sendVerification', (req, res) => {
+  controller.sendVerification(req, res);
+});
+
+router.get('/verify', (req, res) => {
+  controller.verify(req, res);
+});
 
 module.exports = router;

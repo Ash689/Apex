@@ -24,7 +24,7 @@
                     <tr>
                         <td>Select Subject</td>
                         <td>
-                            <input id = "subject" name = "subject" maxlength = "20" required>
+                            <input name="subject" id = "subject" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
                         </td>
                     </tr>
                     <tr>
@@ -62,6 +62,8 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/script/studentScript.js"></script>
     <script src="/script/standardScript.js"></script>
+    <script src = "/script/subjectList.js"></script>
+    <script src = "/script/autoCompleteSubject.js"></script>
     <script>
         
         fetch('/viewOneBooking')

@@ -10,7 +10,7 @@ router.use(sessionCheckStudent);
 
 const storageStudentPicture = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/profileFiles/student');
+    cb(null, 'uploads/profileFiles/student/profilePicture');
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -44,6 +44,29 @@ router.post('/cancelSubject', (req, res) => {
 
 router.post('/changePic', upload.single('profile-photo'), (req, res) => {
   controller.changePic(req, res);
+});
+
+
+const storageStudentID = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/profileFiles/student/id');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+upload = multer({ storage: storageStudentID, limits: { fileSize: 25 * 1024 * 1024 } }); // Corrected this line
+
+
+router.post('/sendID', upload.single('document'), [
+  body('description').trim().escape(),
+], (req, res) => {
+  controller.sendID(req, res);
+});
+
+router.get('/getVerifyID', (req, res) => {
+  controller.getVerifyID(req, res);
 });
 
 

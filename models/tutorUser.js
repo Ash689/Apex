@@ -41,9 +41,22 @@ const tutorSchema = new mongoose.Schema({
   f_mimetype: String,
   f_size: Number,
   f_uploadDate: { type: Date, default: Date.now },
+  isPictureVerified: {type: Boolean, default: false},
   flag: {type: Boolean, default: false},
   resetPasswordToken: { type: String, default: null },
-  resetPasswordExpires: { type: Date, default: null }
+  resetPasswordExpires: { type: Date, default: null },
+  isEmailVerified: {type: Boolean, default: false},
+  dbs_filename: String,
+  dbs_originalname: String,
+  dbs_mimetype: String,
+  dbs_size: Number,
+  isDBSVerified: {type: Boolean, default: false},
+  
+  id_filename: String,
+  id_originalname: String,
+  id_mimetype: String,
+  id_size: Number,
+  isIDVerified: {type: Boolean, default: false},
 });
 
 module.exports = mongoose.model('Tutor', tutorSchema);

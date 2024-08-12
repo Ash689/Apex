@@ -107,13 +107,16 @@
 
                 profileElement.innerHTML = `
                     <div class="profile-container">
-                        <img id="P1" style="width: 200px" alt="${data.recipient.f_originalname}" src="/uploads/profileFiles/student/${data.recipient.f_filename}" alt="Profile Image">
+                        <img id="P1" style="width: 200px" alt="${data.recipient.f_originalname}" src="/uploads/profileFiles/student/profilePicture/${data.recipient.isPictureVerified ? data.recipient.f_filename : 'TBC.jpg'}" alt="Profile Image">
                         <div class="profile-info">
                             <h3>Name: ${data.recipient.fullName}</h3>
                             ${lessonExists ? `
                                 <p>Subject: ${data.lesson.subject}</p>
                                 <p>Lesson Plan: ${data.lesson.plan}</p>
                             ` : ''}
+                            <form action="/tutor/report.html">
+                                <h3><a href="#" onclick="this.closest('form').submit();">Got an issue with this student?</a></h3>
+                            </form>
                         </div>
                     </div>
 
@@ -123,9 +126,6 @@
                         </form>
                         <form action="/tutor/viewHomework.html">
                             <button class="secondary-button" type="submit">Homework</button>
-                        </form>
-                        <form action="/tutor/report.html" class="report-form" style = "width: 20px">
-                            <button style = "width: auto; height: 29px;" type="submit">Report</button>
                         </form>
                     </div>
                 `;

@@ -2,6 +2,7 @@ const findUser = require('../../utils/findUser'); // Assuming you have a utility
 const Homework = require('../../models/homework');
 const HomeworkFile = require('../../models/homeworkFile');
 const { body, validationResult } = require('express-validator');
+const fs = require('fs');
 
 exports.getHomework = async(req, res) => {
   try {
@@ -85,8 +86,14 @@ exports.questionFile = async(req, res) => {
 exports.deleteHomeworkFile = async(req, res) => {
   const { fileID } = req.body;
   try {
-    const file = await HomeworkFile.findByIdAndDelete(fileID);
-    if (!file) {
+
+    let file = await HomeworkFile.findByIdAndDelete(fileID);
+    if (file) {
+      if (!file.isText){
+        fs.unlinkSync(`uploads/homeworkFiles/student/${file.filename}`);
+      }
+      console.log("Deleted File successfully");
+    } else {
       return res.redirect('/student/submission.html?message=Answers not found.&type=error');
     }
 

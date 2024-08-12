@@ -36,12 +36,8 @@ exports.registerUser = async (req, res, userType) => {
       role: userType
     };
 
-    // Redirect based on profile existence
-    if (user.town) {
-      res.redirect(`/${userType}/home.html`);
-    } else {
-      res.redirect(`/${userType}/configProfile.html`);
-    }
+    res.redirect(`/${userType}/sendVerification`);
+
   } catch (error) {
     console.error(error);
     res.redirect(`/${userType}/register.html?message=Server error.&type=error`);
@@ -68,15 +64,23 @@ exports.loginUser = async (req, res, userType) => {
       _id: user._id,
       role: userType,
     };
-    if (user.town) {
-      if (user.subjects.length === 0) {
-
-        res.redirect(`/${userType}/configSubject.html`);
-      } else {
-        res.redirect(`/${userType}/home.html`);
-      }
+    if (!user.isEmailVerified){
+      res.redirect(`/${userType}/sendVerification`);
     } else {
-      res.redirect(`/${userType}/configProfile.html`);
+      if (user.town) {
+        if (!user.isIDVerified){
+          res.redirect(`/${userType}/verifyID.html`);
+        } else {
+          if (user.subjects.length === 0) {
+            res.redirect(`/${userType}/configSubject.html`);
+          } else {
+            res.redirect(`/${userType}/home.html`);
+          }
+        }
+      } else {
+        res.redirect(`/${userType}/configProfile.html`);
+      }
+      
     }
   } catch (error) {
     console.error(error);

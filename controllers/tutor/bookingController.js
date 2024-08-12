@@ -7,6 +7,7 @@ const tempBookingData = require('../../models/tempBookingData');
 const { body, validationResult } = require('express-validator');
 const hasConflictingBooking = require('../../utils/hasConflictingBooking');
 const { v4: uuidv4 } = require('uuid');
+const formatInput = require('../../utils/formatInput');
 
 exports.confirmLesson = async(req, res) => {
   const { bookingId, returnUrl } = req.body;
@@ -69,9 +70,10 @@ exports.editBooking = async(req, res) => {
     }
     let tempBooking = await tempBookingData.findOne({booking: req.session.bookingID});
     if (!tempBooking){
+      let formatted_subject = formatInput(editBooking.subject);
       let tempBooking2 = new tempBookingData({
         booking: req.session.bookingID,
-        subject: editBooking.subject,
+        subject: formatted_subject,
         date: editBooking.date,
         time: editBooking.time,
         price: editBooking.price,
@@ -79,7 +81,8 @@ exports.editBooking = async(req, res) => {
       });
       await tempBooking2.save();    
     }
-    editBooking.subject = subject;
+    let formatted_subject = await formatInput(subject);
+    editBooking.subject = formatted_subject;
     editBooking.date = bookingStartDateTime;
     editBooking.time = bookingTime;
     editBooking.duration = duration;
@@ -107,9 +110,7 @@ exports.launchingLesson = async(req, res) => {
       <title>Redirecting...</title>
       <script>
         document.addEventListener("DOMContentLoaded", function() {
-          // Redirect to Zoom meeting
           window.location.href = "${zoomUrl}";
-          // Open lesson notes in a new tab
           window.open('/tutor/lessonNotes.html', '_blank');
         });
       </script>
@@ -140,9 +141,10 @@ exports.launchLesson = async(req, res) => {
       booking.zMeetingPassword = meetingData.password;
       booking.zJoinUrl = meetingData.join_url;
       await booking.save();
-
+      return res.redirect(`/tutor/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
+    } else {
+      return res.redirect(`/tutor/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
     }
-    return res.redirect(`/tutor/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
     // return res.redirect('/tutor/lessonNotes.html');
 
   } catch (error) {
@@ -308,13 +310,14 @@ exports.newBooking = async(req, res) => {
     let revisionChoice = (revision === "yes");
     const recurringID = uuidv4();
     // Function to create a booking
+    let formatted_subject = await formatInput(subject);
     const createBooking = async (startDateTime) => {
       let booking = new Booking({
         tutor: req.session.user._id,
         student: recipient._id,
         tutorName: name.fullName,
         studentName: recipient.fullName,
-        subject: subject, 
+        subject: subject.toLowerCase().trim(), 
         date: startDateTime,
         time: bookingTime,
         duration: duration,

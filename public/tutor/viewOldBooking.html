@@ -62,7 +62,7 @@
 
                         groupedBookings[date].forEach(booking => {
                             const row = document.createElement('tr');
-                            const profileImage = booking.student.filename ? `/uploads/profileFiles/student/${booking.student.filename}` : '../images/P1.jpg';
+                            const profileImage = booking.student.filename ? `/uploads/profileFiles/student/profilePicture/${booking.student.filename}` : '../images/P1.jpg';
                             const disableLaunchButton = shouldDisableLaunchButton(booking.date, booking.time, booking.duration);
 
                             row.innerHTML = `

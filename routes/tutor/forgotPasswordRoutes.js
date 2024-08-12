@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const controller = require('../../controllers/tutor/forgotPasswordController');
-const sessionCheckTutor = require('../../middleware/sessionCheckPasswordTutor'); // Adjust the path as necessary
+const sessionCheckPassword = require('../../middleware/sessionCheckPasswordTutor'); 
+const sessionCheckVerify = require('../../middleware/sessionCheckVerifyTutor'); 
 
 router.post('/forgotPassword', [
   body('email').trim().escape(),
@@ -20,8 +21,20 @@ router.post('/changePassword', [
   controller.changePassword(req, res);
 });
 
-router.get('/getEmail', sessionCheckTutor, (req, res) => {
+router.get('/getEmailReset', sessionCheckPassword, (req, res) => {
   controller.getEmail(req, res);
+});
+
+router.get('/getEmailVerify', sessionCheckVerify, (req, res) => {
+  controller.getEmailVerify(req, res);
+});
+
+router.get('/sendVerification', (req, res) => {
+  controller.sendVerification(req, res);
+});
+
+router.get('/verify', (req, res) => {
+  controller.verify(req, res);
 });
 
 

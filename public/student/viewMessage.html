@@ -111,16 +111,20 @@
                 const profileInfo = `
                     <form action="/student/findTutorProfile" method="POST">
                         <input type="hidden" name="recipientEmail" value="${data.recipient._id}">
-                        <h3>Name: <a href="#" onclick="this.closest('form').submit();">${data.recipient.fullName}</a></h3>
+                        <h3>Name: <a href="#" style = "text-decoration: none" onclick="this.closest('form').submit();">${data.recipient.fullName}</a></h3>
                     </form>
                     ${lessonExists ? `<p>Subject: ${data.lesson.subject}</p><p>Lesson Plan: ${data.lesson.plan}</p>` : `<p>Subjects: ${subjectsAndQualifications}</p>`}
                 `;
 
                 profileElement.innerHTML = `
                     <div class="profile-container">
-                        <img id="P1" style="width: 200px" alt="${data.recipient.f_originalname}" src="/uploads/profileFiles/tutor/${data.recipient.f_filename}" alt="Profile Image">
+                        <img id="P1" style="width: 200px" alt="${data.recipient.f_originalname}" src="/uploads/profileFiles/tutor/profilePicture/${data.recipient.isPictureVerified ? data.recipient.f_filename : 'TBC.jpg'}" alt="Profile Image">
                         <div class="profile-info">
                             ${profileInfo}
+                            <form action="/student/report.html">
+                                <h3><a href="#" onclick="this.closest('form').submit();">Got an issue with this tutor?</a></h3>
+                            </form>
+                        </div>
                         </div>
                     </div>
 
@@ -130,9 +134,6 @@
                         </form>
                         <form action="/student/newReview.html">
                             <button class = "secondary-button" type="submit">Add Review</button>
-                        </form>
-                        <form action="/student/report.html" class="report-form" style = "top: 320px; width: 20px">
-                            <button style = "width: auto; height: 29px;" type="submit">Report</button>
                         </form>
                     </div>
                 `;

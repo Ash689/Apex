@@ -50,7 +50,7 @@
             } else {
                 const profileElement = document.getElementById('profile');
                 profileElement.innerHTML = `
-                    <img id="P1" alt="${data.f_originalname}" src="/uploads/profileFiles/student/${data.f_filename}" alt="Profile Image">
+                    <img id="P1" alt="${data.f_originalname}" src="/uploads/profileFiles/student/profilePicture/${data.f_filename}" alt="Profile Image">
                     <form action="/student/changePic" method="POST" enctype="multipart/form-data">
                         <input id="profile-photo" type="file" name="profile-photo" accept="image/*">
                         <button type="submit" class="secondary-button">Update Picture</button>

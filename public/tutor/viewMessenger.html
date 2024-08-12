@@ -43,7 +43,7 @@
                             messenger.mostRecentMessage.includes("Weak Topics")) {
                                 
                             messengerElement.innerHTML = `
-                                <img id="P1" style = "width: 200px" alt="${messenger.originalname}" src="/uploads/profileFiles/student/${messenger.filename}" alt="Profile Image">
+                                <img id="P1" style = "width: 200px" alt="${messenger.originalname}" src="/uploads/profileFiles/student/profilePicture/${messenger.filename}" alt="Profile Image">
                                 
                                 <h3>${messenger.fullName}</h3>
                                 
@@ -55,7 +55,7 @@
                             : messenger.mostRecentMessage;
 
                             messengerElement.innerHTML = `
-                                <img id="P1" style="width: 200px" alt="${messenger.originalname}" src="/uploads/profileFiles/student/${messenger.filename}" alt="Profile Image">
+                                <img id="P1" style="width: 200px" alt="${messenger.originalname}" src="/uploads/profileFiles/student/profilePicture/${messenger.filename}" alt="Profile Image">
                                 <h3>${messenger.fullName}</h3>
                                 <p>'${truncatedMessage}'</p>
                             `;

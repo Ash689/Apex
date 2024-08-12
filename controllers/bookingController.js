@@ -42,12 +42,12 @@ exports.viewOldBookings = async (req, res) => {
         bookingsQuery = { tutor: userId, date: { $lt: new Date() } };
         userIdField = 'student';
         userModel = studentUser;
-        userSelectFields = 'f_originalname f_filename';
+        userSelectFields = 'f_originalname f_filename isPictureVerified';
       } else {
         bookingsQuery = { student: userId, date: { $lt: new Date() } };
         userIdField = 'tutor';
         userModel = tutorUser;
-        userSelectFields = 'f_originalname f_filename';
+        userSelectFields = 'f_originalname f_filename isPictureVerified';
       }
   
       // Retrieve bookings based on the constructed query
@@ -77,7 +77,7 @@ exports.viewOldBookings = async (req, res) => {
           ...booking._doc, // Include all booking details
           [userIdField]: {
             originalname: user.f_originalname,
-            filename: user.f_filename
+            filename: user.isPictureVerified ? user.f_filename : 'TBC.jpg'
           }
         };
       });
@@ -226,7 +226,7 @@ exports.viewBookings = async (req, res) => {
       // Fetch user details based on the role
       const userModel = isTutor ? studentUser : tutorUser;
       const users = await userModel.find({ _id: { $in: Array.from(uniqueIds) } })
-        .select('f_originalname f_filename')
+        .select('f_originalname f_filename isPictureVerified')
         .exec();
   
       // Map user details to bookings
@@ -237,7 +237,7 @@ exports.viewBookings = async (req, res) => {
           ...booking._doc, // Include all booking details
           [isTutor ? 'student' : 'tutor']: {
             originalname: user.f_originalname,
-            filename: user.f_filename
+            filename: user.isPictureVerified ? user.f_filename : 'TBC.jpg'
           }
         };
       });

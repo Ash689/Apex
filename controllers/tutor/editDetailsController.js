@@ -1,6 +1,11 @@
 const { body, validationResult } = require('express-validator');
 const validateDateOfBirth = require('../../utils/validateDateOfBirth'); // Assuming you have a utility function for this
 const findUser = require('../../utils/findUser');
+const formatInput = require('../../utils/formatInput');
+const fs = require('fs');
+const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verifyUploads');
+const { trusted } = require('mongoose');
+
 
 exports.config = async (req, res) => {
   const {
@@ -19,16 +24,18 @@ exports.config = async (req, res) => {
     }
     
     if(!req.file){
-      return res.redirect(`/student/configProfile.html?message=Please upload profile picture&type=error`);
+      return res.redirect(`/tutor/configProfile.html?message=Please upload profile picture&type=error`);
     }
     
     let user = await findUser(req, res, "configProfile", req.session.user._id);
     
+    let formatted_fullName = await formatInput(fullName);
+    let formatted_town = await formatInput(town);
 
     // Update the necessary fields
-    user.fullName = fullName.trim();
+    user.fullName = formatted_fullName;
     user.dateOfBirth = dateOfBirth;
-    user.town = town.trim();
+    user.town = formatted_town;
     user.number = number.trim();
     user.tuitionType = tuitionType.trim();
     user.f_filename = req.file.filename,
@@ -39,11 +46,114 @@ exports.config = async (req, res) => {
     // Save the updated user
     await user.save();
 
-    res.redirect('/tutor/configSubject.html');
+    let details = {
+      _id: user._id,
+      fullName: user.fullName,
+      number: user.number,
+      email: user.email,
+      isTutor: true,
+      filename: user.f_filename,
+      originalname: user.f_originalname,
+      mimetype: user.f_mimetype,
+      size: user.f_size,
+    };
+    await verifyProfilePicAdmin(details);
+    
+
+    res.redirect('/tutor/verifyID.html');
   } catch (error){
     console.error(error);
     res.redirect('/tutor/configSubject.html?message=Server error.&type=error');
   
+  }
+};
+
+exports.sendID = async (req, res) => {
+  const {description} = req.body;
+
+  try{
+    if(!req.file){
+      return res.redirect(`/tutor/verifyID.html?message=Please upload an ID picture &type=error`);
+    }
+    
+    let user = await findUser(req, res, "verifyID", req.session.user._id);
+    user.id_filename = req.file.filename,
+    user.id_originalname = req.file.originalname,
+    user.id_mimetype =  req.file.mimetype,
+    user.id_size = req.file.size,
+
+    // Save the updated user
+    await user.save();
+
+    let details = {
+      _id: user._id,
+      fullName: user.fullName,
+      number: user.number,
+      email: user.email,
+      isTutor: true,
+      filename: user.id_filename,
+      originalname: user.id_originalname,
+      mimetype: user.id_mimetype,
+      size: user.id_size,
+      
+    };
+    await verifyIDAdmin(details);
+
+    res.redirect('/tutor/verifyID.html?message=ID added successfully, awaiting verification.&type=success');
+  } catch (error){
+    console.error(error);
+    res.redirect('/tutor/verifyID.html?message=Server error.&type=error');
+  
+  }
+};
+
+exports.sendDBS = async (req, res) => {
+  try{
+    if(!req.file){
+      return res.redirect(`/tutor/verifyID.html?message=Please upload an ID picture &type=error`);
+    }
+    
+    let user = await findUser(req, res, "configProfile", req.session.user._id);
+    user.dbs_filename = req.file.filename,
+    user.dbs_originalname = req.file.originalname,
+    user.dbs_mimetype =  req.file.mimetype,
+    user.dbs_size = req.file.size,
+
+    // Save the updated user
+    await user.save();
+    let details = {
+      _id: user._id,
+      fullName: user.fullName,
+      number: user.number,
+      email: user.email,
+      isTutor: true,
+      filename: user.dbs_filename,
+      originalname: user.dbs_originalname,
+      mimetype: user.dbs_mimetype,
+      size: user.dbs_size,
+    };
+    await verifyIDAdmin(details);
+
+    res.redirect('/tutor/verifyID.html?message=DBS added successfully, awaiting verification.&type=success');
+  } catch (error){
+    console.error(error);
+    res.redirect('/tutor/verifyID.html?message=Server error.&type=error');
+  
+  }
+};
+
+exports.getVerifyID = async (req, res) => {
+  try{
+    let user = await findUser(req, res, "verifyID", req.session.user._id);
+    res.json({
+      email: user.email,
+      id_file: user.id_filename,
+      dbs_file: user.dbs_filename,
+    });
+  } catch (error) {
+    console.log(error);
+    console.error("Error saving profile: ", error);
+    res.redirect('/tutor/login.html?message=Error, please log in.&type=error');
   }
 };
 
@@ -90,10 +200,7 @@ exports.addSubject = async (req, res) => {
 exports.cancelSubject = async (req, res) => {
 
   const { subject } = req.body;
-
   try {
-
-    
     let user = await findUser(req, res, "configSubject", req.session.user._id);
 
     const subjectIndex = user.subjects.findIndex(subj => subj.subject === subject);
@@ -148,14 +255,31 @@ exports.changePic = async (req, res) => {
   let user = await findUser(req, res, "home", req.session.user._id);
 
   try{
+    console.log(user.f_filename);
+    
+    fs.unlinkSync(`uploads/profileFiles/tutor/profilePicture/${user.f_filename}`);
     // Update the necessary fields
     user.f_filename = req.file.filename,
     user.f_originalname = req.file.originalname,
     user.f_mimetype =  req.file.mimetype,
     user.f_size = req.file.size,
+    user.isPictureVerified = false;
 
     // Save the updated user
     await user.save();
+
+    let details = {
+      _id: user._id,
+      fullName: user.fullName,
+      number: user.number,
+      email: user.email,
+      isTutor: true,
+      filename: user.f_filename,
+      originalname: user.f_originalname,
+      mimetype: user.f_mimetype,
+      size: user.f_size,
+    };
+    await verifyProfilePicAdmin(details);
     
   res.redirect('/tutor/home.html?message=Profile updated successfully.&type=success');
   } catch (error){

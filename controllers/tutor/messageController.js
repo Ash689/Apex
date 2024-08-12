@@ -118,7 +118,7 @@ exports.viewMessenger = async (req, res) => {
         subject: recipient.subjects,
         email: recipient.email,
         originalname: recipient.f_originalname,
-        filename: recipient.f_filename,
+        filename: recipient.isPictureVerified ? recipient.f_filename : 'TBC.jpg',
         mostRecentMessage: recipientMessages[recipientId] ? recipientMessages[recipientId].content : "No messages yet"
       };
     });

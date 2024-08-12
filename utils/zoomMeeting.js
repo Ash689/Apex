@@ -36,14 +36,13 @@ const createZoomMeeting = async (token, tutorEmail, topic = 'Tutoring Session', 
       'Content-Type': 'application/json',
     },
   };
-  tutorEmail = "d9604678@gmail.com";
 
   const body = {
     topic: topic,
     type: 2, // 1 for instant meeting, 2 for scheduled meeting, etc.
     start_time: bookingStartDateTime,
     duration: duration,
-    // schedule_for: tutorEmail
+    schedule_for: tutorEmail,
     settings: {
       host_video: true,
       participant_video: true,

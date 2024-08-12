@@ -21,7 +21,7 @@
                     <tr>
                         <td>Subject</td>
                         <td>
-                            <input type="text" id="subject" name="subject" maxlength = "50" required>
+                            <input name="subject" id = "subject" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
                         </td>
                     </tr>
                     <tr>
@@ -71,84 +71,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutorScript.js"></script>
+    <script src = "/script/subjectList.js"></script>
+    <script src = "/script/autoCompleteSubject.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const validSubjects = ['Math', 'Science', 'English', 'History', 'Geography'];
-            const validExamBoards = ['AQA', 'Edexcel', 'OCR', 'WJEC'];
-            const validGrades = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A*', 'A', 'B', 'C'];
-            const validDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-            const subjectInput = document.getElementById('subject');
-            const dateOfBirthInput = document.getElementById('dateOfBirth');
-            const studyExamBoardInput = document.getElementById('studyExamBoard');
-            const gradeInput = document.getElementById('grade');
-
-            function validateSubject() {
-                const enteredSubject = subjectInput.value.trim();
-                if (enteredSubject === '' || !validSubjects.includes(enteredSubject)) {
-                    showModal('Please enter a valid subject before submitting.');
-                    return false;
-                }
-                return true;
-            }
-
-            function validateStudyExamBoard() {
-                const enteredExamBoard = studyExamBoardInput.value.trim();
-                if (!validExamBoards.includes(enteredExamBoard)) {
-                    showModal('Please enter a valid exam board before submitting.');
-                    return false;
-                }
-                return true;
-            }
-
-            function validateGrades(gradeInput) {
-                const enteredGrade = gradeInput.value.trim();
-                if (!validGrades.includes(enteredGrade)) {
-                    showModal('Please enter a valid grade before submitting.');
-                    return false;
-                }
-                return true;
-            }
-
-            function showModal(message) {
-                const modal = document.getElementById('alert-modal');
-                const modalMessage = document.getElementById('modal-message');
-                modalMessage.textContent = message;
-                modal.style.display = 'block';
-
-                const closeBtn = document.getElementById('close-modal');
-                closeBtn.onclick = function() {
-                    modal.style.display = 'none';
-                };
-
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = 'none';
-                    }
-                };
-            }
-
-            const form = document.querySelector('form');
-            form.addEventListener('submit', function(event) {
-                if (!validateSubject() || !validateStudyExamBoard() || 
-                    !validateGrades(gradeInput)) {
-                    event.preventDefault();
-                }
-            });
-        });
-
-
-        $('head').append('<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">');
-
-        $('input').focus(function(event) {
-            $(this).closest('.float-label-field').addClass('float').addClass('focus');
-        });
-
-        $('input').blur(function() {
-            $(this).closest('.float-label-field').removeClass('focus');
-            if (!$(this).val()) {
-                $(this).closest('.float-label-field').removeClass('float');
-            }
-        });
 
         fetch('/tutor/userName')
         .then(response => response.json())

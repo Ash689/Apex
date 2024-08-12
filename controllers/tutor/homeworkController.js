@@ -4,6 +4,7 @@ const Homework = require('../../models/homework');
 const HomeworkFile = require('../../models/homeworkFile');
 const OpenAI = require('openai');
 const { body, validationResult } = require('express-validator');
+const fs = require('fs');
 
 exports.getHomework = async(req, res) => {
   try{
@@ -92,9 +93,14 @@ exports.questionFile = async(req, res) => {
 exports.deleteHomeworkFile = async(req, res) => {
   const { fileID } = req.body;
   try {
-    const file = await HomeworkFile.findByIdAndDelete(fileID);
-    if (!file) {
-      return res.redirect('/tutor/question.html?message=Homework not found.&type=error');
+    let file = await HomeworkFile.findByIdAndDelete(fileID);
+    if (file) {
+      if(!file.isText){
+        fs.unlinkSync(`uploads/homeworkFiles/tutor/${file.filename}`);
+      }
+      console.log("Deleted File successfully");
+    } else {
+      return res.redirect('/tutor/question.html?message=Question not found.&type=error');
     }
     return res.redirect('/tutor/question.html?message=Question Deleted.&type=success');
     

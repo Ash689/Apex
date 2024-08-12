@@ -1,4 +1,5 @@
 const findUser = require('../../utils/findUser');
+const formatInput = require('../../utils/formatInput');
 const { generateAccessToken, createZoomMeeting } = require('../../utils/zoomMeeting');
 const Booking = require('../../models/booking');
 const tempBookingData = require('../../models/tempBookingData');
@@ -65,10 +66,11 @@ exports.editBooking = async(req, res) => {
         }
 
         let tempBooking = await tempBookingData.findOne({booking: req.session.bookingID});
+        let formatted_subject = await formatInput(editBooking.subject);
         if (!tempBooking){
         let tempBooking2 = new tempBookingData({
             booking: req.session.bookingID,
-            subject: editBooking.subject,
+            subject: formatted_subject,
             date: editBooking.date,
             time: editBooking.time,
             price: editBooking.price,
@@ -77,7 +79,9 @@ exports.editBooking = async(req, res) => {
         await tempBooking2.save();    
         }
 
-        editBooking.subject = subject;
+        let formatted_subject2 = await formatInput(subject);
+
+        editBooking.subject = formatted_subject2;
         editBooking.date = bookingStartDateTime;
         editBooking.time = bookingTime;
         editBooking.duration = duration;
@@ -118,34 +122,37 @@ exports.launchingLesson = async(req, res) => {
   `);
 };
 
-exports.launchLesson = async(req, res) => {
-    const { bookingId } = req.body;
-    try {
-        req.session.bookingID = bookingId;
-        const booking = await Booking.findById(req.session.bookingID);
-        let user = await findUser(req, res, "viewBooking", booking.student._id);
-        if(booking.revisionSession){
-        user.revisionCount = user.revisionCount+1;
-        await user.save();
-        } else {
-        user.lessonCount = user.lessonCount+1;
-        await user.save();
-        }
-        if(!booking.zJoinUrl){
-        const token = await generateAccessToken();
-        let tutor = await findUser(req, res, "viewBooking", booking.tutor, true);
-    
-        const meetingData = await createZoomMeeting(token, tutor.email, booking.revisionSession? 'Revision Session': 'Tutoring Session', booking.time, booking.duration);
-        booking.zMeetingId = meetingData.id;
-        booking.zMeetingPassword = meetingData.password;
-        booking.zJoinUrl = meetingData.join_url;
-        await booking.save();
-        }
-        return res.redirect(`/student/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
-
-    } catch (error) {
-        console.error(error);
-        return res.redirect('/student/viewBooking.html?message=Failed to create zoom meeting.&type=error');
+exports.launchLesson = async (req, res) => {
+  const { bookingId } = req.body;
+  try {
+    req.session.bookingID = bookingId;
+    const booking = await Booking.findById(req.session.bookingID);
+    let user = await findUser(req, res, "viewBooking", booking.student._id);
+    if (booking.revisionSession) {
+      user.revisionCount = user.revisionCount + 1;
+      await user.save();
+    } else {
+      user.lessonCount = user.lessonCount + 1;
+      await user.save();
     }
+    if (!booking.zJoinUrl) {
+      const token = await generateAccessToken();
+      let tutor = await findUser(req, res, "viewBooking", booking.tutor, true);
+
+      const meetingData = await createZoomMeeting(token, tutor.email, booking.revisionSession ? 'Revision Session' : 'Tutoring Session', booking.time, booking.duration);
+      booking.zMeetingId = meetingData.id;
+      booking.zMeetingPassword = meetingData.password;
+      booking.zJoinUrl = meetingData.join_url;
+      await booking.save();
+      
+      return res.redirect(`/student/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
+    } else {
+      return res.redirect(`/student/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
+    }
+
+  } catch (error) {
+    console.error(error);
+    return res.redirect('/student/viewBooking.html?message=Failed to create zoom meeting.&type=error');
+  }
 };
 

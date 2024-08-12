@@ -11,7 +11,7 @@ router.use(sessionCheckTutor);
 
 const storageTutorPicture = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, 'uploads/profileFiles/tutor');
+      cb(null, 'uploads/profileFiles/tutor/profilePicture');
     },
     filename: (req, file, cb) => {
       cb(null, Date.now() + path.extname(file.originalname));
@@ -65,20 +65,47 @@ router.post('/changeAvailability', (req, res) => {
   controller.changeAvailability(req, res);
 });
 
-router.post('/forgotPassword', [
-  body('email').trim().escape(),
-], (req, res) => {
-  controller.forgotPassword(req, res);
-});
-
-router.post('/changePassword', [
-  body('password').trim().escape(),
-], (req, res) => {
-  controller.changePassword(req, res);
-});
-
 router.get('/getEmail', (req, res) => {
   controller.getEmail(req, res);
 });
+
+
+const storageTutorID = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/profileFiles/tutor/id');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+upload = multer({ storage: storageTutorID, limits: { fileSize: 25 * 1024 * 1024 } }); // Corrected this line
+
+
+router.post('/sendID', upload.single('document'), [
+  body('description').trim().escape(),
+], (req, res) => {
+  controller.sendID(req, res);
+});
+
+const storageTutorDBS = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/profileFiles/tutor/dbs');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+upload = multer({ storage: storageTutorDBS, limits: { fileSize: 25 * 1024 * 1024 } }); // Corrected this line
+
+router.post('/sendDBS', upload.single('document'),(req, res) => {
+  controller.sendDBS(req, res);
+});
+
+router.get('/getVerifyID', (req, res) => {
+  controller.getVerifyID(req, res);
+});
+
 
 module.exports = router;
