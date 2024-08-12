@@ -33,7 +33,7 @@ router.get('/sendVerification', (req, res) => {
   controller.sendVerification(req, res);
 });
 
-router.get('/verify', (req, res) => {
+router.post('/verify', (req, res) => {
   controller.verify(req, res);
 });
 

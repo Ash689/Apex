@@ -125,7 +125,7 @@ exports.sendVerification = async (req, res) => {
       await user.save();
       await sendVerifyEmail(user.email, token);
     }
-    res.redirect('/student/verifyEmail.html?message=Email verification sent, please enter the code below.&type=error');
+    res.redirect('/student/verifyEmail.html?message=Email verification sent, please enter the code below.&type=success');
 
   } catch (error) {
     console.error("Error verifying profile: ", error);
@@ -143,6 +143,8 @@ exports.verify = async (req, res) => {
         if (Date.now() < user.resetPasswordExpires){
           user.resetPasswordToken = null;
           user.resetPasswordExpires = null;
+          user.isEmailVerified = true;
+          await user.save();
           res.redirect('/student/configProfile.html?message=Code valid!&type=success');
         } else {
           user.resetPasswordToken = null;

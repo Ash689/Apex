@@ -68,8 +68,12 @@ exports.sendID = async (req, res) => {
     if(!req.file){
       return res.redirect(`/student/verifyID.html?message=Please upload an ID picture &type=error`);
     }
-    
     let user = await findUser(req, res, "verifyID", req.session.user._id);
+
+    if (user.id_filename){
+      fs.unlinkSync(`uploads/profileFiles/student/id/${user.id_filename}`);
+    }
+    
     user.id_filename = req.file.filename,
     user.id_originalname = req.file.originalname,
     user.id_mimetype =  req.file.mimetype,
@@ -106,6 +110,7 @@ exports.getVerifyID = async (req, res) => {
     res.json({
       email: user.email,
       id_file: user.id_filename,
+      isIDVerified: user.isIDVerified,
     });
   } catch (error) {
     console.error("Error saving profile: ", error);
@@ -180,9 +185,13 @@ exports.cancelSubject = async (req, res) => {
 
 exports.changePic = async (req, res) => {
     try {
+      if(!req.file){
+        return res.redirect(`/student/home.html?message=Please upload an image &type=error`);
+      }
+
       let user = await findUser(req, res, "studentHome", req.session.user._id); 
 
-      fs.unlinkSync(`/uploads/profileFiles/student/profilePicture/${user.f_filename}`);
+      fs.unlinkSync(`uploads/profileFiles/student/profilePicture/${user.f_filename}`);
 
       user.f_filename = req.file.filename,
       user.f_originalname = req.file.originalname,
@@ -207,10 +216,10 @@ exports.changePic = async (req, res) => {
       };
       await verifyProfilePicAdmin(details);
       
-      res.redirect('/student/home.html?message=Profile updated successfully.&type=success');
+      res.redirect('/student/home.html?message=Profile uploaded successfully, awaiting verification.&type=success');
     } catch (error) {
       console.error("Error saving profile: ", error);
-      res.redirect('/student/home.html?message=Error, please upload a valid image.&type=error');
+      res.redirect('/student/home.html?message=Server Error.&type=error');
     }
 };
 

@@ -75,8 +75,13 @@ exports.sendID = async (req, res) => {
     if(!req.file){
       return res.redirect(`/tutor/verifyID.html?message=Please upload an ID picture &type=error`);
     }
-    
     let user = await findUser(req, res, "verifyID", req.session.user._id);
+    console.log(user.id_filename);
+
+    if (user.id_filename){
+      fs.unlinkSync(`uploads/profileFiles/tutor/id/${user.id_filename}`);
+    }
+    
     user.id_filename = req.file.filename,
     user.id_originalname = req.file.originalname,
     user.id_mimetype =  req.file.mimetype,
@@ -112,8 +117,12 @@ exports.sendDBS = async (req, res) => {
     if(!req.file){
       return res.redirect(`/tutor/verifyID.html?message=Please upload an ID picture &type=error`);
     }
-    
     let user = await findUser(req, res, "configProfile", req.session.user._id);
+
+    if (user.dbs_filename){
+      fs.unlinkSync(`uploads/profileFiles/tutor/dbs/${user.id_filename}`);
+    }
+
     user.dbs_filename = req.file.filename,
     user.dbs_originalname = req.file.originalname,
     user.dbs_mimetype =  req.file.mimetype,
@@ -149,6 +158,9 @@ exports.getVerifyID = async (req, res) => {
       email: user.email,
       id_file: user.id_filename,
       dbs_file: user.dbs_filename,
+      isDBSVerified: user.isDBSVerified,
+      isIDVerified: user.isIDVerified,
+
     });
   } catch (error) {
     console.log(error);
@@ -241,8 +253,7 @@ exports.addDays = async (req, res) => {
     // Save the updated user object
     await user.save();
 
-    // Redirect to tutor home page after successfully adding days
-    res.redirect('/tutor/home.html');
+    res.redirect('/tutor/home.html?message=Days added successfully.&type=success');
 
   } catch (error) {
     console.error(error);
@@ -251,11 +262,13 @@ exports.addDays = async (req, res) => {
 };
 
 exports.changePic = async (req, res) => {
-  
-  let user = await findUser(req, res, "home", req.session.user._id);
-
   try{
-    console.log(user.f_filename);
+
+    if(!req.file){
+      return res.redirect(`/student/home.html?message=Please upload an image &type=error`);
+    }
+    
+    let user = await findUser(req, res, "home", req.session.user._id);
     
     fs.unlinkSync(`uploads/profileFiles/tutor/profilePicture/${user.f_filename}`);
     // Update the necessary fields
@@ -281,10 +294,10 @@ exports.changePic = async (req, res) => {
     };
     await verifyProfilePicAdmin(details);
     
-  res.redirect('/tutor/home.html?message=Profile updated successfully.&type=success');
+  res.redirect('/tutor/home.html?message=Profile uploaded successfully, awaiting verification.&type=success');
   } catch (error){
     console.error(error);
-    return res.redirect('/tutor/home.html?message=Error, please enter a valid image.&type=error');
+    return res.redirect('/tutor/home.html?message=Server Error.&type=error');
   }
 };
 

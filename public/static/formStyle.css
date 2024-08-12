@@ -53,3 +53,13 @@ a{
     text-decoration: underline;
 }
 
+.forgotPasswordLink {
+    margin: 0;
+    text-align: right; /* Aligns the text (link) to the right */
+    margin-bottom: 20px;
+}
+
+.forgotPasswordLink a {
+    display: inline-block; /* Ensures the link itself can be aligned */
+}
+

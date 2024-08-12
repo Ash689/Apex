@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div style = "top: 2%; z-index: 1;" class="header">
             <h1 id="header-title"><a href="/welcome.html">Apex Tuition</a></h1>
         </div>
         <button id="logout-button" class="logout-button" style="z-index: 2; top: 2%;">Logout</button>
@@ -29,7 +29,7 @@
                     </fieldset>
                     <button id="codeSubmit" type="submit">Enter</button>
                 </form>
-                <form action="/student/sendVerification" method="POST">
+                <form action="/student/sendVerification" method="GET">
                     <button class = "secondary-button" id="resend" type="submit">Resend Verification Code</button>
                 </form>
             </div>

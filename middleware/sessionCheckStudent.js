@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
       let user = studentUser.findById(req.session.user._id);
       if (!user.isEmailVerified){
         console.log("Not email verified");
-        return res.redirect('/student/verifyEmail.html?message=Email verification sent, please enter the code below &type=error');
+        return res.redirect('/student/verifyEmail.html?message=Email verification sent, please enter the code below &type=success');
       } else{
         if (user.town) {
           if (user.subjects.length === 0) {

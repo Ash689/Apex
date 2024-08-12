@@ -12,13 +12,12 @@
         <h1><a href="/welcome.html">Apex Tuition</a></h1>
     </div>
     <button id="logout-button" class="logout-button" style="z-index: 2; top: 2%;">Logout</button>
-    <div id="message" class="message"></div>
-    <div class="container" id = "id-container">
+    <div id="message" class="message" style="z-index: 2;"></div>
+    <div class="container">
         <div id="parent-form-container">
             <h2>Upload Documents</h2>
             <h3 id = "upload-notice">Now to upload ID</h3>
             <button id="id-button">Upload</button>
-            
         </div>
     </div>
 
@@ -30,7 +29,6 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
-    <script src="/script/studentLogout.js"></script>
 
     <script>
 
@@ -41,31 +39,40 @@
                 messageElement.textContent = data.error;
                 messageElement.classList.add('error');
             } else {
-                if (data.id_file){
+                if (data.isIDVerified){
+                    let form_container = document.getElementById('parent-form-container');
+                    form_container.innerHTML = `
+                        <h2>Upload Documents</h2>
+                        <h3>ID Verified!</h3>
+                        <button id="id-button" class = "secondary-button">Re-Upload Images</button>
+                        <form id="subjectForm" action="/student/home.html" method="GET">
+                            <button type="submit">Continue to Home Page</button>
+                        </form>
+                    
+                    `;
+                } else if (data.id_file){
                     let upload_sign = document.getElementById('upload-notice');
                     upload_sign.textContent = "Thank you for your documents. Awaiting verification."
                     let id_button = document.getElementById('id-button');
                     id_button.textContent = "Upload Files Again";
                 }
                 document.getElementById('id-button').addEventListener('click', function() {
-                    let form_container = document.getElementById('id-container');
+                    let form_container = document.getElementById('parent-form-container');
                     form_container.innerHTML = `
-                        <h2>Upload Documents</h2>
-                        <div id = "parent-form-container">
                     
-                            <form id="subjectForm" action="/student/sendID" method="post" enctype="multipart/form-data">
-                                <h3 id = "id_header">Please Upload ID: </h3>
-                                <span id = "info-button" class="info-button">ℹ️</span>
-                                ${data.id_file ? 
-                                    `<a href = /uploads/profileFiles/student/id/${data.id_file}>Download Sent ID</a>`
-                                : ''}
-                                <input type="file" name="document">
-                                <input name="description" id = "description" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
-                                <div class="submit-button-container">
-                                    <button type="submit">Enter</button>
-                                </div>
-                            </form>
-                        </div>
+                        <form id="subjectForm" action="/student/sendID" method="post" enctype="multipart/form-data">
+                            <h3 id = "id_header">Please Upload ID: </h3>
+                            <span id = "info-button" class="info-button">ℹ️</span>
+                            ${data.id_file ? 
+                                `<a href = /uploads/profileFiles/student/id/${data.id_file}>Download Sent ID</a>`
+                            : ''}
+                            <input type="file" name="document">
+                            <p>Describe file:</p>
+                            <input name="description" id = "description" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
+                            <div class="submit-button-container">
+                                <button type="submit">Enter</button>
+                            </div>
+                        </form>
                     `;
                             
                     document.getElementById('info-button').title = "Valid documents include driving license, passport, NINO letter";
@@ -106,6 +113,7 @@
             window.location.href = `/student/login.html?message=Please log in .&type=error`;
         });
     </script>
+    <script src="/script/studentLogout.js"></script>
 
 </body>
 </html>
