@@ -98,6 +98,7 @@
                     const formattedDate = bookingDate.toISOString().split('T')[0];
                     dateElement.value = formattedDate;
                     priceElement.value = booking.price;
+                    if (booking.paymentGiven) {priceElement.readOnly = true; priceElement.style = "color: grey"}
 
                     timeElement.value = booking.time;
                     subjectElement.value = booking.subject;  

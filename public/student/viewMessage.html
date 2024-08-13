@@ -178,6 +178,14 @@
                                     <button type="submit">Confirm</button>
                                 </form>
                             ` : ''}
+                            ${booking.studentConfirmed && !booking.paymentGiven ? `
+                                Price: £${booking.price}
+                                <form action="/student/payLesson" method="POST">
+                                    <input type="hidden" name="returnUrl" value="home">
+                                    <input type="hidden" name="bookingId" value="${booking._id}">
+                                    <button type="submit">Pay for lesson</button>
+                                </form>
+                            ` : ''}
                             ${!booking.tutorConfirmed ? `
                                 Lesson to be confirmed by Tutor
                                 <form action="/cancelChanges" method="POST">
@@ -186,7 +194,7 @@
                                     <button type="submit" class="secondary-button">Cancel Changes</button>
                                 </form>
                             ` : ''}
-                            ${booking.studentConfirmed && booking.tutorConfirmed ? `
+                            ${booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven ? `
                                 <form action="/student/launchLesson" method="POST">
                                     <input type="hidden" name="bookingId" value="${booking._id}">
                                         <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" type="submit" ${disableLaunchButton ? 'disabled' : ''}>Launch</button>

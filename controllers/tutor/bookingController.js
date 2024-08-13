@@ -70,7 +70,7 @@ exports.editBooking = async(req, res) => {
     }
     let tempBooking = await tempBookingData.findOne({booking: req.session.bookingID});
     if (!tempBooking){
-      let formatted_subject = formatInput(editBooking.subject);
+      let formatted_subject = await formatInput(editBooking.subject);
       let tempBooking2 = new tempBookingData({
         booking: req.session.bookingID,
         subject: formatted_subject,

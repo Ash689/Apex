@@ -5,34 +5,37 @@ const Booking = require('../../models/booking');
 const tempBookingData = require('../../models/tempBookingData');
 const { body, validationResult } = require('express-validator');
 const hasConflictingBooking = require('../../utils/hasConflictingBooking');
+const payment = require('../../utils/payment');
 
-exports.confirmLesson = async(req, res) => {
-    const { bookingId, returnUrl } = req.body;
+exports.confirmLesson = async (req, res) => {
+  const { bookingId, returnUrl } = req.body;
 
-    try {
+  try {
 
-        const booking = await Booking.findById(bookingId);
+    const booking = await Booking.findById(bookingId);
 
-        if (!booking) {
-        return res.redirect(`/student/${returnUrl}.html?message=Booking not found.&type=error`);
-        }
-
-        if (booking.recurringID) {
-        await Booking.updateMany(
-            { recurringID: booking.recurringID },
-            { $set: { studentConfirmed: true, paymentGiven: true } } // Add other fields if needed
-        );
-
-        } else {
-        booking.studentConfirmed = true;
-        booking.paymentGiven = true;
-        await booking.save();
-        }
-        res.redirect(`/student/${returnUrl}.html?message=Booking confirmed!&type=success`);
-    } catch (error) {
-        console.log(error);
-        res.redirect(`/student/${returnUrl}.html?message=Server error.&type=error`);
+    if (!booking) {
+      return res.redirect(`/student/${returnUrl}.html?message=Booking not found.&type=error`);
     }
+    req.session.bookingID = bookingId;
+    req.session.returnUrl = returnUrl;
+
+    if (booking.recurringID) {
+      await Booking.updateMany(
+        { recurringID: booking.recurringID },
+        { $set: { studentConfirmed: true, paymentGiven: true } } // Add other fields if needed
+      );
+
+    } else {
+      booking.studentConfirmed = true;
+      await booking.save();
+    }
+    let sessionUrl = await payment(bookingId, returnUrl);
+    res.redirect(303, sessionUrl);
+  } catch (error) {
+    console.log(error);
+    res.redirect(`/student/${returnUrl}.html?message=Server error.&type=error`);
+  }
 };
 
 
@@ -153,6 +156,22 @@ exports.launchLesson = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.redirect('/student/viewBooking.html?message=Failed to create zoom meeting.&type=error');
+  }
+};
+
+
+
+exports.payLesson = async (req, res) => {
+  const { bookingId, returnUrl} = req.body;
+
+  try{
+    req.session.bookingID = bookingId;
+
+    let sessionUrl = await payment(req.session.bookingID, returnUrl);
+    res.redirect(303, sessionUrl);
+  } catch (error) {
+    console.error(error);
+    return res.redirect(`/student/${returnUrl}.html?message=Failed to confirm booking.&type=error`);
   }
 };
 

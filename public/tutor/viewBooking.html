@@ -88,7 +88,7 @@
                                         </form>
                                     ` : ''}
                                     ${!booking.studentConfirmed ? `
-                                        Lesson to be confirmed by Student
+                                        Lesson to be confirmed/paid by Student
                                         ${booking.zJoinUrl ? `
                                             <form action="/cancelChanges" method="POST">
                                                 <input type="hidden" name="returnUrl" value="tutorviewBooking">
@@ -97,7 +97,7 @@
                                             </form>
                                         `: ''}
                                     ` : ''}
-                                    ${booking.studentConfirmed && booking.tutorConfirmed ? `
+                                    ${booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven ? `
                                         <form id = "launch" action="/tutor/launchLesson" method="POST">
                                             <input type="hidden" name="bookingId" value="${booking._id}">
                                             <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" 
