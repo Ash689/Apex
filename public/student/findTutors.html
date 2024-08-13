@@ -84,7 +84,7 @@
                         // tutorContainer.style.backgroundColor = backgroundColor;
 
                         tutorDiv.innerHTML = `
-                            <img id="P1" style = "width: 200px" class="tutorImage" alt="${tutor.f_originalname}" src="/uploads/profileFiles/tutor/profilePicture/${tutor.f_filename}">
+                            <img id="P1" style = "width: 200px" class="tutorImage" alt="${tutor.f_originalname}" src="/uploads/profileFiles/tutor/profilePicture/${tutor.isPictureVerified ?  tutor.f_filename: 'TBC.jpg'}">
                             <div class="tutorInfo">
                                 <h3 style = "color: ${backgroundColor}">${tutor.fullName}</h3>
                                 <h3>£${tutor.price}</h3>

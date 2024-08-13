@@ -40,7 +40,7 @@ exports.viewProfile = async(req, res) => {
         res.json({
             _id: user._id,
             f_originalname: user.f_originalname,
-            f_filename: user.f_filename,
+            f_filename: user.isPictureVerified ? user.f_filename : 'TBC.jpg',
             fullName: user.fullName,
             tuitionType: user.tuitionType,
             subjects: user.subjects,
