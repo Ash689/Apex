@@ -1,7 +1,7 @@
-const findUser = require('../utils/findUser'); // Assuming you have a utility function for this
-const Booking = require('../models/booking'); // Assuming you have a utility function for this
+const findUser = require('../utils/findUser');
+const Booking = require('../models/booking');
 const studentUser = require('../models/studentUser');
-const tutorUser = require('../models/tutorUser'); // Assuming you have a utility function for this
+const tutorUser = require('../models/tutorUser');
 const tempBookingData = require('../models/tempBookingData');
 const stripe = require('stripe')(process.env.STRIPE_TOKEN);
 

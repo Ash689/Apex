@@ -28,42 +28,54 @@
             <table id="profile-form">
                 <tbody>
                     <tr>
-                        <td>Full Name</td>
+                        <td>Full Name
+                            <div class = "byline" id = "fullNameTitle"></div>
+
+                        </td>
                         <td>
                             <input type="text" id="fullName" name="fullName" maxlength = "30" required>
                         </td>
                     </tr>
                     <tr>
-                        <td>Date of birth</td>
+                        <td>Date of birth
+                            <div class = "byline" id = "dobTitle"></div>
+                        </td>
                         <td>
                             <input type="date" id="dateOfBirth" name="dateOfBirth" required>
                         </td>
                     </tr>
                     <tr>
-                        <td>Town</td>
+                        <td>Town
+                            <div class = "byline" id = "townTitle"></div>
+                        </td>
                         <td>
                             <input type="text" id="town" name="town" maxlength = "50" required>
                         </td>
                     </tr>
                     <tr>
-                        <td>Number</td>
+                        <td>Number
+                            <div class = "byline" id = "numberTitle"></div>
+                        </td>
                         <td>
                             <input type="number" id="number" name="number" maxlength = "10" required>
                         </td>
                     </tr>
                     <tr>
                         <td>Describe your teaching methods in 100 characters or less:
-                            <span id = "info-button" class="info-button">ℹ️</span>
+                            <span id = "info-button2" class="info-button">ℹ️</span>
+                            <div class = "byline" id = "teachTitle"></div>
                         </td>
                         <td>
                             <input type="text" id="tuitionType" name="tuitionType" minlength="10" maxlength="100" required>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan = "2">
+                            <button id="submitBtn" type="submit">Continue</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            <div class="submit-button-container">
-                <button type="submit">Continue</button>
-            </div>
         </form>
         
         <br><br>
@@ -76,40 +88,38 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutorLogout.js"></script>
+    <script src = "/script/validateProfile.js"></script>
     <script>
-        document.getElementById('profile-photo').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('profile-image').src = e.target.result;
-                }
-                reader.readAsDataURL(file);
+        let teachU = false;
+
+        const teachTitle = document.getElementById('teachTitle');
+        const teachField = document.getElementById('tuitionType');
+
+        teachField.addEventListener('input', function(event) {
+            const teach = teachField.value.trim();
+
+            if (teach.length > 100) {
+                teachTitle.innerHTML = "Please enter 100 characters or less.";
+                teachU = false;
+                validSubmit();
+            } else {
+                teachTitle.innerHTML = '';
+                teachU = true;
+                validSubmit();
             }
         });
 
-        function previewFile() {
-            var preview = document.querySelector('img#profile-image');
-            var file    = document.querySelector('input[type=file]').files[0];
-            var reader  = new FileReader();
-
-            reader.addEventListener("load", function() {
-                preview.src = reader.result;
-            }, false);
-
-            if (file) {
-                reader.readAsDataURL(file);
+        function validSubmit() {
+            if (fileU && nameU && townU && numberU && dobU && teachU){
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('disabled-button');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('disabled-button');
             }
         }
-
-        // $(function() {
-        //     $("#dateOfBirth").datepicker({
-        //         dateFormat: "yy-mm-dd",
-        //         maxDate: 0
-        //     });
-        // });
         
-        document.getElementById('info-button').title = "E.g. 4 years of teaching, ranging from starting from scratch up to exam prep.";
+        document.getElementById('info-button2').title = "E.g. 4 years of teaching, ranging from starting from scratch up to exam prep.";
     </script>
 
 </body>

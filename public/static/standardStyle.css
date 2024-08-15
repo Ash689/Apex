@@ -101,6 +101,10 @@ a:visited, a:hover, a:active {
     margin: 0;
 }
 
+.byline {
+    color: red; 
+    font-size: 10px;
+}
 
 button {
     background-color: #dc143c;

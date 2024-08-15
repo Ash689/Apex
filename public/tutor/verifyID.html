@@ -46,7 +46,7 @@
                         <h3>ID and DBS Verified!</h3>
                         <button id="id-button" class = "secondary-button">Re-Upload Images</button>
                         <form id="subjectForm" action="/tutor/configBanking.html" method="GET">
-                            <button type="submit">Continue to Home Page</button>
+                            <button type="submit">Continue to Subject Selection</button>
                         </form>
                     
                     `;
@@ -60,7 +60,7 @@
                     let form_container = document.getElementById('parent-form-container');
                     form_container.innerHTML = `
                         <form id="subjectForm" action="/tutor/sendID" method="POST" enctype="multipart/form-data">
-                            <h3 id = "id_header">Please Upload ID: </h3>
+                            <h3 id = "id_header">Please upload ID: </h3>
                             <span id = "info-button" class="info-button">ℹ️</span>
                             ${data.id_file ? 
                                 `<a href = /uploads/profileFiles/tutor/id/${data.id_file}>Download Sent ID</a>`
@@ -74,7 +74,7 @@
                         </form>
 
                         <form id="subjectForm" action="/tutor/sendDBS" method="POST" enctype="multipart/form-data">
-                            <h3 id = "dbs_header">Please Upload DBS: </h3>
+                            <h3 id = "dbs_header">Please upload DBS: </h3>
                             <span id = "info-button2" class="info-button">ℹ️</span>
                             ${data.dbs_file ? 
                                 `<a href = /uploads/profileFiles/tutor/id/${data.dbs_file}>Download Sent DBS</a>`

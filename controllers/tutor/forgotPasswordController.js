@@ -14,14 +14,14 @@ exports.forgotPassword = async (req, res) => {
 
   const { email } = req.body;
   try {
-    let user = await tutorUser.findOne({email: email});
+    let user = await tutorUser.findOne({email: email.toLowerCase().trim()});
     if(user){
       const token = generateToken();
       user.resetPasswordToken = token;
       user.resetPasswordExpires = Date.now() + 60*15*10000;
       await user.save();
-      await sendResetEmail(email, token);
-      req.session.email = email;
+      await sendResetEmail(user.email, token);
+      req.session.email = user.email;
     }
     
     res.json({ success: true });

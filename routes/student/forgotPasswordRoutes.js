@@ -22,7 +22,7 @@ router.post('/changePassword', [
 });
 
 router.get('/getEmailReset', sessionCheckPassword, (req, res) => {
-  controller.getEmail(req, res);
+  controller.getEmailReset(req, res);
 });
 
 router.get('/getEmailVerify', sessionCheckVerify, (req, res) => {

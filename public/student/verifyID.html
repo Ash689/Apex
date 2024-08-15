@@ -45,8 +45,8 @@
                         <h2>Upload Documents</h2>
                         <h3>ID Verified!</h3>
                         <button id="id-button" class = "secondary-button">Re-Upload Images</button>
-                        <form id="subjectForm" action="/student/home.html" method="GET">
-                            <button type="submit">Continue to Home Page</button>
+                        <form id="subjectForm" action="/student/configSubject.html" method="GET">
+                            <button type="submit">Continue to Subject Selection</button>
                         </form>
                     
                     `;
@@ -61,7 +61,7 @@
                     form_container.innerHTML = `
                     
                         <form id="subjectForm" action="/student/sendID" method="post" enctype="multipart/form-data">
-                            <h3 id = "id_header">Please Upload ID: </h3>
+                            <h3 id = "id_header">Please upload ID: </h3>
                             <span id = "info-button" class="info-button">ℹ️</span>
                             ${data.id_file ? 
                                 `<a href = /uploads/profileFiles/student/id/${data.id_file}>Download Sent ID</a>`

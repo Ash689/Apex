@@ -17,14 +17,14 @@ exports.forgotPassword = async (req, res) => {
 
   try {
 
-    let user = await studentUser.findOne({email: email});
+    let user = await studentUser.findOne({email: email.toLowerCase().trim()});
     if(user){
       const token = generateToken();
       user.resetPasswordToken = token;
       user.resetPasswordExpires = Date.now() + 60*15*10000;
       await user.save();
-      req.session.email = email;
-      await sendResetEmail(email, token);
+      req.session.email = user.email;
+      await sendResetEmail(user.email, token);
     }
     res.json({ success: true });
 

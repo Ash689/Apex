@@ -4,6 +4,7 @@ const tutorUser = require('../models/tutorUser');
 const studentUser = require('../models/studentUser');
 const Message = require('../models/message');
 require('dotenv').config();
+const formatInput = require('../utils/formatInput');
 
 exports.registerUser = async (req, res, userType) => {
   const errors = validationResult(req);
@@ -15,17 +16,17 @@ exports.registerUser = async (req, res, userType) => {
 
   try {
     const userModel = userType === 'tutor' ? tutorUser : studentUser;
-    let user = await userModel.findOne({email: email});
+    let formattedEmail = await formatInput(email);
+    let user = await userModel.findOne({email: formattedEmail});
     if (user) {
       return res.redirect(`/${userType}/register.html?message= Account already exists.&type=error`);
     }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
-    let email2 = email.toLowerCase().trim();
     // Create new user
     user = new userModel({
-      email: email2,
+      email: formattedEmail,
       password: hashedPassword,
     });
 
@@ -52,7 +53,8 @@ exports.loginUser = async (req, res, userType) => {
   const { email, password } = req.body;
   try {
     const userModel = userType === 'tutor' ? tutorUser : studentUser;
-    let user = await userModel.findOne({ email: email.toLowerCase().trim() });
+    let formattedEmail = await formatInput(email);
+    let user = await userModel.findOne({ email: formattedEmail });
     if (!user) {
       return res.redirect(`/${userType}/login.html?message=User not found.&type=error`);
     }
@@ -71,15 +73,15 @@ exports.loginUser = async (req, res, userType) => {
         if (!user.isIDVerified){
           res.redirect(`/${userType}/verifyID.html`);
         } else {
-          if (userType === 'tutor' && !user.stripeAccount){
-            res.redirect(`/tutor/configBanking.html`);
-          } else {
+          // if (userType === 'tutor' && !user.stripeAccount){
+          //   res.redirect(`/tutor/configBanking.html`);
+          // } else {
             if (user.subjects.length === 0) {
               res.redirect(`/${userType}/configSubject.html`);
             } else {
               res.redirect(`/${userType}/home.html`);
             }
-          }
+          // }
         }
       } else {
         res.redirect(`/${userType}/configProfile.html`);
