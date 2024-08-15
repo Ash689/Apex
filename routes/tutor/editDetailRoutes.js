@@ -45,6 +45,10 @@ router.post('/cancelSubject', (req, res) => {
   controller.cancelSubject(req, res);
 });
 
+router.post('/create-stripe-account', (req, res) => {
+  controller.createStripeAccount(req, res);
+});
+
 router.post('/addDays', (req, res) => {
   controller.addDays(req, res);
 });

@@ -3,6 +3,7 @@ const Booking = require('../models/booking'); // Assuming you have a utility fun
 const studentUser = require('../models/studentUser');
 const tutorUser = require('../models/tutorUser'); // Assuming you have a utility function for this
 const tempBookingData = require('../models/tempBookingData');
+const stripe = require('stripe')(process.env.STRIPE_TOKEN);
 
 exports.getBookingProfile = async(req,res) => {
     try {
@@ -322,8 +323,22 @@ exports.cancelOneBooking = async(req, res) => {
         relatedBooking.plan = booking.plan;
         await relatedBooking.save();
       }
+
   
-      let deletedbooking = await Booking.findByIdAndDelete(req.session.bookingID);
+      let deletedBooking = await Booking.findByIdAndDelete(req.session.bookingID);
+
+      if (deletedBooking) {
+        const session = await stripe.checkout.sessions.retrieve(deletedBooking.stripeSession);
+
+        // Refund the payment
+        const refund = await stripe.refunds.create({
+            payment_intent: session.payment_intent,
+        });
+      } else {
+        return res.redirect('/tutor/viewBooking.html?message=Failed to cancel booking.&type=error');
+      }
+
+
       let linkPage;
 
       if(req.session.user.role === "tutor") {
@@ -334,7 +349,7 @@ exports.cancelOneBooking = async(req, res) => {
       return res.redirect(`${linkPage}viewBooking.html?message=Booking canceled successfully.&type=success`);
     } catch (error) {
       console.error(error);
-      return res.redirect(`${linkPage}editBooking.html?message=Failed to edit booking.&type=error`);
+      return res.redirect(`${linkPage}editBooking.html?message=Failed to cancel booking.&type=error`);
     }
 };
   

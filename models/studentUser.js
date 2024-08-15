@@ -34,7 +34,7 @@ const studentSchema = new mongoose.Schema({
   id_mimetype: String,
   id_size: Number,
   isIDVerified: {type: Boolean, default: false},
-  
+  stripeAccount: {type: String, default: null},
 
 });
 

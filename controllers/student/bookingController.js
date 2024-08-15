@@ -23,15 +23,28 @@ exports.confirmLesson = async (req, res) => {
     if (booking.recurringID) {
       await Booking.updateMany(
         { recurringID: booking.recurringID },
-        { $set: { studentConfirmed: true, paymentGiven: true } } // Add other fields if needed
+        { $set: { studentConfirmed: true } } // Add other fields if needed
       );
 
     } else {
       booking.studentConfirmed = true;
       await booking.save();
     }
-    let sessionUrl = await payment(bookingId, returnUrl);
-    res.redirect(303, sessionUrl);
+
+    let user = await findUser(req, res, `${returnUrl}`, req.session.user._id);
+    if (user.stripeAccount){
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: booking.price*100,
+        currency: 'gbp',
+        customer: user.stripeAccount,
+        off_session: true,  // Customer is not actively entering payment details
+        confirm: true,
+      });
+      res.redirect(`/student/${returnUrl}.html?message=Booking paid and confirmed.&type=error`);
+    } else {
+      let sessionUrl = await payment(bookingId, returnUrl);
+      res.redirect(303, sessionUrl);
+    }
   } catch (error) {
     console.log(error);
     res.redirect(`/student/${returnUrl}.html?message=Server error.&type=error`);

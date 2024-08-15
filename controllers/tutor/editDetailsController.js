@@ -5,6 +5,7 @@ const formatInput = require('../../utils/formatInput');
 const fs = require('fs');
 const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verifyUploads');
 const { trusted } = require('mongoose');
+const stripe = require('stripe')(process.env.STRIPE_TOKEN)
 
 
 exports.config = async (req, res) => {
@@ -166,6 +167,42 @@ exports.getVerifyID = async (req, res) => {
     console.log(error);
     console.error("Error saving profile: ", error);
     res.redirect('/tutor/login.html?message=Error, please log in.&type=error');
+  }
+};
+
+exports.createStripeAccount = async (req, res) => {
+  const { accountNumber,  sortcode} = req.body;
+
+  try {
+    let user = await findUser(req, res, "configBanking", req.session.user._id);
+    if (user.stripeAccount){
+      res.redirect('/tutor/configBanking.html?message=Bank details already exist.&type=success');
+    }
+
+    const account = await stripe.accounts.create({
+      type: 'express', // or 'custom' depending on your use case
+      country: 'GB',
+      email: user.email,
+      capabilities: {
+        card_payments: { requested: true },
+        transfers: { requested: true },
+      },
+      external_account: {
+        object: 'bank_account',
+        country: 'GB',
+        currency: 'gbp',
+        account_number: accountNumber,
+        routing_number: sortcode,
+      },
+    });
+
+    user.stripeAccount = account.id;
+    await user.save();
+
+    res.redirect('/tutor/configSubject.html?message=Banking details added.&type=success');
+  } catch (error) {
+    console.log(error);
+    res.redirect('/tutor/configBanking.html?message=Error with adding bank details.&type=success');
   }
 };
 
