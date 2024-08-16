@@ -53,11 +53,20 @@
                     <img id="P1" alt="${data.f_originalname}" src="/uploads/profileFiles/student/profilePicture/${data.f_filename}" alt="Profile Image">
                     <form action="/student/changePic" method="POST" enctype="multipart/form-data">
                         <input id="profile-photo" type="file" name="profile-photo" accept="image/*">
-                        <button type="submit" class="secondary-button">Update Picture</button>
+                        <button type="submit" id = "imageSubmitBtn" class="disabled-button" disabled>Update Picture</button>
                     </form>
                     <h3>Name: ${data.fullName}</h3>
                     <p>Email: ${data.email}</p>
                 `;
+
+                let imageButton = document.getElementById('imageSubmitBtn');
+
+                document.getElementById('profile-photo').addEventListener('change', function(event) {
+                    imageButton.disabled = false;
+                    imageButton.classList.remove('disabled-button');
+                });
+
+
                 data.subjects.forEach(subject => {
                     const subjectElement = document.createElement('div');
                     subjectElement.classList.add('profile-bar2');
@@ -172,5 +181,6 @@
         });
         
     </script>
+    <script src = "/script/validateImage.js"></script>
 </body>
 </html>

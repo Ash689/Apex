@@ -36,6 +36,10 @@ exports.uploadHomeworkFile = async(req, res) => {
       });
       await file.save();
     } else {
+      if (!req.file){
+        return res.redirect('/student/submission.html?message=Please upload a file.&type=error');
+
+      }
       const file = new HomeworkFile({
         homework: req.session.homeworkID,
         filename: req.file.filename,

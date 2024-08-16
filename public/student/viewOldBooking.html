@@ -31,7 +31,7 @@
     <script src="/script/bookingDateFormat.js"></script>
     <script>
         const bookingTableBody = document.getElementById('bookings');
-        fetch('/student/viewOldBookings')
+        fetch('/viewOldBookings')
         .then(response => response.json())
         .then(data => {
             if (data.error) {

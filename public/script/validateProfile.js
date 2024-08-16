@@ -92,6 +92,7 @@ dobField.addEventListener('input', function(event) {
 
 document.getElementById('profile-photo').addEventListener('change', function(event) {
     const file = event.target.files[0];
+    fileU = true;
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {

@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //----------------
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 200
+  max: 600
 });
 app.use(limiter);
 

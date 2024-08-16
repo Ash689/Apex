@@ -6,18 +6,21 @@ require('dotenv').config();
 const generateToken = require('../../utils/generateToken'); // Assuming you have a utility function for this
 const {sendResetEmail, sendVerifyEmail} = require('../../utils/verifyEmail');
 
+const formatInput = require('../../utils/formatInput');
+
 
 exports.forgotPassword = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-      return res.redirect('/student/forgotPassword.html?message=Invalid input.&type=error');
+    return res.redirect('/student/forgotPassword.html?message=Invalid input.&type=error');
   }
 
   const { email } = req.body;
 
   try {
+    let formattedEmail = await formatInput(email);
 
-    let user = await studentUser.findOne({email: email.toLowerCase().trim()});
+    let user = await studentUser.findOne({email: formattedEmail});
     if(user){
       const token = generateToken();
       user.resetPasswordToken = token;

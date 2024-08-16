@@ -66,7 +66,7 @@
                             <span id = "info-button" class="info-button">ℹ️</span>
                         </td>
                         <td>
-                            <input id="newPrice" name="bookingPrice" type = "number" step = "0.01" min="1" max="100" required> <!-- Hidden input to store the actual value -->
+                            <input id="newPrice" name="bookingPrice" type = "number" step = "0.01" min="0" required> <!-- Hidden input to store the actual value -->
                         </td>
                     </tr>
 
@@ -80,7 +80,7 @@
                     
                     <tr>
                         <td colspan = "2">
-                            <button type="submit">Submit Booking</button>
+                            <button type="submit" id = "submitBtn" class = "disabled-button" disabled>Submit Booking</button>
                         </td>
                     </tr>
 
