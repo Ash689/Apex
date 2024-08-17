@@ -120,30 +120,6 @@ exports.editBooking = async(req, res) => {
     }
 };
 
-exports.launchingLesson = async (req, res) => {
-  const { zoomUrl } = req.query;
-  res.set('Content-Type', 'text/html');
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Redirecting...</title>
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          // Redirect to Zoom meeting
-          window.location.href = "${zoomUrl}";
-          // Open lesson notes in a new tab
-          window.open('/student/newReview.html', '_blank');
-        });
-      </script>
-    </head>
-    <body>
-      <p>Redirecting to your Zoom meeting and opening review...</p>
-    </body>
-    </html>
-  `);
-};
-
 exports.launchLesson = async (req, res) => {
   const { bookingId } = req.body;
   try {
@@ -168,10 +144,10 @@ exports.launchLesson = async (req, res) => {
       booking.zJoinUrl = meetingData.join_url;
       await booking.save();
       
-      return res.redirect(`/student/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
-    } else {
-      return res.redirect(`/student/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
     }
+    return res.json ({
+      zoomUrl: booking.zJoinUrl
+    });
 
   } catch (error) {
     console.error(error);

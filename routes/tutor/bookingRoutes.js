@@ -22,10 +22,6 @@ router.post('/launchLesson', (req, res) => {
   controller.launchLesson(req, res);
 });
 
-router.get('/launchingLesson', (req, res) => {
-  controller.launchingLesson(req, res);
-});
-
 router.post('/launchReport', (req, res) => {
   controller.launchReport(req, res);
 });

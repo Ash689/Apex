@@ -35,6 +35,7 @@
     <script src="/script/studentScript.js"></script>
     <script src="/script/bookingButtons.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
+    <script src="/script/studentLaunchLesson.js"></script>
     <script>
         fetch('/student/getMessage')
         .then(response => response.json())
@@ -195,7 +196,7 @@
                                 </form>
                             ` : ''}
                             ${booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven ? `
-                                <form action="/student/launchLesson" method="POST">
+                                <form id="launch-lesson-form" action="/student/launchLesson" method="POST">
                                     <input type="hidden" name="bookingId" value="${booking._id}">
                                         <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" type="submit" ${disableLaunchButton ? 'disabled' : ''}>Launch</button>
                                 </form>
@@ -207,6 +208,7 @@
                             <p>-------------------------</p>
                         `;
                         bookingElement.appendChild(individualBookingElement);
+                        launchLesson(booking._id);
                     });
                 }
             }

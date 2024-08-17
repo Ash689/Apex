@@ -28,6 +28,7 @@
     <script src="/script/tutorScript.js"></script>
     <script src="/script/bookingButtons.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
+    <script src="/script/tutorLaunchLesson.js"></script>
     <script>
         const bookingTableBody = document.getElementById('bookings');
 
@@ -98,7 +99,7 @@
                                         `: ''}
                                     ` : ''}
                                     ${booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven ? `
-                                        <form id = "launch" action="/tutor/launchLesson" method="POST">
+                                        <form id = "launch-lesson-form" action="/tutor/launchLesson" method="POST">
                                             <input type="hidden" name="bookingId" value="${booking._id}">
                                             <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" 
                                                 type="submit" ${disableLaunchButton ? 'disabled' : ''}>Launch
@@ -113,6 +114,7 @@
                                 </td>
                             `;
                             bookingTableBody.appendChild(row);
+                            launchLesson(booking._id);
                         });
                     });
                 }

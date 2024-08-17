@@ -20,10 +20,6 @@ router.post('/launchLesson', (req, res) => {
   controller.launchLesson(req, res);
 });
 
-router.get('/launchingLesson', (req, res) => {
-  controller.launchingLesson(req, res);
-});
-
 router.post('/payLesson', (req, res) => {
   controller.payLesson(req, res);
 });
