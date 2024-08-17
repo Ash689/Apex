@@ -98,7 +98,7 @@ exports.viewMessenger = async (req, res) => {
     });
 
     let recipients = await studentUser.find({ _id: { $in: Array.from(uniqueRecipients) } })
-      .select('_id fullName subject email f_originalname f_filename')
+      .select('_id fullName subject email isPictureVerified f_originalname f_filename')
       .exec();
 
     // Create a map to store the most recent message for each recipient

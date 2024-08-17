@@ -170,10 +170,11 @@
             // Capture the form submission
             document.getElementById('lessonReportForm').addEventListener('submit', function(event) {
                 notesContainerInput.value = Array.from(notesContainer.children)
-                                                .map(topicRow => topicRow.innerText.trim())
-                                                .join(', ');
-                successfulTopicsInput.value = successfulTopics.innerText.trim();
-                topicsToImproveInput.value = topicsToImprove.innerText.trim();
+                    .map(topicRow => topicRow.innerText.replace(/[✓✗]/g, '').trim())
+                    .join(', ');
+
+                successfulTopicsInput.value = successfulTopics.innerText.replace(/[✓✗]/g, '').trim();
+                topicsToImproveInput.value = topicsToImprove.innerText.replace(/[✓✗]/g, '').trim();
             });
         });
         var homeworkShown = false;
@@ -193,7 +194,7 @@
                             <tr>
                                 <td>Name of topic</td>
                                 <td>
-                                    <input type="text" name="topicName" id="topicNameInput">
+                                    <input type="text" name="topicName" id="topicNameInput" required>
                                 </td>
                             </tr>
                             <tr>
@@ -210,7 +211,7 @@
                             <tr>
                                 <td>Deadline</td>
                                 <td>
-                                    <input style = "margin: 0px" type="hidden text" id="deadline" name="deadline" readonly><br><br>
+                                    <input style = "margin: 0px" type="hidden text" id="deadline" name="deadline" readonly required><br><br>
                                 </td>
                             </tr>
                         </tbody>

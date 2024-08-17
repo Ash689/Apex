@@ -42,7 +42,7 @@ const createZoomMeeting = async (token, tutorEmail, topic = 'Tutoring Session', 
     type: 2, // 1 for instant meeting, 2 for scheduled meeting, etc.
     start_time: bookingStartDateTime,
     duration: duration,
-    schedule_for: tutorEmail,
+    // schedule_for: tutorEmail,
     settings: {
       host_video: true,
       participant_video: true,

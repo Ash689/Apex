@@ -2,7 +2,9 @@ const findUser = require('../../utils/findUser'); // Assuming you have a utility
 const { generateAccessToken, createZoomMeeting } = require('../../utils/zoomMeeting');
 const Homework = require('../../models/homework');
 const studentUser = require('../../models/studentUser');
+const Message = require('../../models/message');
 const Booking = require('../../models/booking');
+const HomeworkFile = require('../../models/homeworkFile');
 const tempBookingData = require('../../models/tempBookingData');
 const { body, validationResult } = require('express-validator');
 const hasConflictingBooking = require('../../utils/hasConflictingBooking');
@@ -100,7 +102,7 @@ exports.editBooking = async(req, res) => {
   }
 };
 
-exports.launchingLesson = async(req, res) => {
+exports.launchingLesson = async (req, res) => {
   const { zoomUrl } = req.query;
   res.set('Content-Type', 'text/html');
   res.send(`
@@ -145,7 +147,6 @@ exports.launchLesson = async(req, res) => {
     } else {
       return res.redirect(`/tutor/launchingLesson?zoomUrl=${encodeURIComponent(booking.zJoinUrl)}`);
     }
-    // return res.redirect('/tutor/lessonNotes.html');
 
   } catch (error) {
     console.error(error);
@@ -232,7 +233,7 @@ exports.lessonReportSubmit = async (req, res) => {
     await message.save();
 
     if (topicName === null || deadline===null || !topicName || !deadline){
-      return res.redirect('/tutor/viewBooking.html?message=Report complete. &type=success');
+      return res.redirect('/tutor/viewBooking.html?message=Report complete. Homework not sent &type=success');
     } else {
       let homework = new Homework({
         tutor: booking.tutor._id,
@@ -260,7 +261,7 @@ exports.lessonReportSubmit = async (req, res) => {
           mimetype: req.file.mimetype,
           size: req.file.size,
           isStudent: false,
-          isText: true
+          isText: false
         });
         await file.save();
       }
@@ -280,6 +281,23 @@ exports.getLessonNotes = async(req, res) => {
   try {
     const booking = await Booking.findById(req.session.bookingID);
     res.json({ notes: booking.notes, subject: booking.subject });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.getStudentProfileNotes = async(req, res) => {
+  try {
+    const booking = await Booking.findById(req.session.bookingID);
+    let student = await findUser(req, res, "lessonReport", booking.student._id, true);
+    res.json({ 
+      f_filename: student.isPictureVerified ? student.f_filename : 'TBC.jpg',
+      f_originalname: student.f_originalname,
+      date: booking.date, 
+      subject: booking.subject,
+      studentName: booking.studentName,
+    });
   } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Server error' });
@@ -317,7 +335,7 @@ exports.newBooking = async(req, res) => {
         student: recipient._id,
         tutorName: name.fullName,
         studentName: recipient.fullName,
-        subject: subject.toLowerCase().trim(), 
+        subject: formatted_subject, 
         date: startDateTime,
         time: bookingTime,
         duration: duration,
@@ -362,7 +380,7 @@ exports.lessonNotesSubmit = async(req, res) => {
   }
   let { topics } = req.body;
   if (typeof topics === 'string') {
-    topics = topics.split(',').map(topic => topic.trim()).filter(topic => topic); // Split and trim each topic
+    topics = topics.split(',').map(topic => topic.trim()).filter(topic => topic);
   }
 
   try {

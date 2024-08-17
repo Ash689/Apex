@@ -57,6 +57,10 @@ router.get('/getLessonNotes', (req, res) => {
   controller.getLessonNotes(req, res);
 });
 
+router.get('/getStudentProfileNotes', (req, res) => {
+  controller.getStudentProfileNotes(req, res);
+})
+
 router.post('/lessonNotesSubmit', upload.single('document'), [
   body('topics').trim().escape()
 ], (req, res) => {

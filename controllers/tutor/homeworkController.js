@@ -37,7 +37,7 @@ exports.uploadHomeworkFile = async(req, res) => {
       });
       await file.save();
 
-    } else {
+    } else if (req.file) {
       const file = new HomeworkFile({
         homework: req.session.homeworkID,
         filename: req.file.filename,

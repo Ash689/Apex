@@ -172,36 +172,36 @@ exports.viewOneBooking = async(req, res) => {
 };
 
 
-exports.viewIndividualBookings = async(req, res) => {
-    try {
-        let recipient = await findUser(req, res, "viewMessage", req.session.recipientID, true);
+exports.viewIndividualBookings = async (req, res) => {
+  try {
+    let recipient = await findUser(req, res, "viewMessage", req.session.recipientID, true);
 
-        const query = {
-          date: {
-            $gte: Date.now(),
-          }
-        };
-      
-        if (req.session.user.role === "tutor") {
-          query.tutor = req.session.user._id;
-          query.student = recipient._id;
-        } else {
-          query.tutor = recipient._id;
-          query.student = req.session.user._id;
-        }
-    
-        // Retrieve bookings based on the constructed query
-        const bookings = await Booking.find(query).sort({ date: 1 });
-    
-        res.json({ bookings });
-    } catch (error) {
-        console.error(error);
-        if (req.session.user.role === "tutor"){
-            return res.redirect('/tutor/viewMessage.html?message=Failed to retrieve bookings.&type=error');
-        } else {
-            return res.redirect('/student/viewMessage.html?message=Failed to retrieve bookings.&type=error');
-        }
+    const query = {
+      date: {
+        $gte: Date.now(),
+      }
+    };
+
+    if (req.session.user.role === "tutor") {
+      query.tutor = req.session.user._id;
+      query.student = recipient._id;
+    } else {
+      query.tutor = recipient._id;
+      query.student = req.session.user._id;
     }
+
+    // Retrieve bookings based on the constructed query
+    const bookings = await Booking.find(query).sort({ date: 1 });
+
+    res.json({ bookings });
+  } catch (error) {
+    console.error(error);
+    if (req.session.user.role === "tutor") {
+      return res.redirect('/tutor/viewMessage.html?message=Failed to retrieve bookings.&type=error');
+    } else {
+      return res.redirect('/student/viewMessage.html?message=Failed to retrieve bookings.&type=error');
+    }
+  }
 };
 
 exports.viewBookings = async (req, res) => {
@@ -258,19 +258,20 @@ exports.getBookingID = async(req, res) => {
     return res.redirect(`${linkPage}`);
 };
 
-exports.getBookingID2 = async(req, res) => {
-    const { bookingId } = req.body;
-    const booking = await Booking.findById(bookingId);
-    let user;
-    let linkPage;
-    if(req.session.user.role === "tutor"){
-      user = await findUser(req, res, "viewBooking", booking.student._id, true);
-      linkPage = '/tutor/viewMessage.html';
-    } else {
-      user = await findUser(req, res, "viewBooking", booking.tutor._id, true);}
-      linkPage = '/student/viewMessage.html';
-    req.session.recipientID = user._id;
-    res.redirect(`${linkPage}`);
+exports.getBookingID2 = async (req, res) => {
+  const { bookingId } = req.body;
+  const booking = await Booking.findById(bookingId);
+  let user;
+  let linkPage;
+  if (req.session.user.role === "tutor") {
+    user = await findUser(req, res, "viewBooking", booking.student._id, true);
+    linkPage = '/tutor/viewMessage.html';
+  } else {
+    user = await findUser(req, res, "viewBooking", booking.tutor._id, true);
+    linkPage = '/student/viewMessage.html';
+  }
+  req.session.recipientID = user._id;
+  res.redirect(`${linkPage}`);
 };
 
 exports.cancelChanges = async (req, res) => {

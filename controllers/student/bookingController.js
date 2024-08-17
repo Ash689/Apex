@@ -21,16 +21,21 @@ exports.confirmLesson = async (req, res) => {
     req.session.returnUrl = returnUrl;
 
     if (booking.recurringID) {
+      console.log("SLDKFJKLSF");
       await Booking.updateMany(
         { recurringID: booking.recurringID },
-        { $set: { studentConfirmed: true } } // Add other fields if needed
-      );
+        { $set: { 
+          studentConfirmed: true, 
+          // paymentGiven: true
+        }});
 
     } else {
+      console.log("SLDKFJKLnjdskhixSF");
       booking.studentConfirmed = true;
+      booking.paymentGiven = true;
       await booking.save();
     }
-
+    /*
     let user = await findUser(req, res, `${returnUrl}`, req.session.user._id);
     if (user.stripeAccount){
       const paymentIntent = await stripe.paymentIntents.create({
@@ -45,6 +50,7 @@ exports.confirmLesson = async (req, res) => {
       let sessionUrl = await payment(bookingId, returnUrl);
       res.redirect(303, sessionUrl);
     }
+      */
   } catch (error) {
     console.log(error);
     res.redirect(`/student/${returnUrl}.html?message=Server error.&type=error`);
@@ -114,7 +120,7 @@ exports.editBooking = async(req, res) => {
     }
 };
 
-exports.launchingLesson = async(req, res) => {
+exports.launchingLesson = async (req, res) => {
   const { zoomUrl } = req.query;
   res.set('Content-Type', 'text/html');
   res.send(`
@@ -151,6 +157,7 @@ exports.launchLesson = async (req, res) => {
       user.lessonCount = user.lessonCount + 1;
       await user.save();
     }
+    req.session.recipientID = booking.tutor;
     if (!booking.zJoinUrl) {
       const token = await generateAccessToken();
       let tutor = await findUser(req, res, "viewBooking", booking.tutor, true);
