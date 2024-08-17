@@ -96,7 +96,6 @@ exports.deleteHomeworkFile = async(req, res) => {
       if (!file.isText){
         fs.unlinkSync(`uploads/homeworkFiles/student/${file.filename}`);
       }
-      console.log("Deleted File successfully");
     } else {
       return res.redirect('/student/submission.html?message=Answers not found.&type=error');
     }

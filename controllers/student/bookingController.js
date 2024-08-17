@@ -21,18 +21,14 @@ exports.confirmLesson = async (req, res) => {
     req.session.returnUrl = returnUrl;
 
     if (booking.recurringID) {
-      console.log("SLDKFJKLSF");
       await Booking.updateMany(
         { recurringID: booking.recurringID },
         { $set: { 
           studentConfirmed: true, 
-          // paymentGiven: true
         }});
 
     } else {
-      console.log("SLDKFJKLnjdskhixSF");
       booking.studentConfirmed = true;
-      booking.paymentGiven = true;
       await booking.save();
     }
     /*
@@ -58,66 +54,66 @@ exports.confirmLesson = async (req, res) => {
 };
 
 
-exports.editBooking = async(req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.redirect('/student/editBooking.html?message=Invalid input.&type=error');
+exports.editBooking = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.redirect('/student/editBooking.html?message=Invalid input.&type=error');
+  }
+  const { subject, bookingDate, bookingTime, duration } = req.body;
+
+  try {
+    // Convert bookingDate and bookingTime into a Date object
+
+    const bookingStartDateTime = new Date(`${bookingDate}T${bookingTime}:00.000Z`);
+    const bookingEndDateTime = new Date(bookingStartDateTime.getTime() + duration * 60 * 1000);
+
+    // Check if the booking start time is in the past
+    const now = new Date();
+    if (bookingStartDateTime < now) {
+      return res.redirect('/student/editBooking.html?message=Booking time cannot be in the past.&type=error');
     }
-    const { subject, bookingDate, bookingTime, duration } = req.body;
 
-    try {
-        // Convert bookingDate and bookingTime into a Date object
-
-        const bookingStartDateTime = new Date(`${bookingDate}T${bookingTime}:00.000Z`);
-        const bookingEndDateTime = new Date(bookingStartDateTime.getTime() + duration * 60 * 1000);
-
-        // Check if the booking start time is in the past
-        const now = new Date();
-        if (bookingStartDateTime < now) {
-        return res.redirect('/student/editBooking.html?message=Booking time cannot be in the past.&type=error');
-        }
-
-        // Find the booking to be edited
-        const editBooking = await Booking.findById(req.session.bookingID);
-        if (!editBooking) {
-        return res.redirect('/student/editBooking.html?message=Booking not found.&type=error');
-        }
-        // Check for conflicts
-        if (await hasConflictingBooking(editBooking.tutor._id, req.session.user._id, bookingStartDateTime, bookingEndDateTime, editBooking._id)) {
-        return res.redirect('/student/editBooking.html?message=This time slot is not available.&type=error');
-        }
-
-        let tempBooking = await tempBookingData.findOne({booking: req.session.bookingID});
-        let formatted_subject = await formatInput(editBooking.subject);
-        if (!tempBooking){
-        let tempBooking2 = new tempBookingData({
-            booking: req.session.bookingID,
-            subject: formatted_subject,
-            date: editBooking.date,
-            time: editBooking.time,
-            price: editBooking.price,
-            duration: editBooking.duration,
-        });
-        await tempBooking2.save();    
-        }
-
-        let formatted_subject2 = await formatInput(subject);
-
-        editBooking.subject = formatted_subject2;
-        editBooking.date = bookingStartDateTime;
-        editBooking.time = bookingTime;
-        editBooking.duration = duration;
-        editBooking.tutorConfirmed = false;
-        editBooking.studentConfirmed = true;
-
-        // Save the booking
-        await editBooking.save();
-
-        res.redirect('/student/viewBooking.html?message=Booking edited successfully.&type=success');
-    } catch (error) {
-        console.error(error);
-        return res.redirect('/student/viewBooking.html?message=Failed to edit booking.&type=error');
+    // Find the booking to be edited
+    const editBooking = await Booking.findById(req.session.bookingID);
+    if (!editBooking) {
+      return res.redirect('/student/editBooking.html?message=Booking not found.&type=error');
     }
+    // Check for conflicts
+    if (await hasConflictingBooking(editBooking.tutor._id, req.session.user._id, bookingStartDateTime, bookingEndDateTime, editBooking._id)) {
+      return res.redirect('/student/editBooking.html?message=This time slot is not available.&type=error');
+    }
+
+    let tempBooking = await tempBookingData.findOne({ booking: req.session.bookingID });
+    let formatted_subject = await formatInput(editBooking.subject);
+    if (!tempBooking) {
+      let tempBooking2 = new tempBookingData({
+        booking: req.session.bookingID,
+        subject: formatted_subject,
+        date: editBooking.date,
+        time: editBooking.time,
+        price: editBooking.price,
+        duration: editBooking.duration,
+      });
+      await tempBooking2.save();
+    }
+
+    let formatted_subject2 = await formatInput(subject);
+
+    editBooking.subject = formatted_subject2;
+    editBooking.date = bookingStartDateTime;
+    editBooking.time = bookingTime;
+    editBooking.duration = duration;
+    editBooking.tutorConfirmed = false;
+    editBooking.studentConfirmed = true;
+
+    // Save the booking
+    await editBooking.save();
+
+    res.redirect('/student/viewBooking.html?message=Booking edited successfully.&type=success');
+  } catch (error) {
+    console.error(error);
+    return res.redirect('/student/viewBooking.html?message=Failed to edit booking.&type=error');
+  }
 };
 
 exports.launchLesson = async (req, res) => {

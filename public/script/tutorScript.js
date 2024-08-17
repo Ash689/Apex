@@ -85,7 +85,7 @@ fetch('/tutor/countMessage')
         if (data.count > 0){
             const messageCountElement = document.getElementById('messageCounter');
             if (data.count > 9){
-                messageCountElement.innerHTML += "*";
+                messageCountElement.innerHTML += "[*]";
             } else {
                 
                 messageCountElement.innerHTML += `[${data.count}]`;

@@ -9,14 +9,13 @@ exports.getBookingProfile = async(req,res) => {
     try {
         let recipient = await findUser(req, res, "viewMessage", req.session.recipientID, true);
   
-        // Find and update related booking for lesson plan
         const relatedBooking = await Booking.findOne({ 
           tutor: recipient._id, 
           student: req.session.user._id,
           revisionSession: false,
           date: { $gt: new Date() }
   
-        }).sort({ date: 1 });  // Sort by date in ascending order to get the earliest one after the current booking
+        }).sort({ date: 1 });
   
         res.json({
           recipient: recipient,
@@ -31,7 +30,6 @@ exports.getBookingProfile = async(req,res) => {
 
 exports.viewOldBookings = async (req, res) => {
     try {
-      // Determine the role of the authenticated user (true if tutor, false if student)
       const userId = req.session.user._id;
   
       let bookingsQuery;
@@ -50,32 +48,24 @@ exports.viewOldBookings = async (req, res) => {
         userModel = tutorUser;
         userSelectFields = 'f_originalname f_filename isPictureVerified';
       }
-  
-      // Retrieve bookings based on the constructed query
       let bookings1 = await Booking.find(bookingsQuery).sort({ date: -1 });
 
       let bookings = bookings1.filter(booking => {
         const endTime = new Date(booking.date).getTime() + booking.duration * 60000;
         return new Date() > endTime;
       });
-  
-      // Extract unique user IDs from the bookings
       let uniqueUserIds = new Set();
       bookings.forEach(booking => {
         uniqueUserIds.add(booking[userIdField].toString());
       });
-  
-      // Fetch user details including f_originalname and f_filename
       let users = await userModel.find({ _id: { $in: Array.from(uniqueUserIds) } })
         .select(userSelectFields)
         .exec();
   
-      // Map user details to bookings
       let bookingsWithUsers = bookings.map(booking => {
-        // Find the user corresponding to the booking
         let user = users.find(u => u._id.toString() === booking[userIdField].toString());
         return {
-          ...booking._doc, // Include all booking details
+          ...booking._doc,
           [userIdField]: {
             originalname: user.f_originalname,
             filename: user.isPictureVerified ? user.f_filename : 'TBC.jpg'
