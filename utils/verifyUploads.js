@@ -15,20 +15,29 @@ async function verifyIDAdmin(details) {
     from: process.env.EMAIL, 
     to: process.env.EMAIL,
     subject: 'Verify User ID',
-    text: `
+    html: `
+      <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
+        <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
+      </div>
+      
+      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #dc143c; font-family: Arial, sans-serif;">User Profile</h2>
+        <p><strong>ID:</strong> ${details._id}</p>
+        <p><strong>Name:</strong> ${details.fullName}</p>
+        <p><strong>Number:</strong> ${details.number}</p>
+        <p><strong>Email:</strong> ${details.email}</p>
+        <p><strong>Tutor:</strong> ${details.isTutor ? "Yes" : "No"}</p>
+        
+        <h3 style="color: #dc143c; font-family: Arial, sans-serif;">ID Details</h3>
+        <p><strong>Filename:</strong> ${details.filename}</p>
+        <p><strong>Original Name:</strong> ${details.originalname}</p>
+        <p><strong>Mimetype:</strong> ${details.mimetype}</p>
+        <p><strong>Size:</strong> ${details.size} KB</p>
 
-    User profile:
-    ${details._id}, \n
-    ${details.fullName}, \n
-    ${details.number},
-    ${details.email},
-    Tutor: ${details.isTutor}
-    
-    ID details:\n 
-      ${details.filename},\n
-      ${details.originalname},\n
-      ${details.mimetype},\n 
-      ${details.size},\n
+        <footer style="margin-top: 20px; font-size: 14px; color: #888;">
+          <p>Best regards,<br/>Apex Tuition</p>
+        </footer>
+      </div>
     `,
   };
 
@@ -52,21 +61,30 @@ async function verifyProfilePicAdmin(details) {
     from: process.env.EMAIL,
     to: process.env.EMAIL,
     subject: 'Verify Profile Picture',
-    text: `
-
-    User profile:
-    ${details._id}, \n
-    ${details.fullName}, \n
-    ${details.number},
-    ${details.email},
-    Student: ${details.isTutor}
+    html: `
+    <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
+      <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
+    </div>
     
-    ID details:\n 
-      ${details.filename},\n
-      ${details.originalname},\n
-      ${details.mimetype},\n 
-      ${details.size},\n
-    `,
+    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #dc143c; font-family: Arial, sans-serif;">User Profile</h2>
+      <p><strong>ID:</strong> ${details._id}</p>
+      <p><strong>Name:</strong> ${details.fullName}</p>
+      <p><strong>Number:</strong> ${details.number}</p>
+      <p><strong>Email:</strong> ${details.email}</p>
+      <p><strong>Tutor:</strong> ${details.isTutor ? "Yes" : "No"}</p>
+      
+      <h3 style="color: #dc143c; font-family: Arial, sans-serif;">ID Details</h3>
+      <p><strong>Filename:</strong> ${details.filename}</p>
+      <p><strong>Original Name:</strong> ${details.originalname}</p>
+      <p><strong>Mimetype:</strong> ${details.mimetype}</p>
+      <p><strong>Size:</strong> ${details.size} KB</p>
+
+      <footer style="margin-top: 20px; font-size: 14px; color: #888;">
+        <p>Best regards,<br/>Apex Tuition</p>
+      </footer>
+    </div>
+  `,
   };
 
   try {

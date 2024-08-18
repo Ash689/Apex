@@ -89,10 +89,10 @@ exports.sendID = async (req, res) => {
       number: user.number,
       email: user.email,
       isTutor: false,
-      id_filename: user.id_filename,
-      id_originalname: user.id_originalname,
-      id_mimetype: user.id_mimetype,
-      id_size: user.id_size,
+      filename: user.id_filename,
+      originalname: user.id_originalname,
+      mimetype: user.id_mimetype,
+      size: user.id_size,
     };
     await verifyIDAdmin(details);
 

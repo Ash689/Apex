@@ -2,6 +2,7 @@
 const Booking = require('../models/booking');
 const findUser = require('../utils/findUser');
 const stripe = require('stripe')(process.env.STRIPE_TOKEN);
+require('dotenv').config();
 
 async function getPriceObject(bookingPrice, bookingId){
     let booking = await Booking.findById(bookingId);
@@ -41,8 +42,8 @@ async function payment(bookingId, returnUrl){
             setup_future_usage: 'off-session',
         },
         mode: 'payment',
-        success_url: `http://localhost:3000/student/${returnUrl}.html?message=Payment confirmed ${bookingId}.&type=success`,
-        cancel_url: `http://localhost:3000/student/${returnUrl}.html?message=Payment unconfirmed.&type=error`,
+        success_url: `${process.env.URL}/student/${returnUrl}.html?message=Payment confirmed ${bookingId}.&type=success`,
+        cancel_url: `${process.env.URL}/student/${returnUrl}.html?message=Payment unconfirmed.&type=error`,
     });
     user.stripeAccount = customer;
     await user.save();
