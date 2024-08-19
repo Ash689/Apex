@@ -5,7 +5,8 @@ const studentSchema = new mongoose.Schema({
   password: { type: String, required: true },
   fullName: { type: String, default: null },
   dateOfBirth: { type: Date, default: null },
-  town: { type: String, default: null },
+  firstLineAddress: { type: String, default: null },
+  postcode: { type: String, default: null },
   number: {type: Number, default: null},
   subjects: [
     {

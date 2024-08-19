@@ -29,7 +29,7 @@
             </div>
             <table id="profile-form">
                 <tbody>
-                    <tr>
+                    <tr id = "nameRow">
                         <td>Full Name
                             <div class = "byline" id = "fullNameTitle"></div>
                         </td>
@@ -37,7 +37,7 @@
                             <input type="text" id="fullName" name="fullName" maxlength = "40" required>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id = "birthRow">
                         <td>Date of birth
                             <div class = "byline" id = "dobTitle"></div>
                         </td>
@@ -46,11 +46,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Town
-                            <div class = "byline" id = "townTitle"></div>
+                        <td>Address
+                            <div class = "byline" id = "addressTitle"></div>
                         </td>
-                        <td>
-                            <input type="text" id="town" name="town" maxlength = "100" required>
+                        <td class = "addressStyle">
+                            <label>First Address Line</label>
+                            <input id="formatted_address_0" name = "firstLineAddress" type="text" required>
+
+                            <label>Second Address Line</label>
+                            <input id="formatted_address_1" type="text">
+
+                            <label>Third Address Line</label>
+                            <input id="formatted_address_2" type="text">
+
+                            <label>Town</label>
+                            <input id="town_or_city" type="text">
+
+                            <label>County</label>
+                            <input id="county" type="text">
+
+                            <label>Postcode</label>
+                            <input id="postcode" name = "postcode" type="text" required>
                         </td>
                     </tr>
                     <tr>
@@ -78,14 +94,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.getaddress.io/scripts/getaddress-autocomplete-1.3.4.min.js"></script>
+    <script src = "/script/autoCompleteAddress.js"></script>
     
     <script src="/script/standardScript.js"></script>
     <script src="/script/studentLogout.js"></script>
     <script src = "/script/validateProfile.js"></script>
+    <script src = "/script/validateStudentProfile.js"></script>
     <script>
 
         function validSubmit() {
-            if (fileU && nameU && townU && numberU && dobU){
+            document.getElementById('message').textContent = `${fileU}, ${nameU}, ${addressU}, ${numberU}, ${dobU},`;
+            if (fileU && nameU && addressU && numberU && dobU){
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('disabled-button');
             } else {

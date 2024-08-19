@@ -12,53 +12,57 @@ exports.config = async (req, res) => {
   const {
     fullName,
     dateOfBirth,
-    town,
+    postcode,
+    firstLineAddress,
     number,
     tuitionType
   } = req.body;
 
   try{
-
-    const dobError = validateDateOfBirth(dateOfBirth, 18);
-    if (dobError) {
-      return res.redirect(`/tutor/configProfile.html?message=${encodeURIComponent(dobError)}&type=error`);
-    }
-    
-    if(!req.file){
-      return res.redirect(`/tutor/configProfile.html?message=Please upload profile picture&type=error`);
-    }
-    
     let user = await findUser(req, res, "configProfile", req.session.user._id);
+
+    if (dateOfBirth) {
+      const dobError = validateDateOfBirth(dateOfBirth, 18);
+      if (dobError) {
+        return res.redirect(`/tutor/configProfile.html?message=${encodeURIComponent(dobError)}&type=error`);
+      } else {
+        user.dateOfBirth = dateOfBirth;
+      }
+    }
+
+    if (fullName){
+      let formatted_fullName = await formatInput(fullName);
+      user.fullName = formatted_fullName;
+    }
     
-    let formatted_fullName = await formatInput(fullName);
-    let formatted_town = await formatInput(town);
+    
+    user.postcode = postcode ? postcode: null;
+    user.firstLineAddress = firstLineAddress ? firstLineAddress : null;
+    user.number = number ? number.trim(): null;
+    user.tuitionType = tuitionType ? tuitionType.trim() : null;
 
-    // Update the necessary fields
-    user.fullName = formatted_fullName;
-    user.dateOfBirth = dateOfBirth;
-    user.town = formatted_town;
-    user.number = number.trim();
-    user.tuitionType = tuitionType.trim();
-    user.f_filename = req.file.filename,
-    user.f_originalname = req.file.originalname,
-    user.f_mimetype =  req.file.mimetype,
-    user.f_size = req.file.size,
-
-    // Save the updated user
     await user.save();
 
-    let details = {
-      _id: user._id,
-      fullName: user.fullName,
-      number: user.number,
-      email: user.email,
-      isTutor: true,
-      filename: user.f_filename,
-      originalname: user.f_originalname,
-      mimetype: user.f_mimetype,
-      size: user.f_size,
-    };
-    await verifyProfilePicAdmin(details);
+    if(req.file){
+      user.f_filename = req.file.filename,
+      user.f_originalname = req.file.originalname,
+      user.f_mimetype =  req.file.mimetype,
+      user.f_size = req.file.size,
+      await user.save();
+
+      let details = {
+        _id: user._id,
+        fullName: user.fullName,
+        number: user.number,
+        email: user.email,
+        isTutor: true,
+        filename: `uploads/profileFiles/tutor/profilePicture/${user.f_filename}`,
+        originalname: user.f_originalname,
+        mimetype: user.f_mimetype,
+        size: user.f_size,
+      };
+      await verifyProfilePicAdmin(details);
+    }
     
 
     res.redirect('/tutor/verifyID.html');
@@ -97,7 +101,7 @@ exports.sendID = async (req, res) => {
       number: user.number,
       email: user.email,
       isTutor: true,
-      filename: user.id_filename,
+      filename: `uploads/profileFiles/tutor/id/${user.id_filename}`,
       originalname: user.id_originalname,
       mimetype: user.id_mimetype,
       size: user.id_size,
@@ -138,6 +142,7 @@ exports.sendDBS = async (req, res) => {
       email: user.email,
       isTutor: true,
       filename: user.dbs_filename,
+      filename: `uploads/profileFiles/tutor/dbs/${user.dbs_filename}`,
       originalname: user.dbs_originalname,
       mimetype: user.dbs_mimetype,
       size: user.dbs_size,
@@ -324,7 +329,7 @@ exports.changePic = async (req, res) => {
       number: user.number,
       email: user.email,
       isTutor: true,
-      filename: user.f_filename,
+      filename: `uploads/profileFiles/tutor/profilePicture/${user.f_filename}`,
       originalname: user.f_originalname,
       mimetype: user.f_mimetype,
       size: user.f_size,

@@ -69,7 +69,7 @@ exports.loginUser = async (req, res, userType) => {
     if (!user.isEmailVerified){
       res.redirect(`/${userType}/sendVerification`);
     } else {
-      if (user.town) {
+      if (user.postcode) {
         if (!user.isIDVerified){
           res.redirect(`/${userType}/verifyID.html`);
         } else {

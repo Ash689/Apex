@@ -1,7 +1,7 @@
 const submitBtn = document.getElementById('submitBtn');
 let fileU = false;
 let nameU = false;
-let townU = false;
+let addressU = false;
 let numberU = false;
 let dobU = false;
 
@@ -16,12 +16,11 @@ fullNameField.addEventListener('input', function(event) {
     if (!fullNameRegex.test(fullName)) {
         fullNameTitle.innerHTML = "Full name must contain only letters, hyphens, and at least one space.";
         nameU = false;
-        validSubmit()
     } else {
         fullNameTitle.innerHTML = '';
         nameU = true;
-        validSubmit()
     }
+    validSubmit();
 });
 
 
@@ -37,33 +36,27 @@ numberField.addEventListener('input', function(event) {
     if (!ukPhoneRegex.test(number)) {
         numberTitle.innerHTML = "Please enter a valid UK phone number.";
         numberU = false;
-        validSubmit()
     } else {
         numberTitle.innerHTML = '';
         numberU = true;
-        validSubmit()
     }
+    validSubmit();
 });
 
 
-const townTitle = document.getElementById('townTitle');
-const townField = document.getElementById('town');
+const addressTitle = document.getElementById('addressTitle');
+const addressField = document.getElementById('formatted_address_0');
 
-townField.addEventListener('input', function(event) {
-    const town = townField.value.trim();
+addressField.addEventListener('input', function(event) {
 
-    const townRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
-
-    // Check if the town matches the valid format (letters, spaces, and hyphens only)
-    if (!townRegex.test(town)) {
-        townTitle.innerHTML = "Please enter a valid town name.";
-        townU = false;
-        validSubmit();
+    if (addressField.value) {
+        addressTitle.innerHTML = '';
+        addressU = true;
     } else {
-        townTitle.innerHTML = '';
-        townU = true;
-        validSubmit();
+        addressTitle.innerHTML = "Please enter a valid address.";
+        addressU = false;
     }
+    validSubmit();
 });
 
 

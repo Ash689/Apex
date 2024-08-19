@@ -11,48 +11,52 @@ exports.config = async (req, res) => {
         return res.redirect('/student/configProfile.html?message=Invalid input.&type=error');
     }
 
-    const { fullName, dateOfBirth, town, number } = req.body;
+    const { fullName, dateOfBirth, postcode, firstLineAddress, number } = req.body;
 
     try {
-        const dobError = validateDateOfBirth(dateOfBirth, 6);
-        if (dobError) {
-          return res.redirect(`/student/configProfile.html?message=${encodeURIComponent(dobError)}&type=error`);
-        }
-
-        if(!req.file){
-          return res.redirect(`/student/configProfile.html?message=Please upload profile picture&type=error`);
-
-        }
-
         let user = await findUser(req, res, "configProfile", req.session.user._id);
-        let formatted_fullName = await formatInput(fullName);
-        let formatted_town = await formatInput(town);
 
-        // Update the necessary fields
-        user.fullName = formatted_fullName,
-        user.dateOfBirth = dateOfBirth;
-        user.town = formatted_town;
-        user.number = number.trim();
-        user.f_filename = req.file.filename;
-        user.f_originalname = req.file.originalname;
-        user.f_mimetype = req.file.mimetype;
-        user.f_size = req.file.size;
+        if (dateOfBirth){
+          const dobError = validateDateOfBirth(dateOfBirth, 6);
+          if (dobError) {
+            return res.redirect(`/student/configProfile.html?message=${encodeURIComponent(dobError)}&type=error`);
+          } else {
+            user.dateOfBirth = dateOfBirth;
+          }
+        }
 
-        // Save the updated user
+
+        if (fullName){
+          let formatted_fullName = await formatInput(fullName);
+          user.fullName = formatted_fullName;
+        }
+
+        user.postcode = postcode ? postcode: null;
+        user.firstLineAddress = firstLineAddress ? firstLineAddress : null;
+        user.number = number? number.trim() : null;
         await user.save();
 
-        let details = {
-          _id: user._id,
-          fullName: user.fullName,
-          number: user.number,
-          email: user.email,
-          isTutor: false,
-          filename: user.f_filename,
-          originalname: user.f_originalname,
-          mimetype: user.f_mimetype,
-          size: user.f_size,
-        };
-        await verifyProfilePicAdmin(details);
+        if(req.file){
+          user.f_filename = req.file.filename;
+          user.f_originalname = req.file.originalname;
+          user.f_mimetype = req.file.mimetype;
+          user.f_size = req.file.size;
+          await user.save();
+
+          let details = {
+            _id: user._id,
+            fullName: user.fullName,
+            number: user.number,
+            email: user.email,
+            isTutor: false,
+            filename: `uploads/profileFiles/student/profilePicture/${user.f_filename}`,
+            originalname: user.f_originalname,
+            mimetype: user.f_mimetype,
+            size: user.f_size,
+          };
+          await verifyProfilePicAdmin(details);
+        }
+
 
         res.redirect('/student/verifyID.html');
     } catch (error) {
@@ -89,7 +93,7 @@ exports.sendID = async (req, res) => {
       number: user.number,
       email: user.email,
       isTutor: false,
-      filename: user.id_filename,
+      filename: `uploads/profileFiles/student/id/${user.id_filename}`,
       originalname: user.id_originalname,
       mimetype: user.id_mimetype,
       size: user.id_size,
@@ -209,7 +213,7 @@ exports.changePic = async (req, res) => {
         number: user.number,
         email: user.email,
         isTutor: false,
-        filename: user.f_filename,
+        filename: `uploads/profileFiles/student/profilePicture/${user.f_filename}`,
         originalname: user.f_originalname,
         mimetype: user.f_mimetype,
         size: user.f_size,

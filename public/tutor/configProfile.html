@@ -27,7 +27,7 @@
             </div>
             <table id="profile-form">
                 <tbody>
-                    <tr>
+                    <tr id = "nameRow">
                         <td>Full Name
                             <div class = "byline" id = "fullNameTitle"></div>
 
@@ -36,7 +36,7 @@
                             <input type="text" id="fullName" name="fullName" maxlength = "30" required>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id = "birthRow">
                         <td>Date of birth
                             <div class = "byline" id = "dobTitle"></div>
                         </td>
@@ -45,11 +45,27 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Town
-                            <div class = "byline" id = "townTitle"></div>
+                        <td>Address
+                            <div class = "byline" id = "addressTitle"></div>
                         </td>
-                        <td>
-                            <input type="text" id="town" name="town" maxlength = "50" required>
+                        <td class = "addressStyle">
+                            <label>First Address Line</label>
+                            <input id="formatted_address_0" type="text" required>
+
+                            <label>Second Address Line</label>
+                            <input id="formatted_address_1" type="text">
+
+                            <label>Third Address Line</label>
+                            <input id="formatted_address_2" type="text">
+
+                            <label>Town</label>
+                            <input id="town_or_city" type="text">
+
+                            <label>County</label>
+                            <input id="county" type="text">
+
+                            <label>Postcode</label>
+                            <input id="postcode" type="text" required>
                         </td>
                     </tr>
                     <tr>
@@ -86,9 +102,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.getaddress.io/scripts/getaddress-autocomplete-1.3.4.min.js"></script>
+    <script src = "/script/autoCompleteAddress.js"></script>
+
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutorLogout.js"></script>
     <script src = "/script/validateProfile.js"></script>
+    <script src = "/script/validateTutorProfile.js"></script>
     <script>
         let teachU = false;
 
@@ -110,7 +130,7 @@
         });
 
         function validSubmit() {
-            if (fileU && nameU && townU && numberU && dobU && teachU){
+            if (fileU && nameU && addressU && numberU && dobU && teachU){
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('disabled-button');
             } else {

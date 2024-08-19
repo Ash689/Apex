@@ -31,7 +31,6 @@ exports.confirmLesson = async (req, res) => {
       booking.studentConfirmed = true;
       await booking.save();
     }
-    /*
     let user = await findUser(req, res, `${returnUrl}`, req.session.user._id);
     if (user.stripeAccount){
       const paymentIntent = await stripe.paymentIntents.create({
@@ -46,7 +45,6 @@ exports.confirmLesson = async (req, res) => {
       let sessionUrl = await payment(bookingId, returnUrl);
       res.redirect(303, sessionUrl);
     }
-      */
   } catch (error) {
     console.log(error);
     res.redirect(`/student/${returnUrl}.html?message=Server error.&type=error`);

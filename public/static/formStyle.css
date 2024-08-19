@@ -63,3 +63,10 @@ a{
     display: inline-block; /* Ensures the link itself can be aligned */
 }
 
+.addressStyle{
+    width: 75%;
+}
+
+.miss {
+    text-decoration: line-through;
+}
