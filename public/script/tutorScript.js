@@ -23,55 +23,54 @@ fetch('/tutor/navbar.html')
 }).catch(error => console.error('Error loading the navbar:', error));
 
 
-    // Now fetch the username information
-fetch('/tutor/userName')
-.then(response => response.json())
-.then(data => {
-    if (data.error) {
-        // Handle error case
-        messageElement.textContent = data.error;
-        messageElement.classList.add('error');
-    } else {
-        // Update welcome-message with user's full name
-        const profileElement = document.getElementById('welcome-message');
-        profileElement.innerHTML = `<h3>${data.fullName}</h3>`;
-        // Ensure welcome-message is visible
-        profileElement.style.display = 'block';
-        if(document.getElementById('newPrice')){
-            const priceElement = document.getElementById('newPrice');
-            priceElement.value = data.price;
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/tutor/userName')
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            // Handle error case
+            messageElement.textContent = data.error;
+            messageElement.classList.add('error');
+        } else {
+            const profileElement = document.getElementById('welcome-message');
+            profileElement.innerHTML = `<h3>${data.fullName}</h3>`;
+            profileElement.style.display = 'block';
+            if(document.getElementById('newPrice')){
+                const priceElement = document.getElementById('newPrice');
+                priceElement.value = data.price;
+            }
+            
+            function getColor(lessonCount) {
+                const colors = [
+                    '#8080807a',
+                    '#0080007a',
+                    '#0000FF7a',
+                    '#8000807a',
+                    '#FFA5007a',
+                    '#dc143c7a'
+                ];
+                const colorIndex = Math.min(Math.floor(lessonCount / 100), colors.length - 1);
+            
+                return colors[colorIndex];
+            }
+            
+            const backgroundColor = getColor(data.lessonCount);
+            document.getElementById('colour-pad').style.backgroundColor = backgroundColor;
         }
-        
-        function getColor(lessonCount) {
-            const colors = [
-                '#8080807a', // Common: Gray
-                '#0080007a', // Uncommon: Green
-                '#0000FF7a', // Rare: Blue
-                '#8000807a', // Epic: Purple
-                '#FFA5007a', // Legendary: Orange
-                '#dc143c7a'  // Mythic: Red
-            ];
-            // Determine which color index to use
-            const colorIndex = Math.min(Math.floor(lessonCount / 100), colors.length - 1);
-        
-            return colors[colorIndex];
-        }
-        
-        const backgroundColor = getColor(data.lessonCount);
-        document.getElementById('colour-pad').style.backgroundColor = backgroundColor;
-    }
 
-    // Show and configure logout button
-    const logoutButton = document.getElementById('logout-button');
-    logoutButton.style.display = 'inline-block'; // Show the button
+        // Show and configure logout button
+        const logoutButton = document.getElementById('logout-button');
+        logoutButton.style.display = 'inline-block'; // Show the button
 
-    logoutButton.addEventListener('click', function() {
-        window.location.href = '/tutor/logout';
+        logoutButton.addEventListener('click', function() {
+            window.location.href = '/tutor/logout';
+        });
+    })
+    .catch(error => {
+        window.location.href = `/tutor/login.html?message=Please log in.&type=error`;
     });
-})
-.catch(error => {
-    window.location.href = '/tutor/login.html?message=Please log in.&type=error';
 });
+
 
 
 fetch('/tutor/countMessage')

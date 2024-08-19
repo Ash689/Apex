@@ -34,8 +34,7 @@ exports.config = async (req, res) => {
       let formatted_fullName = await formatInput(fullName);
       user.fullName = formatted_fullName;
     }
-    
-    
+
     user.postcode = postcode ? postcode: null;
     user.firstLineAddress = firstLineAddress ? firstLineAddress : null;
     user.number = number ? number.trim(): null;
@@ -62,8 +61,7 @@ exports.config = async (req, res) => {
         size: user.f_size,
       };
       await verifyProfilePicAdmin(details);
-    }
-    
+    }  
 
     res.redirect('/tutor/verifyID.html');
   } catch (error){
@@ -184,14 +182,33 @@ exports.createStripeAccount = async (req, res) => {
       res.redirect('/tutor/configBanking.html?message=Bank details already exist.&type=success');
     }
 
+    let dateOfBirthFormat = new Date(user.dateOfBirth);
+
     const account = await stripe.accounts.create({
       type: 'express', // or 'custom' depending on your use case
       country: 'GB',
       email: user.email,
+
+      individual: {
+        first_name: user.fullName.split(' ')[0],
+        last_name: user.fullName.split(' ')[user.fullName.length-1],
+        dob: {
+          day: dateOfBirthFormat.getDate(),
+          month: dateOfBirthFormat.getMonth()+1,
+          year: dateOfBirthFormat.getFullYear(),
+        },
+        address: {
+            line1: user.firstLineAddress,
+            country: 'GB',
+            postal_code: user.postcode,
+        },
+        email: user.email,
+      },
       capabilities: {
         card_payments: { requested: true },
         transfers: { requested: true },
       },
+      business_type: 'individual',
       external_account: {
         object: 'bank_account',
         country: 'GB',

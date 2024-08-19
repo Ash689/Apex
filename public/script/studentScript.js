@@ -44,28 +44,32 @@ fetch('/student/countMessage')
 });
 
 
-fetch('/student/userName')
-.then(response => response.json())
-.then(data => {
-    if (data.error) {
-        // Handle error case
-        messageElement.textContent = data.error;
-        messageElement.classList.add('error');
-    } else {
-        // Update welcome-message with user's full name
-        const profileElement = document.getElementById('welcome-message');
-        profileElement.innerHTML = `<h3>${data.fullName}</h3>`;
-        // Ensure welcome-message is visible
-        profileElement.style.display = 'block';
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/student/userName')
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            // Handle error case
+            messageElement.textContent = data.error;
+            messageElement.classList.add('error');
+        } else {
+            // Update welcome-message with user's full name
+            const profileElement = document.getElementById('welcome-message');
+            profileElement.innerHTML = `<h3>${data.fullName}</h3>`;
+            profileElement.style.display = 'block'; // Ensure welcome-message is visible
+        }
 
-    // Show and configure logout button
-    const logoutButton = document.getElementById('logout-button');
-    logoutButton.style.display = 'inline-block'; // Show the button
+        // Show and configure logout button
+        const logoutButton = document.getElementById('logout-button');
+        logoutButton.style.display = 'inline-block'; // Show the button
 
-    logoutButton.addEventListener('click', function() {
-        window.location.href = '/student/logout';
+        logoutButton.addEventListener('click', function() {
+            window.location.href = '/student/logout';
+        });
+    })
+    .catch(error => {
+        window.location.href = '/student/login.html?message=Please log in.&type=error';
     });
-}).catch(error => {
-    window.location.href = '/student/login.html?message=Please log in.&type=error';
 });
+
+

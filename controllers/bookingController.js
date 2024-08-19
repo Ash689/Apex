@@ -85,38 +85,6 @@ exports.viewOldBookings = async (req, res) => {
     }
 };
 
-/*
-exports.viewDayBookings = async(req, res) => {
-    try {
-      let bookings;
-      if (req.session.user.role === "tutor"){
-        bookings = await Booking.find({
-          tutor: req.session.user._id,
-          date: {
-            $gte: Date.now(),
-            $lte: new Date().setUTCHours(23, 59, 59, 999)
-          }
-        }).sort({ date: 1 });
-      } else {
-        bookings = await Booking.find({
-          student: req.session.user._id,
-          date: {
-            $gte: Date.now(),
-            $lte: new Date().setUTCHours(23, 59, 59, 999)
-          }
-        }).sort({ date: 1 });
-      }
-        res.json({ bookings });
-    } catch (error) {
-        console.error(error);
-        if (req.session.user.role === "tutor"){
-            return res.redirect('/tutor/home.html?message=Failed to retrieve bookings.&type=error');
-        }
-        return res.redirect('/student/home.html?message=Failed to retrieve bookings.&type=error');
-    }
-};
-*/
-
 exports.viewDayBookings = async(req, res) => {
   try {
       const userId = req.session.user._id;

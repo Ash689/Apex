@@ -73,15 +73,15 @@ exports.loginUser = async (req, res, userType) => {
         if (!user.isIDVerified){
           res.redirect(`/${userType}/verifyID.html`);
         } else {
-          // if (userType === 'tutor' && !user.stripeAccount){
-          //   res.redirect(`/tutor/configBanking.html`);
-          // } else {
+          if (userType === 'tutor' && !user.stripeAccount){
+            res.redirect(`/tutor/configBanking.html`);
+          } else {
             if (user.subjects.length === 0) {
               res.redirect(`/${userType}/configSubject.html`);
             } else {
               res.redirect(`/${userType}/home.html`);
             }
-          // }
+          }
         }
       } else {
         res.redirect(`/${userType}/configProfile.html`);
