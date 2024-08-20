@@ -192,7 +192,9 @@
                             <p>-------------------------</p>
                         `;
                         bookingElement.appendChild(individualBookingElement);
-                        launchLesson(booking._id);
+                        if (booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven){
+                            launchLesson(booking._id);
+                        }
                     });
                 }
             }

@@ -16,8 +16,9 @@
 .booking-item {
     padding: 10px;
     border-radius: 10px;
-    max-width: 80%;
+    /* max-width: 80%; */
     font-size: 14px;
+    background-color: #c7c4c4;
 }
 
 .booking-item button{

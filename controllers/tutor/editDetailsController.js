@@ -6,6 +6,7 @@ const fs = require('fs');
 const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verifyUploads');
 const { trusted } = require('mongoose');
 const stripe = require('stripe')(process.env.STRIPE_TOKEN)
+require('dotenv').config();
 
 
 exports.config = async (req, res) => {
@@ -179,19 +180,29 @@ exports.createStripeAccount = async (req, res) => {
   try {
     let user = await findUser(req, res, "configBanking", req.session.user._id);
     if (user.stripeAccount){
-      res.redirect('/tutor/configBanking.html?message=Bank details already exist.&type=success');
+      // res.redirect('/tutor/configBanking.html?message=Bank details already exist.&type=success');
     }
 
     let dateOfBirthFormat = new Date(user.dateOfBirth);
+    let nameSplit = user.fullName.split(' ');
+    console.log(user.number);
+
 
     const account = await stripe.accounts.create({
-      type: 'express', // or 'custom' depending on your use case
+      type: 'custom',
       country: 'GB',
       email: user.email,
 
+      business_profile: {
+        mcc: '8299',
+        product_description: 'Tuition',
+        support_phone: process.env.BUSINESSNUMBER,
+        support_url: process.env.URL,
+      },
+
       individual: {
-        first_name: user.fullName.split(' ')[0],
-        last_name: user.fullName.split(' ')[user.fullName.length-1],
+        first_name: nameSplit[0],
+        last_name: nameSplit[nameSplit.length-1],
         dob: {
           day: dateOfBirthFormat.getDate(),
           month: dateOfBirthFormat.getMonth()+1,
@@ -203,6 +214,7 @@ exports.createStripeAccount = async (req, res) => {
             postal_code: user.postcode,
         },
         email: user.email,
+        phone: user.phone,
       },
       capabilities: {
         card_payments: { requested: true },
@@ -215,6 +227,11 @@ exports.createStripeAccount = async (req, res) => {
         currency: 'gbp',
         account_number: accountNumber,
         routing_number: sortcode,
+      },
+
+      tos_acceptance: {
+        date: Math.floor(Date.now() / 1000),
+        ip: req.ip,
       },
     });
 
