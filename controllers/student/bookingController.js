@@ -6,6 +6,7 @@ const tempBookingData = require('../../models/tempBookingData');
 const { body, validationResult } = require('express-validator');
 const hasConflictingBooking = require('../../utils/hasConflictingBooking');
 const payment = require('../../utils/payment');
+const stripe = require('stripe')(process.env.STRIPE_TOKEN);
 
 exports.confirmLesson = async (req, res) => {
   const { bookingId, returnUrl } = req.body;
@@ -155,13 +156,37 @@ exports.payLesson = async (req, res) => {
   const { bookingId, returnUrl} = req.body;
 
   try{
+
     req.session.bookingID = bookingId;
 
     let sessionUrl = await payment(req.session.bookingID, returnUrl);
-    res.redirect(303, sessionUrl);
+    res.json({
+      session: sessionUrl
+    });
   } catch (error) {
     console.error(error);
     return res.redirect(`/student/${returnUrl}.html?message=Failed to confirm booking.&type=error`);
+  }
+};
+
+
+
+exports.updatePaymentMethod = async (req, res) => {
+  const { setupIntentId} = req.body;
+
+  try {
+    const setupIntent = await stripe.setupIntents.retrieve(setupIntentId);
+    const paymentMethodId = setupIntent.payment_method;
+
+    let user = await findUser(req, res, "viewBooking", req.session.user._id);
+
+    user.defaultPaymentMethod = paymentMethodId;
+    await user.save();
+    res.json({ success: true });
+
+  } catch (error) {
+    console.log(error);
+    return res.redirect(`/student/viewBooking.html?message=Failed to setup payment for future lessons.&type=error`);
   }
 };
 

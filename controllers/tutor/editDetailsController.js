@@ -174,15 +174,62 @@ exports.getVerifyID = async (req, res) => {
   }
 };
 
+
 exports.createStripeAccount = async (req, res) => {
+  let user = await findUser(req, res, "configBanking", req.session.user._id);
+  if (user.stripeAccount){
+    return res.json({
+      link: '/tutor/configSubject.html'
+    });
+  }
+
+  const account = await stripe.accounts.create({
+    type: 'express',
+    email: user.email,
+    country: 'GB', // Specify the country (Great Britain)
+    capabilities: {
+      card_payments: { requested: true },
+      transfers: { requested: true },
+    },
+  });
+
+  user.stripeAccount = account.id;
+  await user.save();
+
+  const accountLink = await stripe.accountLinks.create({
+    account: account.id,
+    refresh_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details not added.&type=error`,
+    return_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details added.&type=success`,
+    type: 'account_onboarding',
+  });
+
+  let link = await generateAccountLink(account.id);
+
+  return res.json({
+    link: link
+  });
+};
+
+const generateAccountLink = async (accountId) => {
+  const accountLink = await stripe.accountLinks.create({
+    account: accountId,
+    refresh_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details not added.&type=error`,
+    return_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details added.&type=success`,
+    type: 'account_onboarding',
+  });
+  return accountLink.url;
+};
+
+exports.updateStripeAccount = async (req, res) => {
   const { accountNumber,  sortcode} = req.body;
 
   try {
     let user = await findUser(req, res, "configBanking", req.session.user._id);
     if (user.stripeAccount){
-      // res.redirect('/tutor/configBanking.html?message=Bank details already exist.&type=success');
+      res.redirect('/tutor/configBanking.html?message=Bank details already exist.&type=success');
     }
 
+    /*
     let dateOfBirthFormat = new Date(user.dateOfBirth);
     let nameSplit = user.fullName.split(' ');
     console.log(user.number);
@@ -237,6 +284,8 @@ exports.createStripeAccount = async (req, res) => {
 
     user.stripeAccount = account.id;
     await user.save();
+    */
+   
 
     res.redirect('/tutor/configSubject.html?message=Banking details added.&type=success');
   } catch (error) {

@@ -30,6 +30,7 @@
     <script src="/script/bookingButtons.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
     <script src="/script/studentLaunchLesson.js"></script>
+    <script src="/script/extractSetupIntent.js"></script>
     <script>
         const bookingTableBody = document.getElementById('bookings');
         fetch('/viewBookings')
@@ -88,17 +89,13 @@
                                         <form action="/student/confirmLesson" method="POST">
                                             <input type="hidden" name="returnUrl" value="viewBooking">
                                             <input type="hidden" name="bookingId" value="${booking._id}">
-                                            <button type="submit">Confirm</button>
+                                            <button id = "checkout-btn" type="submit">Confirm</button>
                                         </form>
                                     ` : ''}
 
                                     ${booking.studentConfirmed && !booking.paymentGiven ? `
                                         Price: £${booking.price}
-                                        <form action="/student/payLesson" method="POST">
-                                            <input type="hidden" name="returnUrl" value="home">
-                                            <input type="hidden" name="bookingId" value="${booking._id}">
-                                            <button type="submit">Pay for lesson</button>
-                                        </form>
+                                        <button id = "checkout-btn" type="submit">Pay for lesson</button>
                                     ` : ''}
                                     ${!booking.tutorConfirmed ? `
                                         Lesson to be confirmed by Tutor
@@ -125,6 +122,28 @@
                             bookingTableBody.appendChild(row);
                             if (booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven){
                                 launchLesson(booking._id);
+                            }
+                            if (booking.studentConfirmed && !booking.paymentGiven){
+                                document.getElementById('checkout-btn').addEventListener('click', async () => {
+                                    const response = await fetch('/student/payLesson', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        bookingId: booking._id,
+                                        returnUrl: "viewBooking"
+                                    }),
+                                });
+
+                                const session = await response.json();
+                                if (session === "Payment completed"){                                    
+                                    window.location.href = `/student/viewBooking.html?message=${session}.&type=success`;
+                                } else {
+                                    window.location.href = session.session;
+                                }
+                            });
+
                             }
                         });
                     });

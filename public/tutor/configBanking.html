@@ -13,34 +13,13 @@
     </div>
     <button id="logout-button" class="logout-button" style="z-index: 2; top: 2%;">Logout</button>
     <div id="message" class="message" style="z-index: 2;"></div>
-    <br><br><br><br>
-    <br><br><br><br>
     <div class="container">
-
-        <form id="subjectForm" action="/tutor/create-stripe-account" method="POST">
-            <h2>Tutor - Profile Set Up</h2>
-            <table id="profile-form">
-                <tbody>
-                    <tr>
-                        <td>Account number</td>
-                        <td>
-                            <input type="number" id="accountNumber" name="accountNumber" maxlength = "9" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sort code</td>
-                        <td>
-                            <input type="number" id="sortcode" name="sortcode" required>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="submit-button-container">
-                <button type="submit">Continue</button>
-            </div>
-        </form>
-        
-        <br><br>
+        <div id="parent-form-container">
+            <h2>Config Banking</h2>
+            <h3 id = "upload-notice">Redirecting you to</br>upload bank details</h3>
+            <button id="id-button">Navigate to bank details</button>
+            
+        </div>
     </div>
 
     <div id="footer" class="footer"></div>
@@ -50,5 +29,32 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutorLogout.js"></script>
+    <script>
+        fetch('/tutor/createStripeAccount')
+            .then(response => response.json())
+            .then(data => {
+                if (data.link){
+                    if (data.link.includes('/configSubject.html')) {
+                        let notice = document.getElementById('upload-notice');
+                        notice.textContent = `
+                            Banking details already updated
+                        `;
+                        let idButton = document.getElementById('id-button');
+                        idButton.textContent = `
+                            Add Subjects
+                        `;                        
+                    }
+                }
+                
+                document.getElementById('id-button').addEventListener('click', function() {
+                    window.location.href = `${data.link}`;
+                });
+        })
+        .catch(error => {
+            console.error('Error creating stripe account:', error);
+            messageElement.textContent = 'Failed to create stripe account';
+            messageElement.classList.add('error');
+        });
+    </script>
 </body>
 </html>

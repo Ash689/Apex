@@ -36,6 +36,7 @@ const studentSchema = new mongoose.Schema({
   id_size: Number,
   isIDVerified: {type: Boolean, default: false},
   stripeAccount: {type: String, default: null},
+  defaultPaymentMethod: {type: String, default: null},
 
 });
 
