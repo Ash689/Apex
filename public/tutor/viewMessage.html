@@ -33,10 +33,11 @@
     <div id="footer" class="footer"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script/standardScript.js"></script>
-    <script src="/script/tutorScript.js"></script>
-    <script src="/script/bookingButtons.js"></script>
+    <script src="/script/tutor/script.js"></script>
+    <script src="/script/shouldDisableLaunchButton.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
-    <script src="/script/tutorLaunchLesson.js"></script>
+    <script src="/script/tutor/launchLesson.js"></script>
+    <script src="/script/tutor/bookingButtons.js"></script>
     <script>
 
         fetch('/tutor/getMessage')
@@ -162,39 +163,11 @@
                             <p style = "font-size: 14px">${formattedDate}</p>
                             <p style = "font-size: 14px">${booking.time}</p>
                             ${!booking.revisionSession ? `<p style = "font-size: 12px">${booking.subject}</p>` : `<p style = "font-size: 12px">Revision Session</p>`}
-                            ${!booking.tutorConfirmed ? `
-                                <form action="/tutor/confirmLesson" method="POST">
-                                    <input type="hidden" name="returnUrl" value="viewMessage">
-                                    <input type="hidden" name="bookingId" value="${booking._id}">
-                                    <button type="submit">Confirm</button>
-                                </form>
-                            ` : ''}
-                            ${!booking.studentConfirmed ? `
-                                Lesson to be confirmed/paid by Student
-                                ${booking.zJoinUrl ? `
-                                    <form action="/cancelChanges" method="POST">
-                                        <input type="hidden" name="returnUrl" value="tutorviewMessage">
-                                        <input type="hidden" name="bookingId" value="${booking._id}">
-                                        <button type="submit" class="secondary-button">Cancel Changes</button>
-                                    </form>
-                                `: ''}
-                            ` : ''}
-                            ${booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven ? `
-                                <form id = "launch-lesson-form" action="/tutor/launchLesson" method="POST">
-                                    <input type="hidden" name="bookingId" value="${booking._id}">
-                                        <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" type="submit" ${disableLaunchButton ? 'disabled' : ''}>Launch</button>
-                                </form>
-                            ` : ''}
-                            <form action="/getBookingID" method="POST">
-                                <input type="hidden" name="bookingId" value="${booking._id}">
-                                <button type="submit" class="secondary-button">Edit Booking</button>
-                            </form>
-                            <p>-------------------------</p>
+                            ${generateBookingHTML(booking)}
                         `;
                         bookingElement.appendChild(individualBookingElement);
-                        if (booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven){
-                            launchLesson(booking._id);
-                        }
+                        launchLesson(booking);
+                        
                     });
                 }
             }

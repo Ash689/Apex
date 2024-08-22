@@ -23,7 +23,8 @@ const bookingSchema = new mongoose.Schema({
   zMeetingId: {type: String, default: ""},
   zMeetingPassword: {type: String},
   zJoinUrl: {type: String, default: ""},
-  stripeSession: {type: String, default: null},
+  stripeIntent: {type: String, default: null},
+  cancelled: {type: Boolean, default: false},
 });
 
 module.exports = mongoose.model('Booking', bookingSchema);

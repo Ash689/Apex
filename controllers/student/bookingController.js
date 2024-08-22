@@ -33,7 +33,7 @@ exports.confirmLesson = async (req, res) => {
       await booking.save();
     }
     
-    res.redirect(`/student/${returnUrl}.html?message=Booking/s confirmed.&type=error`);
+    res.redirect(`/student/${returnUrl}.html?message=Booking/s confirmed.&type=success`);
   } catch (error) {
     console.log(error);
     res.redirect(`/student/${returnUrl}.html?message=Server error.&type=error`);
@@ -171,6 +171,7 @@ exports.updatePaymentMethod = async (req, res) => {
       const paymentMethodId = paymentIntent.payment_method;
   
       let user = await findUser(req, res, "viewBooking", req.session.user._id);
+
       user.defaultPaymentMethod = paymentMethodId;
       await user.save();
 
@@ -178,7 +179,7 @@ exports.updatePaymentMethod = async (req, res) => {
         stripeSession: session.id
 
       }).sort({ date: 1 });
-
+      booking.stripeIntent = session.payment_intent.id;
       booking.paymentGiven = true;
       await booking.save();
   
@@ -190,6 +191,23 @@ exports.updatePaymentMethod = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.redirect(`/student/viewBooking.html?message=Failed to setup payment for future lessons.&type=error`);
+  }
+};
+
+
+exports.clearBanking = async (req, res) => {
+  try {  
+      let user = await findUser(req, res, "viewBooking", req.session.user._id);
+      if(user.defaultPaymentMethod){
+        user.defaultPaymentMethod = null;
+        await user.save();
+        return res.redirect(`/student/home.html?message= Payment method cleared for future lessons.&type=success`);
+      } else {
+        return res.redirect(`/student/home.html?message=Existing payment method not found.&type=error`);
+      }
+  } catch (error) {
+    console.log(error);
+    return res.redirect(`/student/home.html?message=Error in clearing banking details.&type=error`);
   }
 };
 

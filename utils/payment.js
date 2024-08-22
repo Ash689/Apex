@@ -22,16 +22,16 @@ async function payment(bookingId, returnUrl){
             customer: user.stripeAccount,
             payment_method_types: ['card'],
             line_items: [
-            {
-                price_data: {
-                currency: 'gbp',
-                product_data: {
-                    name: 'Lesson Payment',
+                {
+                    price_data: {
+                    currency: 'gbp',
+                    product_data: {
+                        name: 'Lesson Payment',
+                    },
+                    unit_amount: booking.price*100
+                    },
+                    quantity: 1,
                 },
-                unit_amount: booking.price*100
-                },
-                quantity: 1,
-            },
             ],
             mode: 'payment',
             payment_intent_data: {
@@ -41,18 +41,12 @@ async function payment(bookingId, returnUrl){
                 },
                 setup_future_usage: 'off_session',
             },
-            success_url: `${process.env.URL}/student/${returnUrl}.html?message=Payment confirmed, please refresh the page.&type=success&session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${process.env.URL}/student/paymentConfirmation.html?session_id={CHECKOUT_SESSION_ID}&return_page=${returnUrl}`,
             cancel_url: `${process.env.URL}/student/${returnUrl}.html?message=Payment unconfirmed.&type=error`,
         });
-        booking.stripeSession = session.id;
-        await booking.save();
 
         return session.url;
     } else {
-        const paymentMethod = await stripe.paymentMethods.attach(
-            user.defaultPaymentMethod,
-            { customer: user.stripeAccount }
-        );
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: booking.price * 100,
@@ -66,10 +60,16 @@ async function payment(bookingId, returnUrl){
             },
             application_fee_amount: applicationFeeAmount,
         });
-        booking.paymentGiven = true;
-        await booking.save();
+
+        if (paymentIntent.status === 'succeeded') {
+            booking.stripeIntent = paymentIntent.id;
+            booking.paymentGiven = true;
+            await booking.save();
+            return "Payment completed";
+        } else {
+        return "Payment not processed";
+        }
     
-        return "Payment completed";
     }
 };
 

@@ -4,6 +4,7 @@ const findUser = require('../../utils/findUser');
 const formatInput = require('../../utils/formatInput');
 const fs = require('fs');
 const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verifyUploads');
+const updateBankEmail = require('../../utils/updateBankDetails');
 const { trusted } = require('mongoose');
 const stripe = require('stripe')(process.env.STRIPE_TOKEN)
 require('dotenv').config();
@@ -196,13 +197,6 @@ exports.createStripeAccount = async (req, res) => {
   user.stripeAccount = account.id;
   await user.save();
 
-  const accountLink = await stripe.accountLinks.create({
-    account: account.id,
-    refresh_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details not added.&type=error`,
-    return_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details added.&type=success`,
-    type: 'account_onboarding',
-  });
-
   let link = await generateAccountLink(account.id);
 
   return res.json({
@@ -221,76 +215,27 @@ const generateAccountLink = async (accountId) => {
 };
 
 exports.updateStripeAccount = async (req, res) => {
-  const { accountNumber,  sortcode} = req.body;
 
-  try {
-    let user = await findUser(req, res, "configBanking", req.session.user._id);
-    if (user.stripeAccount){
-      res.redirect('/tutor/configBanking.html?message=Bank details already exist.&type=success');
-    }
+  try{
 
-    /*
-    let dateOfBirthFormat = new Date(user.dateOfBirth);
-    let nameSplit = user.fullName.split(' ');
-    console.log(user.number);
+    
+    let user = await findUser(req, res, "configProfile", req.session.user._id);
 
-
-    const account = await stripe.accounts.create({
-      type: 'custom',
-      country: 'GB',
+    let details = {
+      _id: user._id,
+      fullName: user.fullName,
+      number: user.number,
       email: user.email,
+      isTutor: true,      
+    };
+    await updateBankEmail(details);
 
-      business_profile: {
-        mcc: '8299',
-        product_description: 'Tuition',
-        support_phone: process.env.BUSINESSNUMBER,
-        support_url: process.env.URL,
-      },
+    
+    res.redirect(`/tutor/home.html?message=Request sent, email will be sent shortly to '${user.email}'.&type=success`);
 
-      individual: {
-        first_name: nameSplit[0],
-        last_name: nameSplit[nameSplit.length-1],
-        dob: {
-          day: dateOfBirthFormat.getDate(),
-          month: dateOfBirthFormat.getMonth()+1,
-          year: dateOfBirthFormat.getFullYear(),
-        },
-        address: {
-            line1: user.firstLineAddress,
-            country: 'GB',
-            postal_code: user.postcode,
-        },
-        email: user.email,
-        phone: user.phone,
-      },
-      capabilities: {
-        card_payments: { requested: true },
-        transfers: { requested: true },
-      },
-      business_type: 'individual',
-      external_account: {
-        object: 'bank_account',
-        country: 'GB',
-        currency: 'gbp',
-        account_number: accountNumber,
-        routing_number: sortcode,
-      },
-
-      tos_acceptance: {
-        date: Math.floor(Date.now() / 1000),
-        ip: req.ip,
-      },
-    });
-
-    user.stripeAccount = account.id;
-    await user.save();
-    */
-   
-
-    res.redirect('/tutor/configSubject.html?message=Banking details added.&type=success');
   } catch (error) {
     console.log(error);
-    res.redirect('/tutor/configBanking.html?message=Error with adding bank details.&type=success');
+    res.redirect('/tutor/home.html?message=Error sending request.&type=error');
   }
 };
 

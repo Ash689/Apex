@@ -38,12 +38,12 @@ exports.viewOldBookings = async (req, res) => {
       let userSelectFields;
   
       if (req.session.user.role === "tutor") {
-        bookingsQuery = { tutor: userId, date: { $lt: new Date() } };
+        bookingsQuery = { tutor: userId, date: { $lt: new Date() }, cancelled: false };
         userIdField = 'student';
         userModel = studentUser;
         userSelectFields = 'f_originalname f_filename isPictureVerified';
       } else {
-        bookingsQuery = { student: userId, date: { $lt: new Date() } };
+        bookingsQuery = { student: userId, date: { $lt: new Date() }, cancelled: false };
         userIdField = 'tutor';
         userModel = tutorUser;
         userSelectFields = 'f_originalname f_filename isPictureVerified';
@@ -96,7 +96,8 @@ exports.viewDayBookings = async(req, res) => {
           date: {
               $gte: now,
               $lte: endOfDay
-          }
+          },
+          cancelled: false
       };
 
       if (role === "tutor") {
@@ -137,7 +138,8 @@ exports.viewIndividualBookings = async (req, res) => {
     const query = {
       date: {
         $gte: Date.now(),
-      }
+      },
+      cancelled: false
     };
 
     if (req.session.user.role === "tutor") {
@@ -169,7 +171,8 @@ exports.viewBookings = async (req, res) => {
   
       // Create a dynamic query based on the user's role
       const query = {
-        date: { $gt: Date.now() }
+        date: { $gt: Date.now() },
+        cancelled: false
       };
       query[isTutor ? 'tutor' : 'student'] = req.session.user._id;
   
@@ -266,82 +269,78 @@ exports.cancelChanges = async (req, res) => {
     }
 };
 
-exports.cancelOneBooking = async(req, res) => {
-    try {
-      const booking = await Booking.findById(req.session.bookingID);
-  
-      // Find and update related booking for lesson plan
-      const relatedBooking = await Booking.findOne({ 
-          tutor: booking.tutor, 
-          student: booking.student, 
-          subject: booking.subject,
-          date: { $gt: booking.date }  // Find bookings with a date greater than the current booking date
-        }).sort({ date: 1 });  // Sort by date in ascending order to get the earliest one after the current booking
-  
-      if (relatedBooking) {
-        relatedBooking.plan = booking.plan;
-        await relatedBooking.save();
-      }
+exports.cancelOneBooking = async (req, res) => {
+  let linkPage = '/student/';
 
-  
-      let deletedBooking = await Booking.findByIdAndDelete(req.session.bookingID);
+  if (req.session.user.role === "tutor") {
+    linkPage = `/tutor/`;
+  }
+  try {
+    const booking = await Booking.findById(req.session.bookingID);
 
-      if (deletedBooking) {
-        const session = await stripe.checkout.sessions.retrieve(deletedBooking.stripeSession);
+    // Find and update related booking for lesson plan
+    const relatedBooking = await Booking.findOne({
+      tutor: booking.tutor,
+      student: booking.student,
+      subject: booking.subject,
+      date: { $gt: booking.date }
+    }).sort({ date: 1 });
 
-        // Refund the payment
-        const refund = await stripe.refunds.create({
-            payment_intent: session.payment_intent,
-        });
-      } else {
-        return res.redirect('/tutor/viewBooking.html?message=Failed to cancel booking.&type=error');
-      }
-
-
-      let linkPage;
-
-      if(req.session.user.role === "tutor") {
-          linkPage = `/tutor/`;
-      } else {
-          linkPage = `/student/`;
-      }
-      return res.redirect(`${linkPage}viewBooking.html?message=Booking canceled successfully.&type=success`);
-    } catch (error) {
-      console.error(error);
-      return res.redirect(`${linkPage}editBooking.html?message=Failed to cancel booking.&type=error`);
+    if (relatedBooking) {
+      relatedBooking.plan = booking.plan;
+      await relatedBooking.save();
     }
+
+
+    let deletedBooking = await Booking.findById(req.session.bookingID);
+
+    if (deletedBooking.paymentGiven) {
+      const refund = await stripe.refunds.create({
+        payment_intent: deletedBooking.stripeIntent,
+      });
+    }
+
+    deletedBooking.cancelled = true;
+    await deletedBooking.save();
+
+    return res.redirect(`${linkPage}viewBooking.html?message=Booking canceled successfully.&type=success`);
+  } catch (error) {
+    console.error(error);
+    return res.redirect(`${linkPage}editBooking.html?message=Failed to cancel booking.&type=error`);
+  }
 };
   
 
 exports.cancelRecurringBooking = async(req, res) => {
-    try {
-      const booking = await Booking.findById(req.session.bookingID);
-      let linkPage;
-      if (req.session.user.role === "tutor"){
-          linkPage = '/tutor/';
-      } else {
-          linkPage = '/student/';
-      }
-      if (!booking) {
-        return res.redirect(`${linkPage}editBooking.html?message=Booking not found.&type=error`);
-      }
-  
-      if (!booking.recurringID) {
-        return res.redirect(`${linkPage}/editBooking.html?message=Booking is not part of a recurring series.&type=error`);
-      }
-  
-      // Delete all bookings with the same recurringID
-      const deletedBookings = await Booking.deleteMany({ recurringID: booking.recurringID });
-  
-      if (!deletedBookings.deletedCount) {
-        return res.redirect(`${linkPage}editBooking.html?message=No recurring bookings found to cancel.&type=error`);
-      }
-  
-      return res.redirect(`${linkPage}editBooking.html?message=Recurring bookings canceled successfully.&type=success`);
-    } catch (error) {
-      console.error(error);
-      return res.redirect(`${linkPage}editBooking.html?message=Failed to edit booking.&type=error`);
+  let linkPage = '/student/';
+
+  if (req.session.user.role === "tutor") {
+    linkPage = `/tutor/`;
+  }
+  try {
+    const booking = await Booking.findById(req.session.bookingID);
+    if (!booking) {
+      return res.redirect(`${linkPage}editBooking.html?message=Booking not found.&type=error`);
     }
+
+    if (!booking.recurringID) {
+      return res.redirect(`${linkPage}/editBooking.html?message=Booking is not part of a recurring series.&type=error`);
+    }
+    const deletedBookings = await Booking.updateMany(
+      { recurringID: booking.recurringID },
+      { $set: { 
+        cancelled: true, 
+    }});
+
+    if (!deletedBookings.matchedCount) {
+      return res.redirect(`${linkPage}editBooking.html?message=No recurring bookings found to cancel.&type=error`);
+    }
+
+    return res.redirect(`${linkPage}editBooking.html?message=Recurring bookings canceled successfully.&type=success`);
+  } catch (error) {
+    console.error(error);
+    return res.redirect(`${linkPage}editBooking.html?message=Failed to edit booking.&type=error`);
+  }
 };
   
   

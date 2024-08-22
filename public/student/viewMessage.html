@@ -32,12 +32,12 @@
     <div id="footer" class="footer"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script/standardScript.js"></script>
-    <script src="/script/studentScript.js"></script>
-    <script src="/script/bookingButtons.js"></script>
+    <script src="/script/student/script.js"></script>
+    <script src="/script/shouldDisableLaunchButton.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
-    <script src="/script/studentLaunchLesson.js"></script>
-    <script src="/script/extractSetupIntent.js"></script>
+    <script src="/script/student/launchLesson.js"></script>
     <script src="/script/student/payLesson.js"></script>
+    <script src="/script/student/bookingButtons.js"></script>
     <script>
         fetch('/student/getMessage')
         .then(response => response.json())
@@ -167,48 +167,16 @@
                         const date = new Date(booking.date);
                         const dateString = date.toISOString().split('T')[0];
                         const formattedDate = formatDate(dateString);
-                        const disableLaunchButton = shouldDisableLaunchButton(booking.date, booking.time, booking.duration);
                             
                         individualBookingElement.innerHTML = `
                             <p style = "font-size: 14px">${formattedDate}</p>
                             <p style = "font-size: 14px">${booking.time}</p>
                             ${!booking.revisionSession ? `<p style = "font-size: 12px">${booking.subject}</p>` : `<p style = "font-size: 12px">Revision Session</p>`}
-                            ${!booking.studentConfirmed ? `
-                                Price: £${booking.price}
-                                <form action="/student/confirmLesson" method="POST">
-                                    <input type="hidden" name="returnUrl" value="viewMessage">
-                                    <input type="hidden" name="bookingId" value="${booking._id}">
-                                    <button type="submit">Confirm</button>
-                                </form>
-                            ` : ''}
-                            ${booking.studentConfirmed && !booking.paymentGiven ? `
-                                Price: £${booking.price}
-                                <button id = "checkout-btn" type="submit">Pay for lesson</button>
-                            ` : ''}
-                            ${!booking.tutorConfirmed ? `
-                                Lesson to be confirmed by Tutor
-                                <form action="/cancelChanges" method="POST">
-                                    <input type="hidden" name="returnUrl" value="viewMessageStudent">
-                                    <input type="hidden" name="bookingId" value="${booking._id}">
-                                    <button type="submit" class="secondary-button">Cancel Changes</button>
-                                </form>
-                            ` : ''}
-                            ${booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven ? `
-                                <form id="launch-lesson-form" action="/student/launchLesson" method="POST">
-                                    <input type="hidden" name="bookingId" value="${booking._id}">
-                                        <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" type="submit" ${disableLaunchButton ? 'disabled' : ''}>Launch</button>
-                                </form>
-                            ` : ''}
-                            <form action="/getBookingID" method="POST">
-                                <input type="hidden" name="bookingId" value="${booking._id}">
-                                <button type="submit" class="secondary-button">Edit Booking</button>
-                            </form>
-                            <p>-------------------------</p>
+                            ${generateBookingHTML(booking)}
                         `;
                         bookingElement.appendChild(individualBookingElement);
-                        const confirmation = [booking.studentConfirmed, booking.tutorConfirmed, booking.paymentGiven, booking._id];
-                        launchLesson(confirmation);
-                        payLesson(confirmation);
+                        launchLesson(booking);
+                        payLesson(booking, "viewMessage");
                     });
                 }
             }

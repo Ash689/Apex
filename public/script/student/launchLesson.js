@@ -1,5 +1,5 @@
-function launchLesson(confirmation){
-    if (confirmation[0] === true && confirmation[1] === true && confirmation[2] === true){
+function launchLesson(booking){
+    if (booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven){
         document.getElementById('launch-lesson-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -8,7 +8,7 @@ function launchLesson(confirmation){
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ bookingId: confirmation[3] })
+                body: JSON.stringify({ bookingId: booking._id })
             })
             .then(response => response.json())
             .then(data => {

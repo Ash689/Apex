@@ -1,4 +1,6 @@
-function generateBookingHTML(disableLaunchButton, booking){
+
+function generateBookingHTML(booking){
+    const disableLaunchButton = shouldDisableLaunchButton(booking.date, booking.time, booking.duration);
     return `
         ${!booking.tutorConfirmed ? `
             <form action="/tutor/confirmLesson" method="POST">

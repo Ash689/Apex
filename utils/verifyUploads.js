@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 async function verifyIDAdmin(details) {
   const mailOptions = {
     from: process.env.EMAIL, 
-    to: process.env.EMAIL,
+    to: process.env.EMAIL2,
     subject: 'Verify User ID',
     html: `
       <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
@@ -70,7 +70,7 @@ async function verifyIDAdmin(details) {
 async function verifyProfilePicAdmin(details) {
   const mailOptions = {
     from: process.env.EMAIL,
-    to:  process.env.EMAIL,
+    to:  process.env.EMAIL2,
     subject: 'Verify Profile Picture',
     html: `
       <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">

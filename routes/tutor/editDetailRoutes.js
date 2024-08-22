@@ -45,7 +45,7 @@ router.post('/cancelSubject', (req, res) => {
   controller.cancelSubject(req, res);
 });
 
-router.post('/update-stripe-account', (req, res) => {
+router.get('/updateStripeAccount', (req, res) => {
   controller.updateStripeAccount(req, res);
 });
 

@@ -24,6 +24,10 @@ router.post('/payLesson', (req, res) => {
   controller.payLesson(req, res);
 });
 
+router.get('/clearBanking', (req, res) => {
+  controller.clearBanking(req, res);
+});
+
 router.post('/updatePaymentMethod', (req, res) => {
   controller.updatePaymentMethod(req, res);
 });
