@@ -36,6 +36,8 @@
     <script src="/script/bookingButtons.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
     <script src="/script/studentLaunchLesson.js"></script>
+    <script src="/script/extractSetupIntent.js"></script>
+    <script src="/script/student/payLesson.js"></script>
     <script>
         fetch('/student/getMessage')
         .then(response => response.json())
@@ -181,11 +183,7 @@
                             ` : ''}
                             ${booking.studentConfirmed && !booking.paymentGiven ? `
                                 Price: £${booking.price}
-                                <form action="/student/payLesson" method="POST">
-                                    <input type="hidden" name="returnUrl" value="home">
-                                    <input type="hidden" name="bookingId" value="${booking._id}">
-                                    <button type="submit">Pay for lesson</button>
-                                </form>
+                                <button id = "checkout-btn" type="submit">Pay for lesson</button>
                             ` : ''}
                             ${!booking.tutorConfirmed ? `
                                 Lesson to be confirmed by Tutor
@@ -208,9 +206,9 @@
                             <p>-------------------------</p>
                         `;
                         bookingElement.appendChild(individualBookingElement);
-                        if (booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven){
-                            launchLesson(booking._id);
-                        }
+                        const confirmation = [booking.studentConfirmed, booking.tutorConfirmed, booking.paymentGiven, booking._id];
+                        launchLesson(confirmation);
+                        payLesson(confirmation);
                     });
                 }
             }

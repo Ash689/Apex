@@ -10,19 +10,13 @@ async function payment(bookingId, returnUrl){
     let applicationFeeAmount = Math.floor(booking.price*100 * 0.1);
     let tutorUser2 = await tutorUser.findById(booking.tutor._id);
     let user = await studentUser.findById(booking.student._id);
-
     if (!user.stripeAccount){
-        user.stripeAccount = await stripe.customers.create({ email: user.email, name: user.fullName }).id;
+        let account = await stripe.customers.create({ email: user.email, name: user.fullName });
+        user.stripeAccount = account.id; 
         await user.save();
     }
 
-    if (!user.defaultPaymentMethod) {
-        // Create a Setup Intent if the user has no saved payment method
-        let setupIntent = await stripe.setupIntents.create({
-            customer: user.stripeAccount,
-            payment_method_types: ['card'],
-        });
-    
+    if (!user.defaultPaymentMethod) { 
 
         const session = await stripe.checkout.sessions.create({
             customer: user.stripeAccount,
@@ -41,37 +35,40 @@ async function payment(bookingId, returnUrl){
             ],
             mode: 'payment',
             payment_intent_data: {
-            application_fee_amount: applicationFeeAmount,
-            transfer_data: {
-                destination: tutorUser2.stripeAccount, // The tutor's Stripe account ID
+                application_fee_amount: applicationFeeAmount,
+                transfer_data: {
+                    destination: tutorUser2.stripeAccount, // The tutor's Stripe account ID
+                },
+                setup_future_usage: 'off_session',
             },
-            },
-            success_url: `${process.env.URL}/student/${returnUrl}.html?message=Payment confirmed.&type=success&setup_intent=${setupIntent ? setupIntent.id : ''}`,
+            success_url: `${process.env.URL}/student/${returnUrl}.html?message=Payment confirmed, please refresh the page.&type=success&session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${process.env.URL}/student/${returnUrl}.html?message=Payment unconfirmed.&type=error`,
         });
-
-        const paymentMethodId = setupIntent.payment_method;
-        user.defaultPaymentMethod = paymentMethodId;
-        await user.save();
-
-        booking.paymentGiven = true;
+        booking.stripeSession = session.id;
         await booking.save();
 
         return session.url;
     } else {
+        const paymentMethod = await stripe.paymentMethods.attach(
+            user.defaultPaymentMethod,
+            { customer: user.stripeAccount }
+        );
+
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: booking.price * 100, // Price in pennies
+            amount: booking.price * 100,
             currency: 'gbp',
             customer: user.stripeAccount,
             payment_method: user.defaultPaymentMethod,
             off_session: true,
             confirm: true,
             transfer_data: {
-              destination: tutorUser2.stripeAccount,
+                destination: tutorUser2.stripeAccount,
             },
             application_fee_amount: applicationFeeAmount,
         });
-      
+        booking.paymentGiven = true;
+        await booking.save();
+    
         return "Payment completed";
     }
 };

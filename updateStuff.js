@@ -12,7 +12,7 @@ async function updateStuff() {
   
   await Message.updateMany({}, { $set: { 
 
-    defaultPaymentMethod: null, 
+    stripeAccount: null, 
 
   }});
 

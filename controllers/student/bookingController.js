@@ -26,26 +26,14 @@ exports.confirmLesson = async (req, res) => {
         { recurringID: booking.recurringID },
         { $set: { 
           studentConfirmed: true, 
-        }});
+      }});
 
     } else {
       booking.studentConfirmed = true;
       await booking.save();
     }
-    let user = await findUser(req, res, `${returnUrl}`, req.session.user._id);
-    if (user.stripeAccount){
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: booking.price*100,
-        currency: 'gbp',
-        customer: user.stripeAccount,
-        off_session: true,  // Customer is not actively entering payment details
-        confirm: true,
-      });
-      res.redirect(`/student/${returnUrl}.html?message=Booking paid and confirmed.&type=error`);
-    } else {
-      let sessionUrl = await payment(bookingId, returnUrl);
-      res.redirect(303, sessionUrl);
-    }
+    
+    res.redirect(`/student/${returnUrl}.html?message=Booking/s confirmed.&type=error`);
   } catch (error) {
     console.log(error);
     res.redirect(`/student/${returnUrl}.html?message=Server error.&type=error`);
@@ -172,17 +160,32 @@ exports.payLesson = async (req, res) => {
 
 
 exports.updatePaymentMethod = async (req, res) => {
-  const { setupIntentId} = req.body;
+  const { sessionId } = req.body;
 
   try {
-    const setupIntent = await stripe.setupIntents.retrieve(setupIntentId);
-    const paymentMethodId = setupIntent.payment_method;
+    const session = await stripe.checkout.sessions.retrieve(String(sessionId));
+    if (session.payment_intent) {
+      const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
+  
+      // The default payment method attached to the customer after payment
+      const paymentMethodId = paymentIntent.payment_method;
+  
+      let user = await findUser(req, res, "viewBooking", req.session.user._id);
+      user.defaultPaymentMethod = paymentMethodId;
+      await user.save();
 
-    let user = await findUser(req, res, "viewBooking", req.session.user._id);
+      let booking = await Booking.findOne({ 
+        stripeSession: session.id
 
-    user.defaultPaymentMethod = paymentMethodId;
-    await user.save();
-    res.json({ success: true });
+      }).sort({ date: 1 });
+
+      booking.paymentGiven = true;
+      await booking.save();
+  
+      res.json({ success: true });
+    } else {
+      res.json({ success: false });
+    }
 
   } catch (error) {
     console.log(error);

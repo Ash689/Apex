@@ -31,6 +31,7 @@
     <script src="/script/bookingDateFormat.js"></script>
     <script src="/script/studentLaunchLesson.js"></script>
     <script src="/script/extractSetupIntent.js"></script>
+    <script src="/script/student/payLesson.js"></script>
     <script>
         const bookingTableBody = document.getElementById('bookings');
         fetch('/viewBookings')
@@ -120,31 +121,9 @@
                                 </td>
                             `;
                             bookingTableBody.appendChild(row);
-                            if (booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven){
-                                launchLesson(booking._id);
-                            }
-                            if (booking.studentConfirmed && !booking.paymentGiven){
-                                document.getElementById('checkout-btn').addEventListener('click', async () => {
-                                    const response = await fetch('/student/payLesson', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({
-                                        bookingId: booking._id,
-                                        returnUrl: "viewBooking"
-                                    }),
-                                });
-
-                                const session = await response.json();
-                                if (session === "Payment completed"){                                    
-                                    window.location.href = `/student/viewBooking.html?message=${session}.&type=success`;
-                                } else {
-                                    window.location.href = session.session;
-                                }
-                            });
-
-                            }
+                            const confirmation = [booking.studentConfirmed, booking.tutorConfirmed, booking.paymentGiven, booking._id];
+                            launchLesson(confirmation);
+                            payLesson(confirmation);
                         });
                     });
                 }
