@@ -27,10 +27,9 @@
     <div id="footer" class="footer"></div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
-    <script src="/script/validateID.js"></script>
+    <script src="/script/autoCompleteID.js"></script>
+    <script src="/script/validate/ID.js"></script>
     <script>
 
         fetch('/tutor/getVerifyID')
@@ -68,7 +67,11 @@
                             : ''}
                             <input id = "id-upload" type="file" name="document">
                             <p>Describe file:</p>
-                            <input name="description" id = "description" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
+                            <div class="autocomplete-container">
+                                <input name="description" id="description" class="notesContainerInput" autocomplete="off" required>
+                                <div class="autocomplete-suggestions" id="descriptionSuggestions"></div>
+                            </div>
+
                             <div class="submit-button-container">
                                 <button type="submit" id = "submit" class = "disabled-button" disabled>Enter</button>
                             </div>
@@ -78,7 +81,7 @@
                             <h3 id = "dbs_header">Please upload DBS: </h3>
                             <span id = "info-button2" class="info-button">ℹ️</span>
                             ${data.dbs_file ? 
-                                `<a href = /uploads/profileFiles/tutor/id/${data.dbs_file}>Download Sent DBS</a>`
+                                `<a href = /uploads/profileFiles/tutor/dbs/${data.dbs_file}>Download Sent DBS</a>`
                             : ''}
                             <input id = "dbs-upload" type="file" name="document">
                             <div class="submit-button-container">
@@ -86,6 +89,8 @@
                             </div>
                         </form>
                     `;
+                    
+                    autoCompleteDescription();
 
                     validateID();
                     validateDBS();

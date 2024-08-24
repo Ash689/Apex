@@ -34,6 +34,17 @@ router.get('/viewMessenger', (req, res) => {
   controller.viewMessenger(req, res);
 });
 
+const storageReport = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/reportFiles');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+upload = multer({ storage: storageReport, limits: { fileSize: 25 * 1024 * 1024 } }); // Corrected this line
+
 router.post('/sendReport', upload.single('document'), [
   body('content').trim().escape(),
   body('topics').trim().escape(),

@@ -14,7 +14,7 @@ async function verifyIDAdmin(details) {
   const mailOptions = {
     from: process.env.EMAIL, 
     to: process.env.EMAIL2,
-    subject: 'Verify User ID',
+    subject: 'Verify User',
     html: `
       <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
         <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>

@@ -36,6 +36,9 @@
     <script src="/script/shouldDisableLaunchButton.js"></script>
     <script src="/script/tutor/launchLesson.js"></script>
     <script src="/script/tutor/bookingButtons.js"></script>
+    <script src="/script/validate/image.js"></script>
+    <script src="/script/validate/tm.js"></script>
+    
     <script>
         const bookingTableBody = document.getElementById('bookings');
 
@@ -59,7 +62,9 @@
                     </form>
                     <h3>Name: ${data.fullName}</h3>
                     <p>Email: ${data.email}</p>
-                `;                
+                `;      
+                
+                validateImage();          
 
                 profileElement.innerHTML += `
                     <form action="/tutor/changeAvailability" method="POST">
@@ -104,10 +109,11 @@
                 profileElement.innerHTML += `
                     <form action="/tutor/changeTuitionType" method="POST">                        
                         <input type="text" id="tuitionType" name="newTuitionType" minlength="10" maxlength="100" value="${data.tuitionType}">
-                        <button class="secondary-button" type="submit">Update Teaching Method</button>
+                        <button id = "tm-submitBtn" class="secondary-button" type="submit" disabled>Update Teaching Method</button>
                     </form>
-                
                 `;
+
+                validateTM();
 
                 profileElement.innerHTML += `
                     <form action="/tutor/updateStripeAccount" method="GET">                        

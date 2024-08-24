@@ -26,11 +26,9 @@
     <div id="footer" class="footer"></div>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
-    <script src = "/script/validateDescription.js"></script>
-    <script src="/script/validateID.js"></script>
+    <script src="/script/autoCompleteID.js"></script>
+    <script src="/script/validate/ID.js"></script>
 
     <script>
 
@@ -45,7 +43,7 @@
                     let form_container = document.getElementById('parent-form-container');
                     form_container.innerHTML = `
                         <h2>Upload Documents</h2>
-                        <h3>ID Verified!</h3>
+                        <h3>ID Verified</h3>
                         <button id="id-button" class = "secondary-button">Re-Upload Images</button>
                         <form id="subjectForm" action="/student/configSubject.html" method="GET">
                             <button type="submit">Continue</button>
@@ -70,45 +68,24 @@
                             : ''}
                             <input type="file" id = "id-upload" name="document">
                             <p>Describe file:</p>
-                            <input name="description" id = "description" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
+
+                            <div class="autocomplete-container">
+                                <input name="description" id="description" class="notesContainerInput" autocomplete="off" required>
+                                <div class="autocomplete-suggestions" id="descriptionSuggestions"></div>
+                            </div>
+
                             <div class="submit-button-container">
                                 <button type="submit" id = "submit" class = "disabled-button" disabled>Enter</button>
                             </div>
                         </form>
                     `;
 
+                    autoCompleteDescription();
+
                     validateID();
 
                             
                     document.getElementById('info-button').title = "Valid documents include driving license, passport, NINO letter";
-                    
-
-                    let id_header = document.getElementById('id_header');
-                    id_header.textContent += `${data.email}`;
-
-                    const idTypes = [
-                        "Passport", 
-                        "Driving Licence", 
-                        "Biometric Residence Card", 
-                        "National Identity Card", 
-                        "Travel Document", 
-                        "Birth/Adoption certificate", 
-                    ];
-
-                    $(function() {
-
-                        $("#description").autocomplete({
-                            source: idTypes,
-                            minLength: 0,
-                            select: function(event, ui) {
-                                $("#description").val(ui.item.value);
-                                return false;
-                            }
-                        }).focus(function() {
-                            $(this).autocomplete("search", "");
-                        });
-
-                    });
                     
                 });
             }

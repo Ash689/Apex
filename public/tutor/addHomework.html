@@ -30,7 +30,7 @@
                         <td>
                             <button class = "secondary-button" type="button" id="documentOrText">Add Text</button>
                             <div id = "append_homework">
-                                <input type="file" name="document">
+                                <input id = "homework-pic" type="file" name="document">
                             </div>
                         </td>
                     </tr>
@@ -45,24 +45,17 @@
 
             <!-- Submit Button -->
             <div class="submit-button-container">
-                <button type="submit">Add Homework</button>
+                <button id = "submit" type="submit" class ="disabled-button" disabled>Add Homework</button>
             </div>
         </form>
     </div>
     <div id="footer" class="footer"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/script.js"></script>
+    <script src="/script/validate/homework.js"></script>
     <script>
-        $(function() {
-            $("#deadline").datepicker({
-                dateFormat: "yy-mm-dd",
-                minDate: 0
-            });
-        });
         var fileShown = true;
         document.getElementById('documentOrText').addEventListener("click", async function (e) {
             e.preventDefault();

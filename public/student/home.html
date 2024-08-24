@@ -42,6 +42,7 @@
     <script src="/script/student/launchLesson.js"></script>
     <script src="/script/student/payLesson.js"></script>
     <script src="/script/student/bookingButtons.js"></script>
+    <script src="/script/validate/image.js"></script>
     <script>
         const bookingTableBody = document.getElementById('bookings');
         fetch('/student/apiprofile')
@@ -62,7 +63,8 @@
                     <p>Email: ${data.email}</p>
                 `;
 
-
+                validateImage();
+                
                 data.subjects.forEach(subject => {
                     const subjectElement = document.createElement('div');
                     subjectElement.classList.add('profile-bar2');
@@ -160,6 +162,6 @@
 
         
     </script>
-    <script src = "/script/validateImage.js"></script>
+    <script src = "/script/validate/image.js"></script>
 </body>
 </html>

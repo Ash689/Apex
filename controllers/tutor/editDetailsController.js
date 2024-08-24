@@ -360,7 +360,7 @@ exports.changePic = async (req, res) => {
   try{
 
     if(!req.file){
-      return res.redirect(`/student/home.html?message=Please upload an image &type=error`);
+      return res.redirect(`/tutor/home.html?message=Please upload an image &type=error`);
     }
     
     let user = await findUser(req, res, "home", req.session.user._id);

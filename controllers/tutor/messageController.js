@@ -2,6 +2,7 @@ const { body, validationResult } = require('express-validator');
 const findUser = require('../../utils/findUser'); // Assuming you have a utility function for this
 const Message = require('../../models/message');
 const studentUser= require('../../models/studentUser');
+const verifyReport = require('../../utils/verifyReport');
 
 const Report = require('../../models/report');
 
@@ -149,12 +150,26 @@ exports.sendReport = async(req, res) => {
       topic: topics,
     });
 
+    let details = {
+      receiver: recipient._id,
+      content: content,
+      topic: topics, 
+      tutor: true,
+    };
+
     if (req.file) {
-        report.filename = req.file.filename;
-        report.originalname = req.file.originalname;
-        report.mimetype =  req.file.mimetype;
-        report.size =  req.file.size;
+      report.filename = req.file.filename;
+      report.originalname = req.file.originalname;
+      report.mimetype =  req.file.mimetype;
+      report.size =  req.file.size;
+
+      details.filename = `uploads/reportFiles/${req.file.filename}`;
+      details.originalname = req.file.originalname;
+      details.mimetype =  req.file.mimetype;
+      details.size =  req.file.size;
     }
+
+    await verifyReport(details);
 
     // Save the message
     await report.save();

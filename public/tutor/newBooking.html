@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutor | Booking</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/static/booking.css">
     <link rel="stylesheet" href="/static/standardStyle.css">
 </head>
@@ -30,7 +29,10 @@
                             <div class = "byline" id = "subjectTitle"></div>
                         </td>
                         <td>
-                            <input name="subject" id = "subject" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
+                            <div class="autocomplete-container">
+                                <input name="subject" id = "subject" class="notesContainerInput" autocomplete ="off" required>
+                                <div class="autocomplete-suggestions" id="suggestions"></div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -51,6 +53,7 @@
                                 <option value="" disabled selected>Select your time</option>
                             </select>
                         </td>
+                        
                     </tr>
 
                     <tr>
@@ -95,9 +98,8 @@
     </div>
     <div id="footer" class="footer"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src = "/script/validateNewBooking.js"></script>
+    <script src = "/script/validate/newBooking.js"></script>    
+    <script src = "/script/autoCompleteSubject.js"></script>
     <script>
         document.getElementById('duration').value = 40;
         document.getElementById('recurringToggle').addEventListener('click', function() {
@@ -133,8 +135,6 @@
     </script>
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/script.js"></script>
-    <script src = "/script/subjectList.js"></script>
-    <script src = "/script/autoCompleteSubject.js"></script>
     <script>
 
         const timeSelect = document.getElementById('bookingTime');
@@ -159,5 +159,6 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+
 </body>
 </html>

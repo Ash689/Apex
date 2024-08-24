@@ -17,7 +17,7 @@ const storageMessageStudent = multer.diskStorage({
     }
 });
 
-upload = multer({ storage: storageMessageStudent, limits: { fileSize: 25 * 1024 * 1024 } }); // Corrected this line
+upload = multer({ storage: storageMessageStudent, limits: { fileSize: 25 * 1024 * 1024 } });
 
 
 router.post('/sendMessage', upload.single('document'), [
@@ -33,6 +33,18 @@ router.get('/getMessage', (req, res) => {
 router.get('/viewMessenger', (req, res) => {
   controller.viewMessenger(req, res);
 });
+
+
+const storageReport = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/reportFiles');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+upload = multer({ storage: storageReport, limits: { fileSize: 25 * 1024 * 1024 } });
 
 router.post('/sendReport', upload.single('document'), [
   body('content').trim().escape(),

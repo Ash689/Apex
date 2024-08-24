@@ -1,58 +1,94 @@
-$(function() {
+const subjects = [
+    "English",
+    "Math",
+    "Science",
+    "History",
+    "Geography",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Computer Science",
+    "Literature",
+    "Spanish",
+    "French",
+    "Business Studies",
+    "Italian",
+    "German",
+    "Religious Studies",
+    "Language",
+    "Languages",
+];
 
-    $("#subject").autocomplete({
-        source: availableSubjects,
-        minLength: 0,
-        select: function(event, ui) {
-            $("#subject").val(ui.item.value);
-            return false;
-        }
-    }).focus(function() {
-        $(this).autocomplete("search", "");
-    });
 
-    
-    $("#qualification").autocomplete({
-        source: qualifications,
-        minLength: 0,
-        select: function(event, ui) {
-            $("#qualification").val(ui.item.value);
-            return false;
-        }
-    }).focus(function() {
-        $(this).autocomplete("search", "");
-    });
+function handleInput(e) {
+    const inputField = e.target;
+    const inputValue = inputField.value.toLowerCase();
+    const suggestionsContainer = inputField.nextElementSibling;
+    suggestionsContainer.innerHTML = '';
 
-    $("#studyExamBoard").autocomplete({
-        source: examBoards,
-        minLength: 0,
-        select: function(event, ui) {
-            $("#studyExamBoard").val(ui.item.value);
-            return false;
-        }
-    }).focus(function() {
-        $(this).autocomplete("search", "");
-    });
+    if (inputValue) {
+        const filteredsubjects = subjects.filter(topic => topic.toLowerCase().includes(inputValue));
+        filteredsubjects.forEach((topic, index) => {
+            const suggestionElement = document.createElement('div');
+            suggestionElement.classList.add('autocomplete-suggestion');
+            suggestionElement.textContent = topic;
+            suggestionElement.dataset.index = index; // Store index for navigation
+            suggestionElement.addEventListener('click', function() {
+                inputField.value = topic;
+                suggestionsContainer.innerHTML = '';
+            });
+            suggestionsContainer.appendChild(suggestionElement);
+        });
+        suggestionsContainer.style.display = filteredsubjects.length ? 'block' : 'none';
+    } else {
+        suggestionsContainer.style.display = 'none';
+    }
 
-    $("#expectedGrade").autocomplete({
-        source: grades,
-        minLength: 0,
-        select: function(event, ui) {
-            $("#expectedGrade").val(ui.item.value);
-            return false;
-        }
-    }).focus(function() {
-        $(this).autocomplete("search", "");
-    });
+    // Handle keyboard navigation
+    inputField.dataset.activeIndex = -1;
+}
 
-    $("#desiredGrade").autocomplete({
-        source: grades,
-        minLength: 0,
-        select: function(event, ui) {
-            $("#desiredGrade").val(ui.item.value);
-            return false;
+function handleKeydown(e) {
+    const inputField = e.target;
+    const suggestionsContainer = inputField.nextElementSibling;
+    const suggestions = Array.from(suggestionsContainer.children);
+    const activeIndex = parseInt(inputField.dataset.activeIndex, 10);
+
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (activeIndex < suggestions.length - 1) {
+            inputField.dataset.activeIndex = activeIndex + 1;
+            updateSuggestionFocus(suggestions, activeIndex + 1);
         }
-    }).focus(function() {
-        $(this).autocomplete("search", "");
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (activeIndex > 0) {
+            inputField.dataset.activeIndex = activeIndex - 1;
+            updateSuggestionFocus(suggestions, activeIndex - 1);
+        }
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (activeIndex >= 0 && activeIndex < suggestions.length) {
+            const selectedSuggestion = suggestions[activeIndex];
+            inputField.value = selectedSuggestion.textContent;
+            suggestionsContainer.innerHTML = '';
+        }
+    }
+}
+
+function updateSuggestionFocus(suggestions, index) {
+    suggestions.forEach((suggestion, i) => {
+        suggestion.classList.toggle('selected', i === index);
     });
+}
+
+function handleClickOutside(e) {
+    if (!e.target.matches('.notesContainerInput')) {
+        document.querySelectorAll('.autocomplete-suggestions').forEach(container => container.style.display = 'none');
+    }
+}
+
+document.querySelectorAll('.notesContainerInput').forEach(input => {
+    input.addEventListener('input', handleInput);
+    input.addEventListener('keydown', handleKeydown);
 });

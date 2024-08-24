@@ -4,39 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student | Tutor Review</title>
-    <link rel="stylesheet" href="/static/lessonReport.css">
+    <link rel="stylesheet" href="/static/reportStyle.css">
     <link rel="stylesheet" href="/static/standardStyle.css">
-    <!-- Added Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .star-rating {
-            direction: rtl;
-            display: inline-block;
-            font-size: 2em;
-            unicode-bidi: bidi-override;
-        }
-
-        .star-rating input {
-            display: none;
-        }
-
-        .star-rating label {
-            color: #ddd;
-            font-size: 2rem;
-            padding: 0;
-            cursor: pointer;
-        }
-
-        .star-rating input:checked ~ label,
-        .star-rating input:checked ~ label ~ label {
-            color: #f5b301;
-        }
-
-        .star-rating label:hover,
-        .star-rating label:hover ~ label {
-            color: #f5b301;
-        }
-    </style>
 </head>
 <body>
     <div id="navbarStudent"></div>
@@ -44,6 +14,7 @@
     <br><br><br><br><br>
     <div class="container">
         <div id="tutor-profile" class="profile-bar"></div>
+        <br><br>
         <div id="parent-form-container" class="hidden-section">
             <form action="/student/reviewSubmit" id="parent-form" class="hidden" method="POST">
                 <h2>Write Review</h2>
@@ -54,19 +25,19 @@
                             <td>
                                 <div class="star-rating">
                                     <input type="radio" id="star5" name="score" value="5">
-                                    <!-- Replaced text with Font Awesome star icon -->
+                                    
                                     <label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
                                     <input type="radio" id="star4" name="score" value="4">
-                                    <!-- Replaced text with Font Awesome star icon -->
+                                    
                                     <label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
                                     <input type="radio" id="star3" name="score" value="3">
-                                    <!-- Replaced text with Font Awesome star icon -->
+                                    
                                     <label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
                                     <input type="radio" id="star2" name="score" value="2">
-                                    <!-- Replaced text with Font Awesome star icon -->
+                                    
                                     <label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
                                     <input type="radio" id="star1" name="score" value="1">
-                                    <!-- Replaced text with Font Awesome star icon -->
+                                    
                                     <label for="star1" title="1 star"><i class="fas fa-star"></i></label>
                                 </div>
                             </td>

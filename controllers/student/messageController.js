@@ -3,6 +3,7 @@ const findUser = require('../../utils/findUser'); // Assuming you have a utility
 const tutorUser = require('../../models/tutorUser');
 const Message = require('../../models/message');
 const Report = require('../../models/report');
+const verifyReport = require('../../utils/verifyReport');
 
 exports.sendMessage = async (req, res) => {
   const errors = validationResult(req);
@@ -135,18 +136,33 @@ exports.sendReport = async(req, res) => {
 
         // Create a new message
         let report = new Report({
-        sender: req.session.user._id,
-        receiver: recipient._id,
-        content: content,
-        topic: topics,
+          sender: req.session.user._id,
+          receiver: recipient._id,
+          content: content,
+          topic: topics,
         });
+
+        let details = {
+          receiver: recipient._id,
+          content: content,
+          topic: topics, 
+          tutor: false,
+        };
 
         if (req.file) {
             report.filename = req.file.filename;
             report.originalname = req.file.originalname;
             report.mimetype =  req.file.mimetype;
             report.size =  req.file.size;
+
+            details.filename = `uploads/reportFiles/${req.file.filename}`;
+            details.originalname = req.file.originalname;
+            details.mimetype =  req.file.mimetype;
+            details.size =  req.file.size;
         }
+
+        await verifyReport(details);
+
         await report.save();
         res.redirect('/student/viewMessage.html?message=Report sent successfully, we shall review it and get back to you.&type=success');
     } catch (error) {

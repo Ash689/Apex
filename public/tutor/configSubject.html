@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutor | Setup</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/static/standardStyle.css">
     <link rel="stylesheet" href="/static/lessonReport.css">
 </head>
@@ -20,42 +19,61 @@
             <table id="subject-form">
                 <tbody>
                     <tr>
-                        <td>Subject</td>
+                        <td>Subject
+                            <div class = "byline" id = "subjectTitle"></div>
+                        </td>
                         <td>
-                            <input name="subject" id = "subject" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
+                            <div class="autocomplete-container">
+                                <input name="subject" id="subject" class="notesContainerInput" autocomplete="off" required>
+                                <div class="autocomplete-suggestions" id="subjectSuggestions"></div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Qualification</td>
+                        <td>Qualification
+                            <div class = "byline" id = "qualificationTitle"></div>
+                        </td>
                         <td>
-                            <input type="text" id="qualification" name="qualification" maxlength = "50" required>
+                            <div class="autocomplete-container">
+                                <input type="text" id="qualification" name="qualification" class="notesContainerInput" autocomplete="off" maxlength="50" required>
+                                <div class="autocomplete-suggestions" id="qualificationSuggestions"></div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Exam Board</td>
+                        <td>Exam Board
+                            <div class = "byline" id = "examBoardTitle"></div>
+                        </td>
                         <td>
-                            <input type="text" id="studyExamBoard" name="examBoard" maxlength = "50" required>
+                            <div class="autocomplete-container">
+                                <input type="text" id="studyExamBoard" name="examBoard" class="notesContainerInput" maxlength="50" autocomplete="off" required>
+                                <div class="autocomplete-suggestions" id="examBoardSuggestions"></div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Grade Achieved</td>
+                        <td>Grade Achieved
+                            <div class = "byline" id = "gradeTitle"></div>
+                        </td>
                         <td>
-                            <input type="text" id="grade" name="grade" maxlength = "20" required>
+                            <div class="autocomplete-container">
+                                <input type="text" id="grade" name="grade" class="notesContainerInput" maxlength="20" autocomplete="off" required>
+                                <div class="autocomplete-suggestions" id="gradeSuggestions"></div>
+                            </div>
                         </td>
                     </tr>
-
                     <tr>
                         <td>Teaching Approach
                             <span id = "info-button" class="info-button">ℹ️</span>
+                            <div class = "byline" id = "approachTitle"></div>
                         </td>
                         <td>
-                            <input type="text" id="teachingApproach" name="teachingApproach" maxlength = "50" required>
+                            <input type="text" id="approach" name="teachingApproach" maxlength = "50" required>
                         </td>
                     </tr>
                     <tr>
                         <td colspan = "2">
-                            
-                            <button id = "submitBtn" type="submit">Add Subject</button>
+                            <button id = "submitBtn" type="submit" class = "disabled-button" disabled>Add Subject</button>
                         </td>
                     </tr>
 
@@ -68,11 +86,11 @@
     <br><br>
     <div id="footer" class="footer"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/script.js"></script>
-    <script src = "/script/subjectList.js"></script>
-    <script src = "/script/autoCompleteSubject.js"></script>
+    <script src = "/script/configSubjectList.js"></script>
+    <script src = "/script/autoCompleteConfigSubject.js"></script>
+    <script src = "/script/tutor/validateConfigSubject.js"></script>
     <script>
 
         fetch('/tutor/userName')

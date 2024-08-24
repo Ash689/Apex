@@ -171,7 +171,11 @@ exports.viewBookings = async (req, res) => {
   
       // Create a dynamic query based on the user's role
       const query = {
-        date: { $gt: Date.now() },
+        date: { 
+          $gt: Date.now(),
+          $lt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+        },
+        
         cancelled: false
       };
       query[isTutor ? 'tutor' : 'student'] = req.session.user._id;
