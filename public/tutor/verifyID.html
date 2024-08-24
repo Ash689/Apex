@@ -30,6 +30,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
+    <script src="/script/validateID.js"></script>
     <script>
 
         fetch('/tutor/getVerifyID')
@@ -43,10 +44,10 @@
                     let form_container = document.getElementById('parent-form-container');
                     form_container.innerHTML = `
                         <h2>Upload Documents</h2>
-                        <h3>ID and DBS Verified!</h3>
+                        <h3>ID and DBS Verified</h3>
                         <button id="id-button" class = "secondary-button">Re-Upload Images</button>
                         <form id="subjectForm" action="/tutor/configBanking.html" method="GET">
-                            <button type="submit">Continue to Subject Selection</button>
+                            <button type="submit">Continue</button>
                         </form>
                     
                     `;
@@ -65,11 +66,11 @@
                             ${data.id_file ? 
                                 `<a href = /uploads/profileFiles/tutor/id/${data.id_file}>Download Sent ID</a>`
                             : ''}
-                            <input type="file" name="document">
+                            <input id = "id-upload" type="file" name="document">
                             <p>Describe file:</p>
                             <input name="description" id = "description" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
                             <div class="submit-button-container">
-                                <button type="submit">Enter</button>
+                                <button type="submit" id = "submit" class = "disabled-button" disabled>Enter</button>
                             </div>
                         </form>
 
@@ -79,12 +80,15 @@
                             ${data.dbs_file ? 
                                 `<a href = /uploads/profileFiles/tutor/id/${data.dbs_file}>Download Sent DBS</a>`
                             : ''}
-                            <input type="file" name="document">
+                            <input id = "dbs-upload" type="file" name="document">
                             <div class="submit-button-container">
-                                <button type="submit">Enter</button>
+                                <button type="submit" id = "submitDBS" class = "disabled-button" disabled>Enter</button>
                             </div>
                         </form>
                     `;
+
+                    validateID();
+                    validateDBS();
                             
                     document.getElementById('info-button').title = "Valid documents include driving license, passport, NINO letter";
                     document.getElementById('info-button2').title = "Please show DBS letter";

@@ -60,7 +60,7 @@ async function sendVerifyEmail(userEmail, token) {
       
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Password Reset</h2>
-        <p>Your verification token is<strong>${token}</strong></p>
+        <p>Your verification token is: <strong>${token}</strong></p>
 
         <footer style="margin-top: 20px; font-size: 14px; color: #888;">
           <p>Best regards,<br/>Apex Tuition</p>

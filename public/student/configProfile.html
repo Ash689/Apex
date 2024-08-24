@@ -104,7 +104,6 @@
     <script>
 
         function validSubmit() {
-            document.getElementById('message').textContent = `${fileU}, ${nameU}, ${addressU}, ${numberU}, ${dobU},`;
             if (fileU && nameU && addressU && numberU && dobU){
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('disabled-button');

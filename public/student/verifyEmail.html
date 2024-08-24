@@ -27,7 +27,7 @@
                         <label for="code">Enter Code:</label>
                         <input id="code" type="number" name="code" required><br><br>
                     </fieldset>
-                    <button id="codeSubmit" type="submit">Enter</button>
+                    <button id="codeSubmit" type="submit" class = "disabled-button" disabled>Enter</button>
                 </form>
                 <form action="/student/sendVerification" method="GET">
                     <button class = "secondary-button" id="resend" type="submit">Resend Verification Code</button>
@@ -41,6 +41,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script/standardScript.js"></script>
     <script src="/script/student/logout.js"></script>
+    <script src="/script/validateEmailCode.js"></script>
     <script>
         fetch('/student/getEmailVerify')
         .then(response => response.json())

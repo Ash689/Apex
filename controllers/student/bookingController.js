@@ -175,10 +175,7 @@ exports.updatePaymentMethod = async (req, res) => {
       user.defaultPaymentMethod = paymentMethodId;
       await user.save();
 
-      let booking = await Booking.findOne({ 
-        stripeSession: session.id
-
-      }).sort({ date: 1 });
+      let booking = await Booking.findById(req.session.bookingID);
       booking.stripeIntent = session.payment_intent.id;
       booking.paymentGiven = true;
       await booking.save();
@@ -201,7 +198,7 @@ exports.clearBanking = async (req, res) => {
       if(user.defaultPaymentMethod){
         user.defaultPaymentMethod = null;
         await user.save();
-        return res.redirect(`/student/home.html?message= Payment method cleared for future lessons.&type=success`);
+        return res.redirect(`/student/home.html?message= Payment method cleared for future lessons, the next lesson will prompt for new payment details.&type=success`);
       } else {
         return res.redirect(`/student/home.html?message=Existing payment method not found.&type=error`);
       }

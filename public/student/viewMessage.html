@@ -172,7 +172,7 @@
                             <p style = "font-size: 14px">${formattedDate}</p>
                             <p style = "font-size: 14px">${booking.time}</p>
                             ${!booking.revisionSession ? `<p style = "font-size: 12px">${booking.subject}</p>` : `<p style = "font-size: 12px">Revision Session</p>`}
-                            ${generateBookingHTML(booking)}
+                            ${generateBookingHTML(booking, "viewMessage")}
                         `;
                         bookingElement.appendChild(individualBookingElement);
                         launchLesson(booking);

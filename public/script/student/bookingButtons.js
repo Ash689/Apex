@@ -1,11 +1,11 @@
 
-function generateBookingHTML(booking){
+function generateBookingHTML(booking, returnUrl){
     const disableLaunchButton = shouldDisableLaunchButton(booking.date, booking.time, booking.duration);
     return `
         ${!booking.studentConfirmed ? `
             Price: £${booking.price}
             <form action="/student/confirmLesson" method="POST">
-                <input type="hidden" name="returnUrl" value="viewBooking">
+                <input type="hidden" name="returnUrl" value="${returnUrl}">
                 <input type="hidden" name="bookingId" value="${booking._id}">
                 <button id = "checkout-btn" type="submit">Confirm</button>
             </form>
@@ -18,7 +18,7 @@ function generateBookingHTML(booking){
         ${!booking.tutorConfirmed ? `
             Lesson to be confirmed by Tutor
             <form action="/cancelChanges" method="POST">
-                <input type="hidden" name="returnUrl" value="viewBooking">
+                <input type="hidden" name="returnUrl" value="${returnUrl}">
                 <input type="hidden" name="bookingId" value="${booking._id}">
                 <button type="submit" class="secondary-button">Cancel Changes</button>
             </form>

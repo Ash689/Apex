@@ -29,6 +29,8 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
+    <script src = "/script/validateDescription.js"></script>
+    <script src="/script/validateID.js"></script>
 
     <script>
 
@@ -46,7 +48,7 @@
                         <h3>ID Verified!</h3>
                         <button id="id-button" class = "secondary-button">Re-Upload Images</button>
                         <form id="subjectForm" action="/student/configSubject.html" method="GET">
-                            <button type="submit">Continue to Subject Selection</button>
+                            <button type="submit">Continue</button>
                         </form>
                     
                     `;
@@ -66,14 +68,17 @@
                             ${data.id_file ? 
                                 `<a href = /uploads/profileFiles/student/id/${data.id_file}>Download Sent ID</a>`
                             : ''}
-                            <input type="file" name="document">
+                            <input type="file" id = "id-upload" name="document">
                             <p>Describe file:</p>
                             <input name="description" id = "description" class="notesContainerInput" maxlength = "50" autocomplete ="off" required>
                             <div class="submit-button-container">
-                                <button type="submit">Enter</button>
+                                <button type="submit" id = "submit" class = "disabled-button" disabled>Enter</button>
                             </div>
                         </form>
                     `;
+
+                    validateID();
+
                             
                     document.getElementById('info-button').title = "Valid documents include driving license, passport, NINO letter";
                     

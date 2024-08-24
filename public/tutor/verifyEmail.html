@@ -27,7 +27,7 @@
                         <label for="code">Enter Code:</label>
                         <input id="code" type="number" name="code" required><br><br>
                     </fieldset>
-                    <button id="codeSubmit" type="submit">Enter</button>
+                    <button id="codeSubmit" type="submit" class = "disabled-button" disabled>Enter</button>
                 </form>
 
                 <form action="/tutor/sendVerification" method="GET">
@@ -42,6 +42,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/logout.js"></script>
+    <script src="/script/validateEmailCode.js"></script>
     <script>
         fetch('/tutor/getEmailVerify')
         .then(response => response.json())
@@ -58,6 +59,8 @@
             console.error('Error:', error);
             window.location.href = '/tutor/login.html?message=Please log in.&type=error';
         });
+
+        
     </script>
 </body>
 </html>

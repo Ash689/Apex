@@ -53,6 +53,14 @@ router.get('/createStripeAccount', (req, res) => {
   controller.createStripeAccount(req, res);
 });
 
+router.get('/bankStatus', (req, res) => {
+  controller.bankStatus(req, res);
+});
+
+router.post('/completeBankingSetup', (req, res) => {
+  controller.completeBankingSetup(req, res);
+});
+
 router.post('/addDays', (req, res) => {
   controller.addDays(req, res);
 });

@@ -86,7 +86,7 @@
                 document.getElementById('clear-btn').addEventListener('click', function() {
                     document.getElementById('clear').innerHTML = `
                         <form action="/student/clearBanking" method="GET">
-                            <button type="submit">Confirm changes</button>
+                            <button type="submit">Confirm clearing of bank details?</button>
                         </form>
                     `;
                 });
@@ -141,7 +141,7 @@
                                 ` : 'Revision Session'}
                             </td>
                             <td>
-                                ${generateBookingHTML(booking)}
+                                ${generateBookingHTML(booking, "home")}
                             </td>
                         `;
                         bookingTableBody.appendChild(row);

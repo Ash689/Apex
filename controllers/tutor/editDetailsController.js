@@ -125,7 +125,7 @@ exports.sendDBS = async (req, res) => {
     let user = await findUser(req, res, "configProfile", req.session.user._id);
 
     if (user.dbs_filename){
-      fs.unlinkSync(`uploads/profileFiles/tutor/dbs/${user.id_filename}`);
+      fs.unlinkSync(`uploads/profileFiles/tutor/dbs/${user.dbs_filename}`);
     }
 
     user.dbs_filename = req.file.filename,
@@ -194,31 +194,55 @@ exports.createStripeAccount = async (req, res) => {
     },
   });
 
-  user.stripeAccount = account.id;
-  await user.save();
-
-  let link = await generateAccountLink(account.id);
+  const accountLink = await stripe.accountLinks.create({
+    account: account.id,
+    refresh_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details not added.&type=error`,
+    return_url: `${process.env.URL}/tutor/configBanking.html?account=${account.id}`,
+    type: 'account_onboarding',
+  });
 
   return res.json({
-    link: link
+    link: accountLink.url
   });
 };
 
-const generateAccountLink = async (accountId) => {
-  const accountLink = await stripe.accountLinks.create({
-    account: accountId,
-    refresh_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details not added.&type=error`,
-    return_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details added.&type=success`,
-    type: 'account_onboarding',
+exports.bankStatus = async (req, res) => {
+  let user = await findUser(req, res, "configBanking", req.session.user._id);
+  let success = true;
+  if (!user.stripeAccount){
+    success = false
+  }
+
+  return res.json({
+    success: success
   });
-  return accountLink.url;
+};
+
+exports.completeBankingSetup = async (req, res) => {
+  const { accountId } = req.body;
+  try {
+    let user = await findUser(req, res, "configBanking", req.session.user._id);
+    if (user.stripeAccount){
+      res.redirect('/tutor/configBanking.html?message=Error, account already created.&type=error');
+    }
+
+    let id = await stripe.accounts.retrieve(accountId);
+    user.stripeAccount = accountId;
+
+    await user.save();
+
+    return res.json({
+      success: true
+    });
+  } catch(error) {
+    console.log(error);
+    res.redirect(`/tutor/configBanking.html?message=Error configuring bank details.&type=error`);
+  }
 };
 
 exports.updateStripeAccount = async (req, res) => {
 
-  try{
-
-    
+  try{    
     let user = await findUser(req, res, "configProfile", req.session.user._id);
 
     let details = {
@@ -238,6 +262,7 @@ exports.updateStripeAccount = async (req, res) => {
     res.redirect('/tutor/home.html?message=Error sending request.&type=error');
   }
 };
+
 
 exports.addSubject = async (req, res) => {
   const errors = validationResult(req);

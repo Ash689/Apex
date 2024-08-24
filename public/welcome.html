@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" style = >
-    <title>Tutor</title>
+    <title>Apex Tuition | Welcome</title>
     <link rel="stylesheet" href="/static/standardStyle.css">
     <link rel="stylesheet" href="/static/welcomeStyle.css">
 </head>
@@ -98,6 +98,7 @@
     </div>
     <div id="footer" class="footer"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/script/registerButtons.js"></script>
     <script>
         window.onload = function() {
             setTimeout(function() {
@@ -169,6 +170,8 @@
                 `;
                 document.getElementById('parent-form-container').style.maxHeight =  '200px';
                 loginButton.textContent = "Login";
+                
+                registerButtons();
             }
         });
 
@@ -211,16 +214,12 @@
                 `;
                 document.getElementById('tutor-form-container').style.maxHeight =  '200px';
                 loginButton.textContent = 'Login';
+                
+                registerButtons();
             }
         });
 
-        document.getElementById('parent-btn-register').addEventListener('click', function() {
-            window.location.href = './student/register.html';
-        });
-
-        document.getElementById('tutor-btn-register').addEventListener('click', function() {
-            window.location.href = './tutor/register.html';
-        });
+        registerButtons();
         
     </script>
 </body>

@@ -16,7 +16,7 @@
     <div class="container">
         <div id="parent-form-container">
             <h2>Config Banking</h2>
-            <h3 id = "upload-notice">Redirecting you to</br>upload bank details</h3>
+            <h3 id = "upload-notice">Upload bank details</h3>
             <button id="id-button">Navigate to bank details</button>
             
         </div>
@@ -30,30 +30,57 @@
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/logout.js"></script>
     <script>
-        fetch('/tutor/createStripeAccount')
+        document.addEventListener('DOMContentLoaded', async () => {
+
+            fetch('/tutor/bankStatus')
             .then(response => response.json())
             .then(data => {
-                if (data.link){
-                    if (data.link.includes('/configSubject.html')) {
-                        let notice = document.getElementById('upload-notice');
-                        notice.textContent = `
-                            Banking details already updated
-                        `;
-                        let idButton = document.getElementById('id-button');
-                        idButton.textContent = `
-                            Add Subjects
-                        `;                        
+                if (data.success){
+                    let notice = document.getElementById('upload-notice');
+                    notice.textContent = `Banking details added`;
+                    let idButton = document.getElementById('id-button');
+                    idButton.textContent = `Continue`;   
+                }                  
+
+            });
+        
+            document.getElementById('id-button').addEventListener('click', function() {
+                fetch('/tutor/createStripeAccount')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.link){
+                        window.location.href = `${data.link}`;
                     }
-                }
-                
-                document.getElementById('id-button').addEventListener('click', function() {
-                    window.location.href = `${data.link}`;
+                })
+                .catch(error => {
+                    console.error('Error creating stripe account:', error);
+                    messageElement.textContent = 'Failed to create stripe account';
+                    messageElement.classList.add('error');
                 });
-        })
-        .catch(error => {
-            console.error('Error creating stripe account:', error);
-            messageElement.textContent = 'Failed to create stripe account';
-            messageElement.classList.add('error');
+            });
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const accountId = urlParams.get('account');
+
+            if (accountId) {
+                try {
+                    const response = await fetch('/tutor/completeBankingSetup', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ accountId }),
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        messageElement.textContent = "Payment Details Saved";
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
         });
     </script>
 </body>

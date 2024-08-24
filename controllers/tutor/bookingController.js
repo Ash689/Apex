@@ -153,7 +153,7 @@ exports.lessonReportSubmit = async (req, res) => {
   let reportSent = false;
   // Example of how you might handle MongoDB updates
   try {
-    const booking = await Booking.findById(req.session.bookingID); // Assuming bookingID is available in req.body or req.params
+    const booking = await Booking.findById(req.session.bookingID);
     if (!booking) {
         return res.status(404).send('Booking not found');
     }
