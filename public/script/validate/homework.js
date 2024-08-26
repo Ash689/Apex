@@ -2,14 +2,13 @@
 
 let submitBtn = document.getElementById('submit');
 let nameU = false;
-let fileU = false;
-let descU = false;
+let deadlineU = false;
 
 
-let name = document.getElementById('topicNameInput');
+let topicName = document.getElementById('topicNameInput');
 
-name.addEventListener('input', function() {
-    if (name.value.length > 0){
+topicName.addEventListener('input', function() {
+    if (topicName.value.length > 0){
         nameU = true;
     } else {
         nameU = false;
@@ -17,24 +16,18 @@ name.addEventListener('input', function() {
     validSubmit();
 });
 
-document.getElementById('id-upload').addEventListener('change', function(event) {
-    
-    fileU = true;
-    if (fileU && descU){
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('disabled-button');
-    } else {
-        submitBtn.disabled = true;
-        submitBtn.classList.add('disabled-button');
-    }
+
+let deadline = document.getElementById('deadline');
+deadline.addEventListener('input', function(event) {
+    deadlineU = true;
+    validSubmit();
 });
 
 
 
 
 function validSubmit(){
-    
-    if (nameU && fileU && descU){
+    if (nameU && deadlineU){
         submitBtn.classList.remove('disabled-button');
         submitBtn.disabled = false;
     } else {

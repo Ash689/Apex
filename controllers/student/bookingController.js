@@ -128,13 +128,31 @@ exports.launchLesson = async (req, res) => {
       await booking.save();
       
     }
-    return res.json ({
-      zoomUrl: booking.zJoinUrl
-    });
+
+    req.session.zoomLink = booking.zJoinUrl;
+    
+    return res.redirect('/student/newReview.html?zoom=true');
 
   } catch (error) {
     console.error(error);
     return res.redirect('/student/viewBooking.html?message=Failed to create zoom meeting.&type=error');
+  }
+};
+
+exports.getZoomLink = async (req, res) => {
+  try {
+    if (req.session.zoomLink){
+      res.json({
+        link: req.session.zoomLink
+      });
+    } else { 
+      res.json({
+        error: "error"
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.redirect('/student/newReview.html?message=Failed to create zoom meeting.&type=error');
   }
 };
 

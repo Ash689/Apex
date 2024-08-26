@@ -35,7 +35,6 @@
     <script src="/script/student/script.js"></script>
     <script src="/script/shouldDisableLaunchButton.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
-    <script src="/script/student/launchLesson.js"></script>
     <script src="/script/student/payLesson.js"></script>
     <script src="/script/student/bookingButtons.js"></script>
     <script>
@@ -175,7 +174,6 @@
                             ${generateBookingHTML(booking, "viewMessage")}
                         `;
                         bookingElement.appendChild(individualBookingElement);
-                        launchLesson(booking);
                         payLesson(booking, "viewMessage");
                     });
                 }

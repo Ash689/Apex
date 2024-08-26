@@ -39,10 +39,8 @@
     <script src="/script/student/script.js"></script>
     <script src="/script/shouldDisableLaunchButton.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
-    <script src="/script/student/launchLesson.js"></script>
     <script src="/script/student/payLesson.js"></script>
     <script src="/script/student/bookingButtons.js"></script>
-    <script src="/script/validate/image.js"></script>
     <script>
         const bookingTableBody = document.getElementById('bookings');
         fetch('/student/apiprofile')
@@ -56,14 +54,12 @@
                 profileElement.innerHTML = `
                     <img id="P1" alt="${data.f_originalname}" src="/uploads/profileFiles/student/profilePicture/${data.f_filename}" alt="Profile Image">
                     <form action="/student/changePic" method="POST" enctype="multipart/form-data">
-                        <input id="profile-photo" type="file" name="profile-photo" accept="image/*">
-                        <button type="submit" id = "imageSubmitBtn" class = "secondary-button">Update Picture</button>
+                        <input id="profile-image" type="file" name="profile-photo" accept="image/*">
+                        <button type="submit" id = "imageSubmitBtn" class = "secondary-button" disabled>Update Picture</button>
                     </form>
                     <h3>Name: ${data.fullName}</h3>
                     <p>Email: ${data.email}</p>
                 `;
-
-                validateImage();
                 
                 data.subjects.forEach(subject => {
                     const subjectElement = document.createElement('div');
@@ -147,7 +143,6 @@
                             </td>
                         `;
                         bookingTableBody.appendChild(row);
-                        launchLesson(booking);
                         payLesson(booking, "home");
                     });
                 }

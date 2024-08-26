@@ -1,6 +1,6 @@
 
 function generateBookingHTML(booking, returnUrl){
-    const disableLaunchButton = shouldDisableLaunchButton(booking.date, booking.time, booking.duration);
+    const launchButtonEnabled = enableLaunchButton(booking.date, booking.duration);
     return `
         ${!booking.tutorConfirmed ? `
             <form action="/tutor/confirmLesson" method="POST">
@@ -22,7 +22,8 @@ function generateBookingHTML(booking, returnUrl){
         ${booking.studentConfirmed && booking.tutorConfirmed && booking.paymentGiven ? `
             <form id = "launch-lesson-form" action="/tutor/launchLesson" method="POST">
                 <input type="hidden" name="bookingId" value="${booking._id}">
-                    <button class="${disableLaunchButton ? (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button') : (booking.revisionSession ? 'tertiary-button' : '')} launch" type="submit" ${disableLaunchButton ? 'disabled' : ''}>Launch</button>
+                    <button class="${launchButtonEnabled ? (booking.revisionSession ? 'tertiary-button' : '') : (booking.revisionSession ? 'disabled-button-revision' : 'disabled-button')} launch" 
+                    type="submit" ${launchButtonEnabled ? '' : 'disabled'}>Launch</button>
             </form>
         ` : ''}
         <form action="/getBookingID" method="POST">

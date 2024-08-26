@@ -57,20 +57,18 @@
 
             <!-- Submit Button -->
             <div class="submit-button-container">
-                <button type="submit">Submit</button>
+                <button id = "submit" type="submit">Submit</button>
             </div>
         </form>
     </div>
     <div id="footer" class="footer"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/script.js"></script>
     <script src="/script/bookingReportScript.js"></script>
+    <script src="/script/validate/homework.js"></script>
     <script>
-        // import OpenAI from "openai";
 
         document.addEventListener('DOMContentLoaded', () => {
             const notesContainer = document.getElementById('notesContainer');
@@ -185,8 +183,14 @@
             if(homeworkShown){
                 document.getElementById('homework-btn').textContent = "Add Homework";
                 homeworkElements.innerHTML =``;
+                nameU = true;
+                deadlineU = true;
+                validSubmit();
             } else{
                 document.getElementById('homework-btn').textContent = "Close Homework";
+                nameU = false;
+                deadlineU = false;
+                validSubmit();
             
                 homeworkElements.innerHTML = `
                     <table id="homework-form" class="hidden">
@@ -211,21 +215,32 @@
                             <tr>
                                 <td>Deadline</td>
                                 <td>
-                                    <input style = "margin: 0px" type="hidden text" id="deadline" name="deadline" readonly required><br><br>
+                                    <input style = "margin: 0px" type="date" id="deadline" name="deadline" required><br><br>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 `;
+
+                let topicName = document.getElementById('topicNameInput');
+
+                topicName.addEventListener('input', function() {
+                    if (topicName.value.length > 0){
+                        nameU = true;
+                    } else {
+                        nameU = false;
+                    }
+                    validSubmit();
+                });
+
+
+                let deadline = document.getElementById('deadline');
+                deadline.addEventListener('input', function(event) {
+                    deadlineU = true;
+                    validSubmit();
+                });
                 
                 document.getElementById('info-button2').title = "Add File: Add a document or homework file." + "\n" + "Add Text: Type your questions.";
-            
-                $(function() {
-                    $("#deadline").datepicker({
-                        dateFormat: "yy-mm-dd",
-                        minDate: 0
-                    });
-                });
 
                 document.getElementById('documentOrText').addEventListener("click", async function (e) {
                     e.preventDefault();

@@ -36,7 +36,6 @@
     <script src="/script/tutor/script.js"></script>
     <script src="/script/shouldDisableLaunchButton.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
-    <script src="/script/tutor/launchLesson.js"></script>
     <script src="/script/tutor/bookingButtons.js"></script>
     <script>
 
@@ -158,16 +157,13 @@
                         const date = new Date(booking.date);
                         const dateString = date.toISOString().split('T')[0];
                         const formattedDate = formatDate(dateString);
-                        const disableLaunchButton = shouldDisableLaunchButton(booking.date, booking.time, booking.duration);
                         individualBookingElement.innerHTML = `
                             <p style = "font-size: 14px">${formattedDate}</p>
                             <p style = "font-size: 14px">${booking.time}</p>
                             ${!booking.revisionSession ? `<p style = "font-size: 12px">${booking.subject}</p>` : `<p style = "font-size: 12px">Revision Session</p>`}
                             ${generateBookingHTML(booking, "viewMessage")}
                         `;
-                        bookingElement.appendChild(individualBookingElement);
-                        launchLesson(booking);
-                        
+                        bookingElement.appendChild(individualBookingElement);                        
                     });
                 }
             }

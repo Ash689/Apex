@@ -20,6 +20,10 @@ router.post('/launchLesson', (req, res) => {
   controller.launchLesson(req, res);
 });
 
+router.get('/getZoomLink', (req, res) => {
+  controller.getZoomLink(req, res);
+});
+
 router.post('/payLesson', (req, res) => {
   controller.payLesson(req, res);
 });

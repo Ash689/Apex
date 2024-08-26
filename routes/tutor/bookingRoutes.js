@@ -22,6 +22,10 @@ router.post('/launchLesson', (req, res) => {
   controller.launchLesson(req, res);
 });
 
+router.get('/getZoomLink', (req, res) => {
+  controller.getZoomLink(req, res);
+});
+
 router.post('/launchReport', (req, res) => {
   controller.launchReport(req, res);
 });

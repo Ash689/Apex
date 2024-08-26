@@ -28,7 +28,6 @@
     <script src="/script/tutor/script.js"></script>
     <script src="/script/shouldDisableLaunchButton.js"></script>
     <script src="/script/bookingDateFormat.js"></script>
-    <script src="/script/tutor/launchLesson.js"></script>
     <script src="/script/tutor/bookingButtons.js"></script>
     <script>
         const bookingTableBody = document.getElementById('bookings');
@@ -86,8 +85,7 @@
                             `;
                             
 
-                            bookingTableBody.appendChild(row);
-                            launchLesson(booking);                        
+                            bookingTableBody.appendChild(row);                       
                         });
                     });
                 }

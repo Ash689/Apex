@@ -23,7 +23,7 @@ fetch('/tutor/getStudentProfileNotes')
         const formattedTime = lessonDate.toLocaleTimeString('en-US', timeOptions);
 
         profileElement.innerHTML = `
-            <div class="profile-container">
+            <div class="profile-container" style = "display: flex">
                         <img id="P1" style="width: 200px" alt="${data.f_originalname}" src="/uploads/profileFiles/student/profilePicture/${data.f_filename}" alt="Profile Image">
                 <div class="profile-info">
                     <h3>Name: ${data.studentName}</h3>

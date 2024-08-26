@@ -301,6 +301,7 @@ exports.cancelOneBooking = async (req, res) => {
     if (deletedBooking.paymentGiven) {
       const refund = await stripe.refunds.create({
         payment_intent: deletedBooking.stripeIntent,
+        refund_application_fee: true,
       });
     }
 
@@ -330,6 +331,26 @@ exports.cancelRecurringBooking = async(req, res) => {
     if (!booking.recurringID) {
       return res.redirect(`${linkPage}/editBooking.html?message=Booking is not part of a recurring series.&type=error`);
     }
+
+    const futureBookings = await Booking.find({
+      recurringID: booking.recurringID,
+      date: { $gte: new Date() },
+      paymentGiven: true,
+      cancelled: false
+    });
+
+    if (futureBookings.length != 0) {
+      for (const futureBooking of futureBookings) {
+        if (futureBooking.paymentGiven) {
+          const refund = await stripe.refunds.create({
+            payment_intent: futureBooking.stripeIntent,
+            refund_application_fee: true,
+          });
+        }
+      }
+    }
+
+
     const deletedBookings = await Booking.updateMany(
       { recurringID: booking.recurringID },
       { $set: { 

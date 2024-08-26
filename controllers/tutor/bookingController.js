@@ -122,13 +122,31 @@ exports.launchLesson = async(req, res) => {
       booking.zJoinUrl = meetingData.join_url;
       await booking.save();
     }
-    return res.json ({
-      zoomUrl: booking.zJoinUrl
-    });
+
+    req.session.zoomLink = booking.zJoinUrl;
+    
+    return res.redirect('/tutor/lessonNotes.html?zoom=true');
 
   } catch (error) {
     console.error(error);
     return res.redirect('/tutor/viewBooking.html?message=Failed to join zoom meeting.&type=error');
+  }
+};
+
+exports.getZoomLink = async (req, res) => {
+  try {
+    if (req.session.zoomLink){
+      res.json({
+        link: req.session.zoomLink
+      });
+    } else {
+      res.json({
+        error: "error"
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.redirect('/tutor/lessonNotes.html?message=Failed to create zoom meeting.&type=error');
   }
 };
 
@@ -169,6 +187,13 @@ exports.lessonReportSubmit = async (req, res) => {
     booking.weakTopics = weakTopics;
     await booking.save();
 
+    const date = new Date(booking.date);
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const year = date.getUTCFullYear();
+
+    let headingTopic = booking.revisionSession ? booking.subject : 'Revision';
+
     // Find and update related booking for lesson plan
     const relatedBooking = await Booking.findOne({ 
       tutor: booking.tutor, 
@@ -184,7 +209,7 @@ exports.lessonReportSubmit = async (req, res) => {
     }
     let messageDesign = `
       <div id = "report" class = "reportStyle">
-        <h3>Lesson Report</h3>
+        <h3>Lesson Report: ${headingTopic} [${day}/${month}/${year}] </h3>
         <p><strong>Topics Covered:</strong></p>
         <ul>
           ${topics.split(', ').map(topic => `<li>${topic}</li>`).join('')}

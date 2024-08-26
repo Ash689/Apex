@@ -2,6 +2,7 @@ const submitBtn = document.getElementById('submitBtn');
 let subjectU = true;
 let durationU = true;
 let dateU = true;
+let timeU = true;
 
 const subjectTitle = document.getElementById('subjectTitle');
 const subjectField = document.getElementById('subject');
@@ -41,23 +42,60 @@ const dateTitle = document.getElementById('dateTitle');
 const dateField = document.getElementById('bookingDate');
 
 dateField.addEventListener('change', function(event) {
-    const date = new Date(dateField.value);
-    const today = new Date();
-    messageElement.textContent = ` ${(date.getFullYear() >= today.getFullYear())} &&  ${(date.getMonth() >= today.getMonth())} && ${(date.getDate() >= today.getDate())}`;
+    const date = new Date(dateField.value); // Date selected by the user
+    const today = new Date(); // Current date
+    timeField.value = "";  
+    timeU = false;
 
-    if ((date.getFullYear() >= today.getFullYear()) &&  (date.getMonth() >= today.getMonth()) && (date.getDate() >= today.getDate())) {
+    // Set time to midnight for both dates to ensure comparison is based on the date, not the time
+    today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
+
+    if (date >= today) {
+        // The selected date is either today or in the future
         dateTitle.innerHTML = "";
         dateU = true;
     } else {
+        // The selected date is in the past
         dateTitle.innerHTML = "Booking must not be in the past.";
         dateU = false;
     }
     validSubmit();
 });
 
+const timeTitle = document.getElementById('timeTitle');
+const timeField = document.getElementById('bookingTime');
+
+timeField.addEventListener('change', function() {
+    const date = new Date(dateField.value);
+    const today = new Date();
+    let currentHour = today.getHours();
+    let currentMinute = today.getMinutes();
+
+    // If the date is today, validate the selected time
+    if (dateField.value && date.toDateString() === today.toDateString()) {
+        let [selectedHour, selectedMinute] = timeField.value.split(':').map(Number);
+
+        // Check if selected time is earlier than the current time
+        if (selectedHour < currentHour || (selectedHour === currentHour && selectedMinute < currentMinute)) {
+            timeTitle.innerHTML = 'Selected time cannot be in the past for today.';
+            timeU = false;
+        } else {
+            timeTitle.innerHTML = '';
+            timeU = true;
+        }
+    } else {
+        // Any time is valid if the selected date is not today
+        timeTitle.innerHTML = '';
+        timeU = true;
+    }
+
+    validSubmit();
+});
+
 
 function validSubmit() {
-    if (subjectU && durationU && dateU){
+    if (subjectU && durationU && dateU && timeU){
         submitBtn.disabled = false;
         submitBtn.classList.remove('disabled-button');
     } else {
