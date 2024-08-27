@@ -1,6 +1,6 @@
 function payLesson(booking, returnUrl){
     if (booking.studentConfirmed && !booking.paymentGiven){
-        document.getElementById('checkout-btn').addEventListener('click', async () => {
+        document.getElementById('checkout-btn-payment').addEventListener('click', async () => {
             const response = await fetch('/student/payLesson', {
                 method: 'POST',
                 headers: {

@@ -192,6 +192,7 @@ exports.updatePaymentMethod = async (req, res) => {
 
       user.defaultPaymentMethod = paymentMethodId;
       await user.save();
+      console.log("JDKLASJD");
 
       let booking = await Booking.findById(req.session.bookingID);
       booking.stripeIntent = session.payment_intent.id;

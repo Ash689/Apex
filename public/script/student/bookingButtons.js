@@ -13,7 +13,7 @@ function generateBookingHTML(booking, returnUrl){
 
         ${booking.studentConfirmed && !booking.paymentGiven ? `
             Price: £${booking.price}
-            <button id = "checkout-btn" type="submit">Pay for lesson</button>
+            <button id = "checkout-btn-payment" type="submit">Pay for lesson</button>
         ` : ''}
         ${!booking.tutorConfirmed ? `
             Lesson to be confirmed by Tutor
