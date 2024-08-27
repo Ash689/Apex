@@ -37,29 +37,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/script.js"></script>
-    <script>  
-        document.addEventListener('DOMContentLoaded', () => {
-            const days = document.querySelectorAll('#day');
-            const daysAvailableInput = document.getElementById('daysAvailable');
-            let selectedDays = [];
-
-            days.forEach(day => {
-                day.addEventListener('click', () => {
-                    const dayName = day.getAttribute('data-day');
-                    if (selectedDays.includes(dayName)) {
-                        selectedDays = selectedDays.filter(d => d !== dayName);
-                        day.classList.remove('selected');
-                        day.style = "";
-                    } else {
-                        selectedDays.push(dayName);
-                        day.classList.add('selected');
-                        day.style = "background-color: #9d1a34; color: white;"
-                    }
-                    daysAvailableInput.value = selectedDays.join(',');
-                });
-            });
-        });       
-    </script>
-
+    <script src="/script/tutor/pages/configDays.js"></script>
 </body>
 </html>

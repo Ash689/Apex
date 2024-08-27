@@ -25,17 +25,6 @@
     width: 200px;
 }
 
-.messaging {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    height: 100%;
-}
-
-.messaging textarea {
-    width: 3000px;
-}
-
 a:visited, a:hover, a:active {
     font-size: 12px;
 }
@@ -171,3 +160,31 @@ a:visited, a:hover, a:active {
     align-items: center;
     padding: 20px;
 } 
+
+.messaging {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    height: 100%;
+}
+
+.messaging textarea {
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+.messaging textarea:focus{  
+    border-color: #dc143c;
+}
+
+.message-file {
+    /* height: 20px; */
+    width: 300px;
+}
+
+.message-button {
+    height: 20px;
+    width: 3000px;
+}

@@ -9,7 +9,7 @@ const payment = require('../../utils/payment');
 const stripe = require('stripe')(process.env.STRIPE_TOKEN);
 
 exports.confirmLesson = async (req, res) => {
-  const { bookingId, returnUrl } = req.body;
+  const { bookingId, returnUrl, charityChoice } = req.body;
 
   try {
 
@@ -26,10 +26,12 @@ exports.confirmLesson = async (req, res) => {
         { recurringID: booking.recurringID },
         { $set: { 
           studentConfirmed: true, 
+          charity: charityChoice,
       }});
 
     } else {
       booking.studentConfirmed = true;
+      booking.charity = charityChoice;
       await booking.save();
     }
     

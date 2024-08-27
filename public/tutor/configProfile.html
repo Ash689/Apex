@@ -103,43 +103,12 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://cdn.getaddress.io/scripts/getaddress-autocomplete-1.3.4.min.js"></script>
-    <script src = "/script/autoCompleteAddress.js"></script>
+    <script src = "/script/autoComplete/address.js"></script>
 
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/logout.js"></script>
     <script src = "/script/validate/profile.js"></script>
-    <script>
-        let teachU = false;
-
-        const teachTitle = document.getElementById('teachTitle');
-        const teachField = document.getElementById('tuitionType');
-
-        teachField.addEventListener('input', function(event) {
-            const teach = teachField.value.trim();
-
-            if (teach.length > 100) {
-                teachTitle.innerHTML = "Please enter 100 characters or less.";
-                teachU = false;
-                validSubmit();
-            } else {
-                teachTitle.innerHTML = '';
-                teachU = true;
-                validSubmit();
-            }
-        });
-
-        function validSubmit() {
-            if (fileU && nameU && addressU && numberU && dobU && teachU){
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('disabled-button');
-            } else {
-                submitBtn.disabled = true;
-                submitBtn.classList.add('disabled-button');
-            }
-        }
-        
-        document.getElementById('info-button2').title = "E.g. 4 years of teaching, ranging from starting from scratch up to exam prep.";
-    </script>
+    <script src="/script/tutor/pages/configProfile.js"></script>
 
 </body>
 </html>

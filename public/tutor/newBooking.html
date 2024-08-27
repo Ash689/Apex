@@ -98,64 +98,11 @@
     </div>
     <div id="footer" class="footer"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
-    <script src = "/script/autoCompleteSubject.js"></script>
-    <script>
-        document.getElementById('duration').value = 40;
-        document.getElementById('recurringToggle').addEventListener('click', function() {
-            var recurringValue = document.getElementById('recurring');
-            var recurringButton = document.getElementById('recurringToggle');
-            // Check if the register button text is "Get Started"
-            if (recurringValue.value === 'No') {
-                recurringValue.value = 'Yes';
-                recurringButton.textContent = "Yes";
-                recurringButton.style = "background-color: #9d1a34; color: #efefef";
-            } else {
-                recurringButton.style = "";
-                recurringValue.value = 'No';
-                recurringButton.textContent = "No";
-            }
-        });
-
-
-        document.getElementById('revisionToggle').addEventListener('click', function() {
-            var revisionValue = document.getElementById('revision');
-            var revisionButton = document.getElementById('revisionToggle');
-            // Check if the register button text is "Get Started"
-            if (revisionValue.value === 'no') {
-                revisionValue.value = 'yes';
-                revisionButton.className = "tertiary-button";
-                revisionButton.textContent = "Recurring Session";
-            } else {
-                revisionButton.className = "";
-                revisionValue.value = 'no';
-                revisionButton.textContent = "Tutoring Lesson";
-            }
-        });
-    </script>
+    <script src = "/script/autoComplete/subject.js"></script>
+    <script src="/script/tutor/pages/newBooking1.js"></script>
     <script src="/script/standardScript.js"></script>
     <script src="/script/tutor/script.js"></script>
-    <script>
-
-        const timeSelect = document.getElementById('bookingTime');
-
-        // Clear existing options except the first one
-        while (timeSelect.options.length > 1) {
-            timeSelect.remove(1);
-        }
-
-        // Populate with new options
-        for (let hour = 0; hour < 24; hour++) {
-            for (let minute = 0; minute < 60; minute += 15) {
-                let time = ('0' + hour).slice(-2) + ':' + ('0' + minute).slice(-2);
-                let option = document.createElement('option');
-                option.value = time;
-                option.textContent = time;
-                timeSelect.appendChild(option);
-            }
-        }
-        
-        document.getElementById('info-button').title = "Tutoring Lesson: Prices range from £10 to £40" + "\n" + "Revision Session: Prices range from £5 to £12" + "\n" + "Introduction Session: Free";
-    </script>
+    <script src="/script/tutor/pages/newBooking2.js"></script>
     <script src = "/script/validate/newBooking.js"></script>  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">

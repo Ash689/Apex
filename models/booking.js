@@ -25,6 +25,7 @@ const bookingSchema = new mongoose.Schema({
   zJoinUrl: {type: String, default: ""},
   stripeIntent: {type: String, default: null},
   cancelled: {type: Boolean, default: false},
+  charity : {type: String, default: null}
 });
 
 module.exports = mongoose.model('Booking', bookingSchema);
