@@ -8,7 +8,7 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    color: #1d3151;
+    color: #0f1b2e;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
@@ -16,6 +16,8 @@ body {
     font-family: Helvetica, sans-serif;
     overflow: auto; /* Prevent scrolling */
 }
+
+/*Other blue colour was : 1.d3151*/
 
 .container{
     /* background-color: #efefef; */
@@ -35,7 +37,7 @@ body {
     width: 100%;
     font-size: 14px;
     text-decoration: none;
-    color: #1d3151;
+    color: #0f1b2e;
 }
 #navbar a{
     margin-left: 60px;
@@ -102,20 +104,20 @@ a{
     text-decoration: none;
     text-decoration: underline;
     font-size: 14px;
-    color: #1d3151; 
+    color: #0f1b2e; 
 }
 
 a:visited, a:hover, a:active {
     font-family: 'Dancing Script', sans-serif;
     font-size: 14px;
-    color: #1d3151; 
+    color: #0f1b2e; 
     text-decoration: none;
     margin: 0;
 }
 .current{
     font-family: 'Dancing Script', sans-serif;
     font-size: 14px;
-    color: #1d3151; 
+    color: #0f1b2e; 
     text-decoration: none;
     margin: 0;
 }
@@ -151,7 +153,7 @@ button:active {
     border-radius: 5px;
     background-color: #efefef;
     border: none;
-    color: #1d3151;
+    color: #0f1b2e;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
@@ -195,7 +197,7 @@ input, button {
 h2 {
     margin-top: 0;
     font-size: 38px;
-    color: #1d3151;
+    color: #0f1b2e;
     font-family: 'Dancing Script', sans-serif;
 }
 
@@ -225,7 +227,7 @@ p{
 
 .secondary-button {
     background-color: #efefef;
-    color: #1d3151;
+    color: #0f1b2e;
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -242,7 +244,7 @@ p{
 }
 
 .tertiary-button {
-    background-color: #1d3151;
+    background-color: #0f1b2e;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -269,8 +271,8 @@ p{
 }
 
 .disabled-button-revision {
-    background-color: #1d31517a;
-    border: 2px solid #1d3151; 
+    background-color: #0f1b2e7a;
+    border: 2px solid #0f1b2e; 
     cursor: not-allowed;
     pointer-events: none; 
     position: relative; 
@@ -478,4 +480,80 @@ select option {
 select option:hover {
     background-color: #dc143c; /* Crimson background on hover */
     color: #fff; /* White text on hover */
+}
+
+
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 20px;
+}
+
+.footer-section p, .footer-section ul {
+    margin: 0;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+}
+
+.footer-divider {
+    border: 0;
+    border-top: 1px solid #444;
+    margin: 20px 0;
+}
+
+.social-media {
+    margin-bottom: 20px;
+}
+
+.social-media a {
+    margin: 0 10px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.social-media a:hover {
+    text-decoration: underline;
+}
+
+.copyright {
+    margin-bottom: 0;
+}
+
+.contact a{
+    color: #fff;
 }

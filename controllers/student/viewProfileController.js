@@ -76,6 +76,7 @@ exports.getTutorProfile2 = async(req, res) => {
           tutor: recipient._id, 
           student: req.session.user._id,
           revisionSession: false,
+          cancelled: false,
           date: { $gt: new Date() }
   
         }).sort({ date: 1 });  // Sort by date in ascending order to get the earliest one after the current booking

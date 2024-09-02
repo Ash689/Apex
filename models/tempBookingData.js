@@ -6,6 +6,7 @@ const tempBookingDataSchema = new mongoose.Schema({
   date: { type: Date, required: true },
   time: {type: String, required: true},
   duration: {type: Number, required: true},
+  revisionSession: {type: Boolean, default: false},
   price: { type: Number, required: true}
 });
 

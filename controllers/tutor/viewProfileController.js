@@ -45,7 +45,8 @@ exports.getBookingProfile = async(req,res) => {
     const relatedBooking = await Booking.findOne({ 
       tutor: req.session.user._id, 
       student: recipient._id,
-      date: { $gt: new Date() }
+      date: { $gt: new Date() },
+      cancelled: false,
     }).sort({ date: 1 });  // Sort by date in ascending order to get the earliest one after the current booking
     res.json({
       recipient: recipient,

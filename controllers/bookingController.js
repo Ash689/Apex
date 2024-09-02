@@ -13,7 +13,8 @@ exports.getBookingProfile = async(req,res) => {
           tutor: recipient._id, 
           student: req.session.user._id,
           revisionSession: false,
-          date: { $gt: new Date() }
+          date: { $gt: new Date() },
+          cancelled: false
   
         }).sort({ date: 1 });
   
@@ -252,6 +253,7 @@ exports.cancelChanges = async (req, res) => {
       booking.time = tempBooking.time;
       booking.duration = tempBooking.duration;
       booking.price = tempBooking.price;
+      booking.revisionSession = tempBooking.revisionSession;
   
       // Set the correct confirmation flag based on the user's role
       let linkPage;
@@ -290,7 +292,7 @@ exports.cancelOneBooking = async (req, res) => {
       date: { $gt: booking.date }
     }).sort({ date: 1 });
 
-    if (relatedBooking) {
+    if (relatedBooking && relatedBooking.plan != "Not planned") {
       relatedBooking.plan = booking.plan;
       await relatedBooking.save();
     }
@@ -301,7 +303,7 @@ exports.cancelOneBooking = async (req, res) => {
     if (deletedBooking.paymentGiven) {
       const refund = await stripe.refunds.create({
         payment_intent: deletedBooking.stripeIntent,
-        refund_application_fee: true,
+        reverse_transfer:true,
       });
     }
 

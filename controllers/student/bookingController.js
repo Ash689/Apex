@@ -48,7 +48,7 @@ exports.editBooking = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.redirect('/student/editBooking.html?message=Invalid input.&type=error');
   }
-  const { subject, bookingDate, bookingTime, duration } = req.body;
+  const { revision, subject, bookingDate, bookingTime, duration } = req.body;
 
   try {
     // Convert bookingDate and bookingTime into a Date object
@@ -81,6 +81,7 @@ exports.editBooking = async (req, res) => {
         date: editBooking.date,
         time: editBooking.time,
         price: editBooking.price,
+        revisionSession: editBooking.revisionSession,
         duration: editBooking.duration,
       });
       await tempBooking2.save();
@@ -94,6 +95,7 @@ exports.editBooking = async (req, res) => {
     editBooking.duration = duration;
     editBooking.tutorConfirmed = false;
     editBooking.studentConfirmed = true;
+    editBooking.revisionSession = (revision === "yes");
 
     // Save the booking
     await editBooking.save();

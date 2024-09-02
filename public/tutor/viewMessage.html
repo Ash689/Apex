@@ -21,7 +21,7 @@
             <div class="message-section">
                 <div id="read-message" class="profile-bar2"></div>
                 <form action="/tutor/sendMessage" class = "message-box" id="parent-form" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="document">
+                    <input class = "message-file" type="file" name="document">
                     <textarea  id="message-input" type="text" name="content" required maxlength="2000"></textarea><br><br>
                     <button type="submit">Send</button>
                 </form>

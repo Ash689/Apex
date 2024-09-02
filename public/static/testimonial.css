@@ -1,0 +1,55 @@
+.testimonial p {
+    color: #dc143c;
+    margin-bottom: 20px;
+    font-weight: 400vh;
+    font-size: 15px;
+    position: absolute;
+}
+
+.top-left {
+    top: 10%;
+    left: 10%;
+    transform: rotate(-5deg);
+}
+
+.top-right {
+    top: 21%;
+    right: 20%;
+    transform: rotate(5deg);
+}
+
+.top-left-bottom {
+    top: 35%;
+    left: 10%;
+    transform: rotate(5deg);
+}
+
+.top-right-bottom {
+    top: 35%;
+    right: 20%;
+    transform: rotate(-5deg);
+}
+
+.bottom-left {
+    top: 65%;
+    left: 10%;
+    transform: rotate(5deg);
+}
+
+.bottom-right {
+    top: 65%;
+    right: 20%;
+    transform: rotate(-5deg);
+}
+
+.bottom-left-bottom {
+    top: 80%;
+    left: 0%;
+    transform: rotate(-5deg);
+}
+
+.bottom-right-bottom {
+    top: 80%;
+    right: 20%;
+    transform: rotate(5deg);
+}

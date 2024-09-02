@@ -8,7 +8,7 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    color: #1d3151;
+    color: #0f1b2e;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
@@ -140,7 +140,7 @@ button {
 }
 
 button:hover {
-    background-color: #1d3151;
+    background-color: #0f1b2e;
     color: #efefef;
 }
 
@@ -208,7 +208,7 @@ input[type="file"] {
 }
 
 .custom-file-input:hover {
-    background-color: #1d3151;
+    background-color: #0f1b2e;
     color: #efefef;
 }
 
@@ -266,7 +266,7 @@ input[type="file"] {
 }
 
 .button:hover {
-    background-color: #1d3151;
+    background-color: #0f1b2e;
     color: #efefef;
 }
 
@@ -285,6 +285,6 @@ input[type="file"] {
 }
 
 .logout-button:hover {
-    background-color: #1d3151;
+    background-color: #0f1b2e;
     color: #efefef;
 }

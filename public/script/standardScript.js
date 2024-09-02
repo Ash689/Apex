@@ -50,10 +50,11 @@ $('input').blur(function() {
     }
 });
 
-const footerElement = document.getElementById('footer');
-footerElement.innerHTML = `
-    <p>&copy; 2024 Tutoring. All rights reserved.</p>
-`;
+fetch('/footer.html')
+.then(response => response.text())
+.then(data => {
+    document.getElementById('footer').innerHTML = data;
+}).catch(error => console.error('Error loading the footer:', error));
 
 
 

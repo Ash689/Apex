@@ -37,3 +37,19 @@ fetch('/viewOneBooking')
     messageElement.textContent = 'Failed to show bookings';
     messageElement.classList.add('error');
 });
+
+document.getElementById('revisionToggle').addEventListener('click', function() {
+    var revisionValue = document.getElementById('revision');
+    var revisionButton = document.getElementById('revisionToggle');
+    // Check if the register button text is "Get Started"
+    if (revisionValue.value === 'no') {
+        revisionValue.value = 'yes';
+        revisionButton.className = "tertiary-button";
+        revisionButton.textContent = "Recurring Session";
+    } else {
+        revisionButton.className = "";
+        revisionValue.value = 'no';
+        revisionButton.textContent = "Tutoring Lesson";
+    }
+    validSubmit();
+});

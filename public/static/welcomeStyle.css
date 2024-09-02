@@ -11,62 +11,69 @@
     z-index: 1;
 }
 
+
+.header {
+    background-color: #f2f2f2;
+    padding-left: 20px;
+    border-bottom: 2px solid #f2f2f2;
+    color: #dc143c;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: auto;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    transition: top 1s ease, transform 1s ease;
+    z-index: 2;
+    height: auto;
+}
+
+.header h1 {
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 50px;
+    margin: 0;
+}
+
+
+
+#intro-section{
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+#intro-section.hidden{
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.title {
+    margin-top: 150px;
+    color: #dc143c;
+}
+
+
 #container {
     text-align: center;
     width: 100%;
     box-sizing: border-box;
     background-color: #f2f2f2;
-    height: auto;
+    z-index: 2;
+    height: 650px;
+}
+
+#container img{
+    max-width: 100%; /* Ensure the image fits inside the div */
+    max-height: 100%;
+    z-index: 2;
+}
+
+#login-container {
     z-index: 2;
     display: flex;
     justify-content: space-around;
-    margin-top: 100px;
 }
 
-.header {
-    background-color: #f2f2f2;
-    padding: 20px;
-    border-bottom: 2px solid #f2f2f2;
-    color: #dc143c;
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    width: 100%;
-    box-sizing: border-box;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: top 1s ease, transform 1s ease;
-    z-index: 2;
-}
-
-.header h1 {
-    font-family: 'Dancing Script', sans-serif;
-    font-size: 76px;
-    margin: 0;
-}
-
-.slogan-top {
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.testimonial {
-    font-size: 16px;
-    color: #666666;
-    margin-bottom: 20px;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.testimonial span {
-    display: inline-block;
-    margin-top: 10px;
-    font-weight: bold;
-}
 
 #parent-form-container {
     background-color: #fff;
@@ -78,11 +85,17 @@
     transform: translateY(20px);
     max-width: 400px;
     max-height: 200px;
-    /* margin: 0 auto; */
     flex: 1;
-    margin-top: 150px;
-    font-size: 30px;
+    margin-top: 50px;
+    font-size: 20px;
+    max-width: 500px;
+    transition: all 0.2s ease-in-out;
 }
+
+#parent-form-container:hover {
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
+}
+
 
 
 #tutor-form-container {
@@ -97,86 +110,160 @@
     max-height: 200px;
     /* margin: 0 auto; */
     flex: 1;
-    margin-top: 150px;
-    font-size: 30px;
-}
-
-.bridge2 {
-    color: #1d3151;
-    padding: 20px;
-    border-radius: 10px;
-    
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    opacity: 1;
-    width: 100%; /* Adjust width as needed */
-    height: auto; /* Adjust height to be larger than width */
-    margin: 50px auto; /* Center horizontally with margin */
-    /* text-align: left; */
-    box-sizing: border-box;
-}
-
-.bridge {
-    /* display: flex; */
-    background-color: #dc143c;
-    color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    opacity: 1;
-    width: 100%px; /* Adjust width as needed */
-    height: auto; /* Adjust height to be larger than width */
-    margin: 50px auto; /* Center horizontally with margin */
-    /* text-align: left; */
-    box-sizing: border-box;
-}
-
-.bridge h1{
-    display: inline-block;
-    font-size: 25px;
-    /* transform: rotate(-5deg); */
-}
-
-.bridge h2{
-    color: #fff;
+    margin-top: 50px;
     font-size: 20px;
+    max-width: 500px;
+    transition: all 0.2s ease-in-out;
+}
+
+#tutor-form-container:hover {
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+button {
+    font-size: 15px;
+}
+
+#bridge {
+    background-color: #0f1b2e;
+    color: #fff;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
+
+#bridge h1{
+    color: #fff;
+    display: inline-block;
+    font-size: 15px;
+}
+
+#bridge h2{
+    color: #fff;
+    font-size: 13px;
     font-family: Arial, sans-serif;
 }
 
-.extra {
+#bridge:hover {
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+#aboutus-3d {
+    background-color: #fff;
+    color: #122139;
+    height: 450px;
+}
+
+#aboutus {
     display: flex;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    opacity: 1;
-    transition: opacity 1s ease, transform 1s ease;
-    transform: translateY(0);
-    width: 90%;
-    /* height: 400px; */
-    height: auto;
-    margin: 50px auto;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin: 40px;
+    border: none; /* Remove any existing border */
+    box-shadow: 4px 4px 0px 0px #000; /* Creates the 3D effect on the right and bottom */
+    transition: all 0.2s ease-in-out;
+    border: 2px solid #000000;
+}
+
+#aboutus p{
     text-align: left;
-    box-sizing: border-box;
 }
 
-.extra-text, .extra-images {
-    /* flex: 1; */
+#aboutus:hover {
+    box-shadow: 8px 8px 0px 0px #000; /* Make the shadow larger for the pop-out effect */
+    transform: translate(-2px, -2px); /* Slightly move the element up and to the left to enhance the effect */
+}
+
+#aboutus img {
+    height: 250px;
+    width: 450px; /* Make sure the width and height are equal */
+    margin-right: 50px;
+    border-radius: 50%; /* This makes the image circular */
+    border-color: #fff;
+    object-fit: cover; /* Ensures the image fills the circular area */
+}
+
+#group-3 {
+    display: flex;
+    justify-content: space-between; /* Distributes the extra-text divs evenly */
+    align-items: flex-start; /* Aligns the divs at the top */
+    gap: 20px; /* Optional: Adds space between the divs */
+    background-color: #0f1b2e;
+    color: #fff;
+    height: 550px;
     padding: 20px;
+}
+
+#group {
+    flex: 1; 
+    padding: 10px;
     box-sizing: border-box;
+    border-radius: 5px;
+    border: none;
+    height: 480px;
+    margin-top: 40px;
+    transition: all 0.2s ease-in-out;
 }
 
-.extra-images img {
-    width: 50%;
-    height: auto;
-    margin-bottom: 20px;
+#group h1 {
+    letter-spacing: 2px;
+    font-weight: 100;
 }
 
-#review h3 {
-    margin-top: 0;
+#group img {
+    height: 250px;
+    width: 250px; /* Make sure the width and height are equal */
+    border-radius: 50%; /* This makes the image circular */
+    border-color: #fff;
+    object-fit: cover; /* Ensures the image fills the circular area */
 }
 
-#review p {
-    margin-bottom: 10px;
+#group:hover {
+    background-color: #fff;
+    color: #122139;
+    border-color: #122139;
+}
+
+
+#group-3d {
+    background-color: #fff;
+    color: #122139;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    height: 500px;
+}
+
+#group-d {
+    border-radius: 5px;
+    border: none; /* Remove any existing border */
+    box-shadow: 4px 4px 0px 0px #000; /* Creates the 3D effect on the right and bottom */
+    transition: all 0.2s ease-in-out;
+    border: 2px solid #000000;
+}
+
+#group-d:hover {
+    box-shadow: 8px 8px 0px 0px #000; /* Make the shadow larger for the pop-out effect */
+    transform: translate(-2px, -2px); /* Slightly move the element up and to the left to enhance the effect */
+}
+
+#group-d img {
+    height: 200px;
+    width: 200px;
+}
+
+#group-d h1 {
+    letter-spacing: 2px;
+    font-weight: 100;
 }
 
 #P1 {
@@ -233,51 +320,7 @@
     transform: translate(-50%, -50%);
     z-index: 3; /* Place the image behind the text */
 }
-.parent-form {
-    width: 500px;
-    margin: 30px auto;
-    background-color: #fff;
-    border: solid 1px #ccc;
-    padding: 20px 10px;
-}
 
-.slogan-top {
-    transition: opacity 1s ease, transform 1s ease;
-    position: absolute;
-    top: 205px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 1;
-    font-family: Arial, sans-serif;
-    font-weight: 600;
-    font-size: 40px;
-    z-index: 1;
-}
-
-.slogan-top.hidden {
-    opacity: 0;
-    transform: translateY(-20px);
-}
-
-
-#intro-section{
-    transition: opacity 1s ease, transform 1s ease;
-}
-
-#intro-section.hidden{
-    opacity: 0;
-    transform: translateY(-20px);
-}
-
-.parent-form-container{
-    max-width: 500px;
-}
-
-.tutor-form-container{
-    max-width: 500px;
-}
-
-.text-emphasis{
-    font-weight: 500; 
+.emphasis {
     color: #dc143c;
 }

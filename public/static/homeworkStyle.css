@@ -59,7 +59,7 @@
 .current{
     font-family: 'Dancing Script', sans-serif;
     font-size: 18px;
-    color: #1d3151; 
+    color: #0f1b2e; 
     text-decoration: none;
     margin: 0;
 }   
@@ -67,7 +67,7 @@
 a:visited, a:hover, a:active {
     font-family: 'Dancing Script', sans-serif;
     font-size: 18px;
-    color: #1d3151; 
+    color: #0f1b2e; 
     text-decoration: none;
     margin: 0;
 }

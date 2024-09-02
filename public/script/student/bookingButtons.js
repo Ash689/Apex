@@ -2,8 +2,23 @@
 function generateBookingHTML(booking, returnUrl){
     const launchButtonEnabled = enableLaunchButton(booking.date, booking.duration);
     return `
-        ${!booking.studentConfirmed ? `
+        ${!booking.studentConfirmed && !booking.paymentGiven? `
             Price: £${booking.price}
+            <form action="/student/confirmLesson" method="POST">
+                <select id="charity" name="charityChoice" class = "charity-choice" required>
+                    <option value="" disabled selected>Select your charity</option>
+                    <option value="redCross">Red Cross</option>
+                    <option value="unicef">UNICEF</option>
+                    <option value="wwf">World Wildlife Fund (WWF)</option>
+                    <option value="ChildrenInNeed">Children in Need</option>
+                </select>
+                <input type="hidden" name="returnUrl" value="${returnUrl}">
+                <input type="hidden" name="bookingId" value="${booking._id}">
+                <button id = "checkout-btn" type="submit">Confirm</button>
+            </form>
+        ` : ''}
+
+        ${!booking.studentConfirmed && booking.paymentGiven? `
             <form action="/student/confirmLesson" method="POST">
                 <select id="charity" name="charityChoice" class = "charity-choice" required>
                     <option value="" disabled selected>Select your charity</option>

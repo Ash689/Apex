@@ -29,6 +29,7 @@ fetch('/viewOneBooking')
                     </form>
                 `;
             }
+
         } else {
             messageElement.textContent = 'Booking not found.';
             messageElement.classList.add('error');
@@ -43,3 +44,21 @@ fetch('/viewOneBooking')
 
 
 document.getElementById('info-button').title = "Tutoring Lesson: Prices range from £10 to £40" + "\n" + "Revision Session: Prices range from £5 to £12" + "\n" + "Introduction Session: Free";
+
+
+document.getElementById('revisionToggle').addEventListener('click', function() {
+    var revisionValue = document.getElementById('revision');
+    var revisionButton = document.getElementById('revisionToggle');
+    // Check if the register button text is "Get Started"
+    if (revisionValue.value === 'no') {
+        revisionValue.value = 'yes';
+        revisionButton.className = "tertiary-button";
+        revisionButton.textContent = "Recurring Session";
+    } else {
+        revisionButton.className = "";
+        revisionValue.value = 'no';
+        revisionButton.textContent = "Tutoring Lesson";
+    }
+    
+    validSubmit();
+});

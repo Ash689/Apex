@@ -20,6 +20,15 @@
         <form action="/student/editBooking" method="POST">
             <table id="edit-booking">
                 <tbody>
+
+                    <tr>
+                        <td>Lesson or Revision</td>
+                        <td>
+                            <button type="button" id="revisionToggle" data-state="No">Tutoring Lesson</button>
+                            <input type="hidden" id="revision" name="revision" value="no">
+                        </td>
+                    </tr>
+                    
                     <tr>
                         <td>Select Subject
                             <div class = "byline" id = "subjectTitle"></div>

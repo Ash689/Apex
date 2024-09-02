@@ -52,7 +52,7 @@ fetch('/tutor/getMessage')
 });
 
 
-fetch('/getBookingProfile')
+fetch('/tutor/getBookingProfile')
 .then(response => response.json())
 .then(data => {
     if (data.error) {
