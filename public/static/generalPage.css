@@ -1,0 +1,72 @@
+@font-face {
+    font-family: 'Dancing Script';
+    src: url('../fonts/DancingScript-VariableFont_wght.ttf') format('truetype');
+}
+.container {
+    /* background-color: #edc03b; */
+    /* background-color: #0f1b2e; */
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header {
+    background-color: #ffffff;
+    padding: 20px;
+    border-bottom: 2px solid #cccccc;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 100%;
+    /* width: auto; */
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* margin-top: 5%; */
+    transform: translate(-50%, -20%);
+    transition: top 1s ease, transform 1s ease;
+    z-index: 1;
+}
+
+.header h1 {
+    font-family: 'Dancing Script', sans-serif;
+    font-size: 76px;
+    margin: 0;
+}
+
+
+#parent-form-container {
+    /* background-color: #efefef; */
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    max-height: 600px;
+    margin: 0 auto;
+    margin-top: 150px;
+    font-size: 20px;
+    text-align: center;
+}
+
+a{
+    text-decoration: underline;
+}
+
+.forgotPasswordLink {
+    margin: 0;
+    text-align: right; /* Aligns the text (link) to the right */
+    margin-bottom: 20px;
+}
+
+.forgotPasswordLink a {
+    display: inline-block; /* Ensures the link itself can be aligned */
+}
+
+.addressStyle{
+    width: 75%;
+}
+
+.miss {
+    text-decoration: line-through;
+}

@@ -210,7 +210,7 @@ exports.bankStatus = async (req, res) => {
   let user = await findUser(req, res, "configBanking", req.session.user._id);
   let success = true;
   if (!user.stripeAccount){
-    success = false
+    success = false;
   }
 
   return res.json({

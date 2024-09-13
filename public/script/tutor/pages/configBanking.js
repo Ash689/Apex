@@ -13,18 +13,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.getElementById('id-button').addEventListener('click', function() {
-        fetch('/tutor/createStripeAccount')
+
+        fetch('/tutor/bankStatus')
         .then(response => response.json())
         .then(data => {
-            if (data.link){
-                window.location.href = `${data.link}`;
-            }
-        })
-        .catch(error => {
-            console.error('Error creating stripe account:', error);
-            messageElement.textContent = 'Failed to create stripe account';
-            messageElement.classList.add('error');
+            if (data.success){
+                window.location.href = '/tutor/configSubject.html';  
+            } else {
+                fetch('/tutor/createStripeAccount')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.link){
+                        window.location.href = `${data.link}`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error creating stripe account:', error);
+                    messageElement.textContent = 'Failed to create stripe account';
+                    messageElement.classList.add('error');
+                });
+            }                  
+
         });
+
+        
     });
 
     const urlParams = new URLSearchParams(window.location.search);

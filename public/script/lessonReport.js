@@ -23,7 +23,7 @@ document.getElementById('generateQuestionButton').addEventListener("click", asyn
     try {
         const chatCompletion = await openai.chat.completions.create({
             messages: [
-                { role: "system", content: 'You are a question bank, giving practice exam questions to users.' },
+                { role: "system", content: 'You are a question bank, giving practice exam questions to users without latex' },
                 { role: 'user', content: `Output ${aiHomeworkNumber} questions on the following topic: ${aiHomeworkTopic}.` }
             ],
             model: 'gpt-3.5-turbo',

@@ -140,9 +140,9 @@ document.getElementById('aboutus-student-button').addEventListener('click', func
         My name is Umar, I'm currently a student, studying computer science.<br>
         I have been a tutor for 4 years, before in person, and now online. <br>
         I created this website as a hobby: I thought about what I, as a tutor, would want the students to have more of. <br>
-        Tutors are not teachers, we are a friend. We are a support system that has got student's back, gives them someone they can talk to about their education and help them with their progression, generally.<br> 
-        We are on their level, we give them advice on academica, but also life, as we know the present circumstances that students are concerned with nowadays. <br>
-        Attend our lessons and don't receive tuition anymore.
+        Tutors are not teachers; we are a friend.<br> 
+        Tutors are on students' level, we give them advice on academica and we know how to make things understandable for students.<br>
+        Join us and don't receive tuition anymore.
         Receive <span class = "emphasis" >Apex Tuition</span>.
     </p>
     `;
@@ -160,9 +160,9 @@ document.getElementById('aboutus-tutor-button').addEventListener('click', functi
         My name is Umar, I'm currently a student, studying computer science.<br>
         I have been a tutor for 4 years, before in person, and now online. <br>
         I created this website as a hobby: I thought about what I, as a tutor, would want more creative freedom over. <br>
-        I thought about what tools I wanted to see, what features I wanted implemented, and how to make the students believe that they were the priority. <br>
-        Tutors are not teachers, we are a friend. We are a support system that has got student's back, gives them someone they can talk to about their education and help them with their progression, generally.<br> 
-        We are on their level, we give them advice on academica, but also life, as we know the present circumstances that students are concerned with nowadays. <br>
+        I thought about what tools I wanted to see, what features I wanted implemented, and how to make students believe that they were the priority. <br>
+        Tutors are not teachers; we are a friend.<br> 
+        We are on students' level, we give them advice on academica and we know how to make things understandable for them.<br>
         Join us and make a difference. Don't be a tutor. <br>
         Be an <span class = "emphasis" >Apex Tutor</span>.
     </p>
@@ -179,12 +179,12 @@ changeColour("aboutus-student-button");
 
 document.getElementById("aboutus-text").innerHTML = `
     <p>
-         My name is Umar, I'm currently a student, studying computer science.<br>
+        My name is Umar, I'm currently a student, studying computer science.<br>
         I have been a tutor for 4 years, before in person, and now online. <br>
         I created this website as a hobby: I thought about what I, as a tutor, would want the students to have more of. <br>
-        Tutors are not teachers, we are a friend. We are a support system that has got student's back, gives them someone they can talk to about their education and help them with their progression, generally.<br> 
-        We are on their level, we give them advice on academica, but also life, as we know the present circumstances that students are concerned with nowadays. <br>
-        Attend our lessons and don't receive tuition anymore.
+        Tutors are not teachers; we are a friend.<br> 
+        Tutors are on students' level, we give them advice on academica and we know how to make things understandable for students.<br>
+        Join us and don't receive tuition anymore.
         Receive <span class = "emphasis" >Apex Tuition</span>.
     </p>
 `;

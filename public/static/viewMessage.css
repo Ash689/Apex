@@ -26,5 +26,24 @@
 }
 
 
+body {
+    position: relative;
+    /* Make sure the body has some positioning so the pseudo-element can be positioned relative to it */
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/images/H-BTS4.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.3; /* Adjust this to control the transparency */
+    z-index: -1; /* Ensure it sits behind the other content */
+}
 
 

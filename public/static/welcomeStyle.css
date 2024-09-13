@@ -13,9 +13,9 @@
 
 
 .header {
-    background-color: #f2f2f2;
+    background-color: transparent;
     padding-left: 20px;
-    border-bottom: 2px solid #f2f2f2;
+    border-bottom:transparent;
     color: #dc143c;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
     text-align: left;
@@ -60,6 +60,10 @@
     background-color: #f2f2f2;
     z-index: 2;
     height: 650px;
+    background-image: url('../images/H-BTS.jpg');
+    background-size: cover;
+    /* background-position: center; */
+    background-repeat: no-repeat;
 }
 
 #container img{
@@ -241,6 +245,7 @@ button {
     align-items: center;
     gap: 20px;
     height: 500px;
+    padding: 20px;
 }
 
 #group-d {
@@ -249,6 +254,7 @@ button {
     box-shadow: 4px 4px 0px 0px #000; /* Creates the 3D effect on the right and bottom */
     transition: all 0.2s ease-in-out;
     border: 2px solid #000000;
+    padding: 20px;
 }
 
 #group-d:hover {
@@ -266,61 +272,8 @@ button {
     font-weight: 100;
 }
 
-#P1 {
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100px; /* Set maximum height */
-    margin: 200px 350px;
-    position: absolute;
-    top: -20%;
-    left: -15%;
-    transform: translate(-50%, -50%);
-    z-index: 3; /* Place the image behind the text */
-}
-
-#P2 {
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100px; /* Set maximum height */
-    margin: 100px 350px;
-    position: absolute;
-    top: 60%;
-    left: -15%;
-    transform: translate(-50%, -50%);
-    z-index: 3; /* Place the image behind the text */
-}
-
-#P3 {
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100px; /* Set maximum height */
-    margin: 300px 10px;
-    position: absolute;
-    top: 110px;
-    right: 0%;
-    transform: translate(-50%, -50%);
-    z-index: 3; /* Place the image behind the text */
-}
-
-#P4 {
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100px; /* Set maximum height */
-    margin: 200px 200px;
-    position: absolute;
-    top: 7px;
-    left: 1000px;
-    transform: translate(-50%, -50%);
-    z-index: 3; /* Place the image behind the text */
-}
-
-#P5 {
-    height: auto; /* Maintain aspect ratio */
-    max-height: 200px; /* Set maximum height */
-    margin: 50px 50px;
-    position: absolute;
-    top: 440px;
-    left: 360px;
-    transform: translate(-50%, -50%);
-    z-index: 3; /* Place the image behind the text */
-}
-
 .emphasis {
     color: #dc143c;
+    font-family: 'Dancing Script', sans-serif;
+    font-weight: 4000;
 }
