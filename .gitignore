@@ -1,4 +1,5 @@
 .env
+.env(2)
 /uploads/homeworkFiles/student/*
 /uploads/messageFiles/student/*
 /uploads/profileFiles/student/profilePicture/*
@@ -11,3 +12,4 @@ index11.js
 /public/about.html
 /public/FAQ.html
 /public/services.html
+/public/static/standardStyle_copy.css

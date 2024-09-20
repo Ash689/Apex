@@ -11,23 +11,20 @@
     z-index: 1;
 }
 
-
 .header {
     background-color: transparent;
-    padding-left: 20px;
     border-bottom:transparent;
-    color: #dc143c;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    width: auto;
-    box-sizing: border-box;
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    transform: translate(-50%, -50%);
     transition: top 1s ease, transform 1s ease;
-    z-index: 2;
     height: auto;
+    text-align: center;
+    margin-top: 2%;
+    left: 0%;
+    top: 50%;
+    z-index: 2;
+    width: 20%;
+    padding: 20px 0;
+    position: absolute;
 }
 
 .header h1 {
@@ -161,7 +158,7 @@ button {
 #aboutus-3d {
     background-color: #fff;
     color: #122139;
-    height: 450px;
+    height: auto;
 }
 
 #aboutus {
@@ -201,7 +198,7 @@ button {
     gap: 20px; /* Optional: Adds space between the divs */
     background-color: #0f1b2e;
     color: #fff;
-    height: 550px;
+    height: 600px;
     padding: 20px;
 }
 
@@ -211,7 +208,7 @@ button {
     box-sizing: border-box;
     border-radius: 5px;
     border: none;
-    height: 480px;
+    height: auto;
     margin-top: 40px;
     transition: all 0.2s ease-in-out;
 }

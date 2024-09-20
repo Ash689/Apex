@@ -2,6 +2,10 @@
     font-family: 'Dancing Script';
     src: url('../fonts/DancingScript-VariableFont_wght.ttf') format('truetype');
 }
+@font-face {
+    font-family: 'Archivo Black';
+    src: url('../fonts/ArchivoBlack-Regular.ttf') format('truetype');
+}
 
 body {
     background-color: #f2f2f2;
