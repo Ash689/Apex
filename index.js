@@ -18,8 +18,6 @@ app.use(bodyParser.json());
 
 mongoose.connect(process.env.MONGODB_URI, {});
 
-app.set('trust proxy', true);
-
 const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
   collection: 'sessions',
