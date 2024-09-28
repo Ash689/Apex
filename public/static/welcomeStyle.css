@@ -198,8 +198,11 @@ button {
     gap: 20px; /* Optional: Adds space between the divs */
     background-color: #0f1b2e;
     color: #fff;
-    height: 600px;
+    height: auto;
     padding: 20px;
+    width: 100%; /* Define the width of the container */
+    overflow-x: auto; /* Enables horizontal scrolling */
+    flex-wrap: nowrap; /* Prevents wrapping to maintain a single row */
 }
 
 #group {
