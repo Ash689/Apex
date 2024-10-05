@@ -14,10 +14,10 @@ const PORT = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_URI, {});
+mongoose.connect('mongodb+srv://doadmin:571qOb46n39oJh2e@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703', {});
 
 const store = new MongoDBStore({
-  uri: process.env.MONGODB_URI,
+  uri: 'mongodb+srv://doadmin:571qOb46n39oJh2e@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703',
   collection: 'sessions',
 });
 
@@ -94,6 +94,7 @@ app.use('/uploads', express.static('uploads'));
 
 // Start server
 app.listen(PORT, () => {
+  console.log(`${process.env.MONGODB_URI} is here!`);
   console.log(`Server is running on ${process.env.URL}/${PORT}`);
 });
 
