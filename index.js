@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -15,10 +14,10 @@ const PORT = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect(process.envs.MONGODB_URI, {});
+mongoose.connect(process.env.MONGODB_URI, {});
 
 const store = new MongoDBStore({
-  uri: process.envs.MONGODB_URI,
+  uri: process.env.MONGODB_URI,
   collection: 'sessions',
 });
 
