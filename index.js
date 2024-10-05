@@ -15,10 +15,11 @@ const PORT = config.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect(config.MONGODB_URI, {});
+console.log(`askdlj ${config.MONGODB_URI} asdsd`);
+mongoose.connect(`${config.MONGODB_URI}`, {});
 
 const store = new MongoDBStore({
-  uri: config.MONGODB_URI,
+  uri: `${config.MONGODB_URI}`,
   collection: 'sessions',
 });
 
