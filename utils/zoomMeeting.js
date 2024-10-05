@@ -2,11 +2,11 @@
 
 const axios = require('axios');
 const qs = require('qs');
-const config = require('../config');
+require('dotenv').config();
 
-const clientId = config.ZOOM_CLIENTID;
-const clientSecret = config.ZOOM_CLIENTSECRET;
-const accountId = config.ZOOM_ACCOUNTID;
+const clientId = process.env.ZOOM_CLIENTID;
+const clientSecret = process.env.ZOOM_CLIENTSECRET;
+const accountId = process.env.ZOOM_ACCOUNTID;
 
 const generateAccessToken = async () => {
   const tokenUrl = 'https://zoom.us/oauth/token';

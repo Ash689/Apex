@@ -1,31 +1,28 @@
-const config = require('./config');
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const path = require('path');
 const MongoDBStore = require('connect-mongodb-session')(session);
-
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 // const csrf = require('csrf');
 
 const app = express();
-const PORT = config.PORT;
+const PORT = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect(config.MONGODB_URI, {});
-
-
+mongoose.connect(process.env.MONGODB_URI, {});
 const store = new MongoDBStore({
-  uri: config.MONGODB_URI,
+  uri: process.env.MONGODB_URI,
   collection: 'sessions',
 });
 
 app.use(session({
-  secret: config.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: store,

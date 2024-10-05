@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const generateToken = require('../../utils/generateToken'); // Assuming you have a utility function for this
 const {sendResetEmail, sendVerifyEmail} = require('../../utils/verifyEmail');
-const config = require('../../config');
+require('dotenv').config();
 
 const formatInput = require('../../utils/formatInput');
 
@@ -78,7 +78,7 @@ exports.changePassword = async (req, res) => {
     let user = await studentUser.findOne({email: req.session.email});
     if(user){
       if (Date.now() < user.resetPasswordExpires){
-        const hashedPassword = await bcrypt.hash(password, parseInt(config.SALT));
+        const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
         user.password = hashedPassword;
         user.resetPasswordToken = null;
         user.resetPasswordExpires = null;

@@ -4,7 +4,7 @@ const tutorUser = require('../models/tutorUser');
 const studentUser = require('../models/studentUser');
 const Message = require('../models/message');
 const formatInput = require('../utils/formatInput');
-const config = require('../config');
+require('dotenv').config();
 
 exports.registerUser = async (req, res, userType) => {
   const errors = validationResult(req);
@@ -23,7 +23,7 @@ exports.registerUser = async (req, res, userType) => {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, parseInt(config.SALT));
+    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
     // Create new user
     user = new userModel({
       email: formattedEmail,

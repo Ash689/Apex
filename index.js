@@ -1,5 +1,5 @@
+require('dotenv').config();
 const express = require('express');
-const config = require('./config');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoose = require('mongoose');
@@ -11,27 +11,28 @@ const rateLimit = require('express-rate-limit');
 // const csrf = require('csrf');
 
 const app = express();
-const PORT = config.PORT;
+const PORT = process.env.PORT;
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-console.log(`askdlj ${config.MONGODB_URI.trim()} asdsd`);
-mongoose.connect(`${config.MONGODB_URI.trim()}`, {});
+mongoose.connect(process.env.MONGODB_URI, {});
+
 
 const store = new MongoDBStore({
-  uri: `${config.MONGODB_URI.trim()}`,
+  uri: process.env.MONGODB_URI,
   collection: 'sessions',
 });
 
 app.use(session({
-  secret: config.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: store,
   cookie: {
     maxAge: 60 * 60 * 1000 * 2,
     httpOnly: true,
-    secure: false,
+    secure: true,
     sameSite: 'strict'
   }
 }));
@@ -41,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //----------------
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 600
+  max: 200
 });
 app.use(limiter);
 
@@ -96,6 +97,5 @@ app.use('/uploads', express.static('uploads'));
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on ${config.URL}/${PORT}`);
+  console.log(`Server is running on ${process.env.URL}/${PORT}`);
 });
-

@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const generateToken = require('../../utils/generateToken'); // Assuming you have a utility function for this
 const {sendResetEmail, sendVerifyEmail} = require('../../utils/verifyEmail');
 const formatInput = require('../../utils/formatInput');
-const config = require('../../config');
+require('dotenv').config();
 
 exports.forgotPassword = async (req, res) => {
   const errors = validationResult(req);
@@ -73,7 +73,7 @@ exports.changePassword = async (req, res) => {
     let user = await tutorUser.findOne({email: req.session.email});
     if(user){
       if (Date.now() < user.resetPasswordExpires){
-        const hashedPassword = await bcrypt.hash(password, parseInt(config.SALT));
+        const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
         user.password = hashedPassword;
         user.resetPasswordToken = null;
         user.resetPasswordExpires = null;

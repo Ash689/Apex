@@ -4,7 +4,7 @@ const HomeworkFile = require('../../models/homeworkFile');
 const OpenAI = require('openai');
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
-const config = require('../../config');
+require('dotenv').config();
 
 exports.getHomework = async(req, res) => {
   try{
@@ -134,7 +134,7 @@ exports.homework = async (req, res, pageType) => {
 
 
 const openai = new OpenAI({
-  apiKey: config.OPENAI_APIKEY, // Replace with your actual API key
+  apiKey: process.env.OPENAI_APIKEY, // Replace with your actual API key
 });
 
 exports.generateQuestions = async(req, res) => {
