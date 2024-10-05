@@ -12,15 +12,27 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT;
-console.log(process.env.MONGODB_URI);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_URI, {});
+// mongoose.connect(process.env.MONGODB_URI, {});
+
+
 
 const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
   collection: 'sessions',
+});
+
+mongoose.connect("mongodb://localhost:27017/db", {
+  poolSize: 10,
+  authSource: "admin",
+  user: "doadmin",
+  pass: "571qOb46n39oJh2e",
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false 
 });
 
 app.use(session({
