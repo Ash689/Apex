@@ -15,10 +15,10 @@ const PORT = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://doadmin:571qOb46n39oJh2e@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703', {});
+mongoose.connect(process.envs.MONGODB_URI, {});
 
 const store = new MongoDBStore({
-  uri: 'mongodb+srv://doadmin:571qOb46n39oJh2e@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703',
+  uri: process.envs.MONGODB_URI,
   collection: 'sessions',
 });
 

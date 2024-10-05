@@ -116,9 +116,7 @@ exports.getEmailVerify = async (req, res) => {
 
 exports.sendVerification = async (req, res) => {
   try {
-    console.log("SDKALJ");
     console.log(req.session.user._id);
-    console.log("ASKLDJL");
     let user = await tutorUser.findById(req.session.user._id);
     if(user){
       const token = generateToken();
