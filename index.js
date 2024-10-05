@@ -12,15 +12,14 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT;
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_URI, {});
-
+const mongoConnection = process.env.MONGODB_URI;
+mongoose.connect(mongoConnection, {});
 
 const store = new MongoDBStore({
-  uri: process.env.MONGODB_URI,
+  uri: mongoConnection,
   collection: 'sessions',
 });
 
@@ -30,9 +29,9 @@ app.use(session({
   saveUninitialized: false,
   store: store,
   cookie: {
-    maxAge: 60 * 60 * 1000 * 2,
+    maxAge: 60 * 60 * 1000 * 24,
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: 'strict'
   }
 }));
@@ -42,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //----------------
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 200
+  max: 600
 });
 app.use(limiter);
 
@@ -99,3 +98,4 @@ app.use('/uploads', express.static('uploads'));
 app.listen(PORT, () => {
   console.log(`Server is running on ${process.env.URL}/${PORT}`);
 });
+
