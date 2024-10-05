@@ -25,14 +25,11 @@ const store = new MongoDBStore({
 });
 
 mongoose.connect("mongodb://localhost:27017/db", {
-  poolSize: 10,
   authSource: "admin",
   user: "doadmin",
   pass: "571qOb46n39oJh2e",
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false 
 });
 
 app.use(session({
