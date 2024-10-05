@@ -1,20 +1,21 @@
 const nodemailer = require('nodemailer');
+const config = require('../config');
 
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
+  host: config.EMAIL_HOST,
+  port: config.EMAIL_PORT,
   port: 465,
   secure: true,
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASSWORD
+    user: config.EMAIL,
+    pass: config.EMAIL_PASSWORD
   }
 });
 
 async function verifyIDAdmin(details) {
   const mailOptions = {
-    from: process.env.EMAIL, 
-    to: process.env.EMAIL2,
+    from: config.EMAIL, 
+    to: config.EMAIL2,
     subject: 'Verify User',
     html: `
       <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
@@ -70,8 +71,8 @@ async function verifyIDAdmin(details) {
 
 async function verifyProfilePicAdmin(details) {
   const mailOptions = {
-    from: process.env.EMAIL,
-    to:  process.env.EMAIL2,
+    from: config.EMAIL,
+    to:  config.EMAIL2,
     subject: 'Verify Profile Picture',
     html: `
       <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">

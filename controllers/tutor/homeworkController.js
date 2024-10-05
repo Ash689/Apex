@@ -1,10 +1,10 @@
-require('dotenv').config();
 const findUser = require('../../utils/findUser'); // Assuming you have a utility function for this
 const Homework = require('../../models/homework');
 const HomeworkFile = require('../../models/homeworkFile');
 const OpenAI = require('openai');
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
+const config = require('../../config');
 
 exports.getHomework = async(req, res) => {
   try{
@@ -134,7 +134,7 @@ exports.homework = async (req, res, pageType) => {
 
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_APIKEY, // Replace with your actual API key
+  apiKey: config.OPENAI_APIKEY, // Replace with your actual API key
 });
 
 exports.generateQuestions = async(req, res) => {

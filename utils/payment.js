@@ -1,9 +1,8 @@
-
+const config = require('../config');
 const Booking = require('../models/booking');
-const stripe = require('stripe')(process.env.STRIPE_TOKEN);
+const stripe = require('stripe')(config.STRIPE_TOKEN);
 const studentUser = require('../models/studentUser');
 const tutorUser = require('../models/tutorUser');
-require('dotenv').config();
 
 async function payment(bookingId, returnUrl){
     let booking = await Booking.findById(bookingId);
@@ -41,8 +40,8 @@ async function payment(bookingId, returnUrl){
                 },
                 setup_future_usage: 'off_session',
             },
-            success_url: `${process.env.URL}/student/paymentConfirmation.html?session_id={CHECKOUT_SESSION_ID}&return_page=${returnUrl}`,
-            cancel_url: `${process.env.URL}/student/${returnUrl}.html?message=Payment unconfirmed.&type=error`,
+            success_url: `${config.URL}/student/paymentConfirmation.html?session_id={CHECKOUT_SESSION_ID}&return_page=${returnUrl}`,
+            cancel_url: `${config.URL}/student/${returnUrl}.html?message=Payment unconfirmed.&type=error`,
         });
 
         return session.url;

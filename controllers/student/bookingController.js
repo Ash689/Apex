@@ -1,3 +1,4 @@
+const config = require('../../config');
 const findUser = require('../../utils/findUser');
 const formatInput = require('../../utils/formatInput');
 const { generateAccessToken, createZoomMeeting } = require('../../utils/zoomMeeting');
@@ -6,7 +7,8 @@ const tempBookingData = require('../../models/tempBookingData');
 const { body, validationResult } = require('express-validator');
 const hasConflictingBooking = require('../../utils/hasConflictingBooking');
 const payment = require('../../utils/payment');
-const stripe = require('stripe')(process.env.STRIPE_TOKEN);
+const stripe = require('stripe')(config.STRIPE_TOKEN);
+
 
 exports.confirmLesson = async (req, res) => {
   const { bookingId, returnUrl, charityChoice } = req.body;

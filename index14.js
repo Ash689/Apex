@@ -1,4 +1,4 @@
-require('dotenv').config();
+const config = require('./config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -11,21 +11,21 @@ const rateLimit = require('express-rate-limit');
 // const csrf = require('csrf');
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = config.PORT;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_URI, {});
+mongoose.connect(config.MONGODB_URI, {});
 
 
 const store = new MongoDBStore({
-  uri: process.env.MONGODB_URI,
+  uri: config.MONGODB_URI,
   collection: 'sessions',
 });
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: config.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: store,

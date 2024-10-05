@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('./config');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const mongoose = require('mongoose');
@@ -10,22 +11,19 @@ const rateLimit = require('express-rate-limit');
 // const csrf = require('csrf');
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = config.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoConnection = process.env.MONGODB_URI;
-
-mongoose.connect(mongoConnection, {});
-
+mongoose.connect(config.MONGODB_URI, {});
 
 const store = new MongoDBStore({
-  uri: mongoConnection,
+  uri: config.MONGODB_URI,
   collection: 'sessions',
 });
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: config.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: store,
@@ -97,6 +95,6 @@ app.use('/uploads', express.static('uploads'));
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on ${process.env.URL}/${PORT}`);
+  console.log(`Server is running on ${config.URL}/${PORT}`);
 });
 

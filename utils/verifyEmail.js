@@ -1,20 +1,21 @@
 const nodemailer = require('nodemailer');
+const config = require('../config');
 
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
+  host: config.EMAIL_HOST,
+  port: config.EMAIL_PORT,
   port: 465,
   secure: true,
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASSWORD
+    user: config.EMAIL,
+    pass: config.EMAIL_PASSWORD
   }
 });
   
   
 async function sendResetEmail(userEmail, token) {
     const mailOptions = {
-      from: process.env.EMAIL,
+      from: config.EMAIL,
       to: userEmail,
       subject: 'Password Reset',
       html: `
@@ -49,7 +50,7 @@ async function sendResetEmail(userEmail, token) {
 
 async function sendVerifyEmail(userEmail, token) {
   const mailOptions = {
-    from: process.env.EMAIL, // Replace with your email
+    from: config.EMAIL, // Replace with your email
     to: userEmail,
     subject: 'Verify User',
     text: `Your verification token is ${token}. It will expire in 15 mins.`,

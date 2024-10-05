@@ -1,3 +1,5 @@
+
+const config = require('../../config');
 const { body, validationResult } = require('express-validator');
 const validateDateOfBirth = require('../../utils/validateDateOfBirth'); // Assuming you have a utility function for this
 const findUser = require('../../utils/findUser');
@@ -6,8 +8,7 @@ const fs = require('fs');
 const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verifyUploads');
 const updateBankEmail = require('../../utils/updateBankDetails');
 const { trusted } = require('mongoose');
-const stripe = require('stripe')(process.env.STRIPE_TOKEN)
-require('dotenv').config();
+const stripe = require('stripe')(config.STRIPE_TOKEN)
 
 
 exports.config = async (req, res) => {
@@ -196,8 +197,8 @@ exports.createStripeAccount = async (req, res) => {
 
   const accountLink = await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${process.env.URL}/tutor/configBanking.html?message=Banking details not added.&type=error`,
-    return_url: `${process.env.URL}/tutor/configBanking.html?account=${account.id}`,
+    refresh_url: `${config.URL}/tutor/configBanking.html?message=Banking details not added.&type=error`,
+    return_url: `${config.URL}/tutor/configBanking.html?account=${account.id}`,
     type: 'account_onboarding',
   });
 
