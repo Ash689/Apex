@@ -12,15 +12,13 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT;
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb+srv://doadmin:571qOb46n39oJh2e@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703', {});
-
+mongoose.connect(process.env.MONGODB_URI, {});
 
 const store = new MongoDBStore({
-  uri: 'mongodb+srv://doadmin:571qOb46n39oJh2e@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703',
+  uri: process.env.MONGODB_URI,
   collection: 'sessions',
 });
 
@@ -97,6 +95,6 @@ app.use('/uploads', express.static('uploads'));
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on ${process.env.URL}/${PORT}`);
 });
 
