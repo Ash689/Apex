@@ -15,35 +15,20 @@ const PORT = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const uri = (process.env.MONGODB_URI || '').trim();
+const uri = process.env.MONGODB_URI; // Use the entire URI from the environment variable
 
-console.log(`alskdjaskld + ${uri}`);
+mongoose.connect(uri, {});
 
-console.log(`1jl2k3j + ${process.env.MONGODB_URI}`);
-// Improved connection with additional options and better error handling
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,  // Timeout after 5 seconds if no server is found
-  connectTimeoutMS: 10000,         // Timeout after 10 seconds for the initial connection
-})
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => {
-    console.error('MongoDB connection error:', err);
-    // Optionally handle any connection failures (e.g., graceful app shutdown)
-    process.exit(1);  // Exit the process if connection fails (optional)
-  });
+console.log("Mongoose part works");
 
-// Use the same trimmed URI for session store to avoid repeating process.env
 const store = new MongoDBStore({
-  uri,  // Reuse the trimmed and validated URI
+  uri: uri,
   collection: 'sessions',
 });
 
-// Handle MongoDBStore connection errors
-store.on('error', function(error) {
-  console.error('Session store error:', error);
-});
+
+console.log("MongoDBStore part works");
+
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
