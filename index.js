@@ -19,8 +19,7 @@ const mongoConnection = process.env.MONGODB_URI;
 mongoose.connect(mongoConnection, {
   userNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => console.log('Connected to MongoDB'))
-.catch((err) => console.error('MongoDB connection error:', err));
+});
 
 const store = new MongoDBStore({
   uri: mongoConnection,
