@@ -17,11 +17,10 @@ app.use(bodyParser.json());
 
 const mongoUri = process.env.MONGODB_URI;
 
-mongoose.connect('mongodb+srv://doadmin:571qOb46n39oJh2e@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703', {});
-console.log(`SDLKJ + ${mongoUri}`);
+mongoose.connect('mongodb+srv://doadmin:34h8j7d9Ab0Rm5W2@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703', {});
 
 const store = new MongoDBStore({
-  uri: 'mongodb+srv://doadmin:571qOb46n39oJh2e@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703',
+  uri: 'mongodb+srv://doadmin:34h8j7d9Ab0Rm5W2@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703',
   collection: 'sessions',
 });
 
