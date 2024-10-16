@@ -19,16 +19,10 @@ const mongoUri = process.env.MONGODB_URI;
 
 mongoose.connect(mongoUri, {});
 
-console.log("Mongoose part works");
-
 const store = new MongoDBStore({
   uri: mongoUri,
   collection: 'sessions',
 });
-
-
-console.log("MongoDBStore part works");
-
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
