@@ -17,6 +17,9 @@ app.use(bodyParser.json());
 
 const uri = (process.env.MONGODB_URI || '').trim();
 
+console.log(`alskdjaskld + ${uri}`);
+
+console.log(`1jl2k3j + ${process.env.MONGODB_URI}`);
 // Improved connection with additional options and better error handling
 mongoose.connect(uri, {
   useNewUrlParser: true,
