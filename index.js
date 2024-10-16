@@ -15,14 +15,16 @@ const PORT = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const mongoConnection = process.env.MONGODB_URI;
-mongoose.connect(mongoConnection, {
-  userNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,  // Correct capitalization
+  useUnifiedTopology: true
+})
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('MongoDB connection error:', err));
+
 
 const store = new MongoDBStore({
-  uri: mongoConnection,
+  uri: process.env.MONGODB_URI,
   collection: 'sessions',
 });
 
