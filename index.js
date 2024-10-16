@@ -17,10 +17,10 @@ app.use(bodyParser.json());
 
 const mongoUri = process.env.MONGODB_URI;
 
-mongoose.connect('mongodb+srv://doadmin:34h8j7d9Ab0Rm5W2@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703', {});
+mongoose.connect(mongoUri, {});
 
 const store = new MongoDBStore({
-  uri: 'mongodb+srv://doadmin:34h8j7d9Ab0Rm5W2@db-mongodb-lon1-53703-1ceb219a.mongo.ondigitalocean.com/admin?tls=true&authSource=admin&replicaSet=db-mongodb-lon1-53703',
+  uri: mongoUri,
   collection: 'sessions',
 });
 
