@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })
     .catch(error => {
-        window.location.href = '/student/login.html?message=Please log in.&type=error';
+        window.location.href = `/student/login.html?message=Please log in ${error}.&type=error`;
     });
 });
 
