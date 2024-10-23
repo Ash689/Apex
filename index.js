@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 
 const uri = process.env.MONGODB_URI; // Use the entire URI from the environment variable
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(uri, { })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
