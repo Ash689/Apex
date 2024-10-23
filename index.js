@@ -26,7 +26,7 @@ const store = new MongoDBStore({
   collection: 'sessions',
 });
 
-app.set('trust proxy', true);
+app.set('trust proxy', 1);
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -46,7 +46,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 //----------------
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 600
+  max: 600,
+  keyGenerator: function (req /*, res*/) {
+    return req.ip; // Use the correct client IP (from X-Forwarded-For)
+  },
+  skipFailedRequests: true,
 });
 app.use(limiter);
 
