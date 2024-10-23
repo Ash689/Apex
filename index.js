@@ -26,6 +26,8 @@ const store = new MongoDBStore({
   collection: 'sessions',
 });
 
+app.set('trust proxy', true);
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
