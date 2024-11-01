@@ -1,3 +1,32 @@
+document.addEventListener('DOMContentLoaded', async () => {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const accountId = urlParams.get('access');
+
+    if (accountId != "denied") {
+
+        try {
+            const response = await fetch('/tutor/validationComplete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({  }),
+            });
+
+            const data = await response.json();
+            if (data.redirectUrl){
+                window.location.href = data.redirectUrl;
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+});
+
+
+
 fetch('/tutor/navbar.html')
 .then(response => response.text())
 .then(data => {
@@ -67,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })
     .catch(error => {
-        window.location.href = `/tutor/login.html?message=Please log in ${error}.&type=error`;
+        window.location.href = `/tutor/login.html?message=Please log in.&type=error`;
     });
 });
 

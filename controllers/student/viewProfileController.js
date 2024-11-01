@@ -2,6 +2,8 @@
 const findUser = require('../../utils/findUser'); // Assuming you have a utility function for this
 const { body, validationResult } = require('express-validator');
 const Booking = require('../../models/booking');
+const validationStandard = require('../../utils/validationComplete');
+const alreadyValid = require('../../utils/alreadyValidated');
 
 exports.apiprofile = async (req, res) => {
     const user = await findUser(req, res, "home", req.session.user._id);
@@ -14,7 +16,8 @@ exports.userName = async (req, res) => {
         res.json({
             fullName: user.fullName,
             email: user.email,
-            subjects: user.subjects
+            subjects: user.subjects,
+            isVerified: user.isIDVerified
         });
         
     } catch (error) {
@@ -22,6 +25,23 @@ exports.userName = async (req, res) => {
         return res.redirect('/student/login.html?message=Error, Please log in.&type=error');
     }
 };
+
+exports.alreadyValidated = async(req, res) => {
+
+    const { page } = req.body;
+    res.json({
+      pageAvailable: await alreadyValid(req.session.user._id, "student", page)
+    }) 
+  }
+
+exports.validationComplete = async(req, res) => {
+
+  
+    res.json({
+      redirectUrl: await validationStandard(req.session.user._id, "student")
+    }) 
+}
+  
 
 exports.getID = async (req, res) => {
     try {

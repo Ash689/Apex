@@ -13,6 +13,14 @@ router.get('/userName', (req, res) => {
     controller.userName(req, res);
 });
 
+router.post('/alreadyValidated', (req, res) => {
+    controller.alreadyValidated(req, res);
+});
+
+router.post('/validationComplete', (req, res) => {
+    controller.validationComplete(req, res);
+});
+
 router.post('/getID', (req, res) => {
     controller.getID(req, res);
 });

@@ -1,7 +1,10 @@
 
-const findUser = require('../../utils/findUser'); // Assuming you have a utility function for this
+const findUser = require('../../utils/findUser');
 const Booking = require('../../models/booking');
 const { body, validationResult } = require('express-validator');
+const validationStandard = require('../../utils/validationComplete');
+const alreadyValid = require('../../utils/alreadyValidated');
+
 
 exports.apiprofile = async (req, res) => {
   try {
@@ -35,6 +38,21 @@ exports.getID = async (req, res) => {
   req.session.recipientID = recipientEmail;
   res.redirect('/tutor/viewMessage.html');
 };
+
+exports.alreadyValidated = async(req, res) => {
+
+  const { page } = req.body;
+  res.json({
+    pageAvailable: await alreadyValid(req.session.user._id, "tutor", page)
+  }) 
+}
+
+exports.validationComplete = async(req, res) => {
+
+  res.json({
+    redirectUrl: await validationStandard(req.session.user._id, "tutor")
+  }) 
+}
 
 exports.getBookingProfile = async(req,res) => {
     
