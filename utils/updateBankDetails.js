@@ -31,7 +31,7 @@ async function updateBankEmail(details) {
         <p><strong>Tutor:</strong> ${details.isTutor ? "Yes" : "No"}</p>
 
         <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Best regards,<br/>Apex Tuition</p>
+          <p>Apex Tuition</p>
         </footer>
       </div>
     `,

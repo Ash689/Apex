@@ -1,5 +1,5 @@
 const { body, validationResult } = require('express-validator');
-const validateDateOfBirth = require('../../utils/validateDateOfBirth'); // Assuming you have a utility function for this
+const validateDateOfBirth = require('../../utils/validateDateOfBirth'); 
 const findUser = require('../../utils/findUser');
 const formatInput = require('../../utils/formatInput');
 const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verifyUploads');

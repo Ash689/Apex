@@ -1,9 +1,10 @@
 const { body, validationResult } = require('express-validator');
-const findUser = require('../../utils/findUser'); // Assuming you have a utility function for this
+const findUser = require('../../utils/findUser'); 
 const tutorUser = require('../../models/tutorUser');
 const Message = require('../../models/message');
 const Report = require('../../models/report');
 const verifyReport = require('../../utils/verifyReport');
+const sendMessageEmail = require('../../utils/sendMessageEmail');
 
 exports.sendMessage = async (req, res) => {
   const errors = validationResult(req);
@@ -14,6 +15,7 @@ exports.sendMessage = async (req, res) => {
 
   try {
     let recipient = await findUser(req, res, "viewMessage", req.session.recipientID, true);
+    let user = await findUser(req, res, "viewMessage", req.session.user._id);
 
     // Create a new message
     let message = new Message({
@@ -34,6 +36,7 @@ exports.sendMessage = async (req, res) => {
     // Save the message
     await message.save();
     // res.status(200).json({ message: 'Message sent successfully.' });
+    await sendMessageEmail(recipient.email, content, recipient.fullName.split(" ")[0], user.fullName.split(" ")[0]);
     res.redirect('/student/viewMessage.html');
   } catch (error) {
     console.error(error);

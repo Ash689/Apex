@@ -2,7 +2,7 @@ const { body, validationResult } = require('express-validator');
 const studentUser = require('../../models/studentUser');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const generateToken = require('../../utils/generateToken'); // Assuming you have a utility function for this
+const generateToken = require('../../utils/generateToken'); 
 const {sendResetEmail, sendVerifyEmail} = require('../../utils/verifyEmail');
 require('dotenv').config();
 

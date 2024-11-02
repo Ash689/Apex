@@ -40,7 +40,7 @@ async function verifyIDAdmin(details) {
         <img src="cid:IDPicture" alt="ID Picture" style="width: 200px; height: auto;"/>
 
         <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Best regards,<br/>Apex Tuition</p>
+          <p>Apex Tuition</p>
         </footer>
       </div>
     `,
@@ -97,7 +97,7 @@ async function verifyProfilePicAdmin(details) {
         <img src="cid:profilePicture" alt="Profile Picture" style="width: 200px; height: auto;"/>
 
         <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Best regards,<br/>Apex Tuition</p>
+          <p>Apex Tuition</p>
         </footer>
       </div>
     `,

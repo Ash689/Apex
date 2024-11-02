@@ -1,4 +1,4 @@
-const findUser = require('../../utils/findUser'); // Assuming you have a utility function for this
+const findUser = require('../../utils/findUser'); 
 const { generateAccessToken, createZoomMeeting } = require('../../utils/zoomMeeting');
 const Homework = require('../../models/homework');
 const studentUser = require('../../models/studentUser');

@@ -1,5 +1,5 @@
 
-const findUser = require('../../utils/findUser'); // Assuming you have a utility function for this
+const findUser = require('../../utils/findUser'); 
 const { body, validationResult } = require('express-validator');
 const Booking = require('../../models/booking');
 const validationStandard = require('../../utils/validationComplete');

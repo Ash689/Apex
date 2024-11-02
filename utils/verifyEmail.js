@@ -28,7 +28,7 @@ async function sendResetEmail(userEmail, token) {
           <p>Your password reset token is <strong>${token}</strong></p>
 
           <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-            <p>Best regards,<br/>Apex Tuition</p>
+            <p>Apex Tuition</p>
           </footer>
         </div>
       `,
@@ -65,7 +65,7 @@ async function sendVerifyEmail(userEmail, token) {
         <p>Your verification token is: <strong>${token}</strong></p>
 
         <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Best regards,<br/>Apex Tuition</p>
+          <p>Apex Tuition</p>
         </footer>
       </div>
     `,
