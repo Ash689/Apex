@@ -5,6 +5,7 @@ const OpenAI = require('openai');
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
 require('dotenv').config();
+const {sendHomeworkEmail, sendSubmissionEmail} = require('../../utils/sendHomeworkEmail');
 
 exports.getHomework = async(req, res) => {
   try{
@@ -166,6 +167,7 @@ exports.addHomework = async(req, res) => {
   const {topicName, deadline, generatedQuestions } = req.body;
 
   let recipient = await findUser(req, res, "addHomework", req.session.recipientID, true);
+  let sender = await findUser(req, res, "addHomework", req.session.user._id);
 
   let homework = new Homework({
     tutor: req.session.user._id,
@@ -175,6 +177,7 @@ exports.addHomework = async(req, res) => {
     deadline: deadline,
   });
   await homework.save();
+  await sendHomeworkEmail(recipient.email, topicName, recipient.fullName.split(" ")[0], sender.fullName.split(" ")[0], deadline);
 
 
   if (generatedQuestions){

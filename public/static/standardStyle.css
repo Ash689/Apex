@@ -58,6 +58,7 @@ body {
     height: auto;
     text-align: center;
     position:absolute;
+    /* margin-top: 20px; */
     margin-top: 2%;
     left: 0%;
     width: 350px;

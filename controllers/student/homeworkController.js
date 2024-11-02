@@ -3,6 +3,7 @@ const Homework = require('../../models/homework');
 const HomeworkFile = require('../../models/homeworkFile');
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
+const {sendHomeworkEmail, sendSubmissionEmail} = require('../../utils/sendHomeworkEmail');
 
 exports.getHomework = async(req, res) => {
   try {
@@ -55,6 +56,11 @@ exports.uploadHomeworkFile = async(req, res) => {
     homework.docCount = homework.docCount+1;
     homework.submission = true;
     await homework.save();
+
+    let sender = await findUser(req, res, "addHomework", req.session.user._id);
+    let recipient = await findUser(req, res, "addHomework", req.session.recipientID, true);
+
+    await sendSubmissionEmail(recipient.email, homework.topicName, recipient.fullName.split(" ")[0], sender.fullName.split(" ")[0], homework.deadline);
 
     
     return res.redirect('/student/submission.html?message=Homework uploaded successfully.&type=success');
