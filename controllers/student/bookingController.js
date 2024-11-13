@@ -37,8 +37,8 @@ exports.confirmLesson = async (req, res) => {
       booking.charity = charityChoice;
       await booking.save();
     }
-    let tutor = findUser(req, res, "View Booking", booking.tutor, true);
-    confirmBookingEmail(tutor.email, bookingId, false);
+    let tutor = await findUser(req, res, "View Booking", booking.tutor, true);
+    await confirmBookingEmail(tutor.email, bookingId, false);
     
     res.redirect(`/student/${returnUrl}.html?message=Booking/s confirmed.&type=success`);
   } catch (error) {
@@ -105,8 +105,8 @@ exports.editBooking = async (req, res) => {
     // Save the booking
     await editBooking.save();
 
-    let tutor = findUser(req, res, "View Booking", editBooking.tutor, true);
-    editBookingEmail(tutor.email, editBooking._id, false);
+    let tutor = await findUser(req, res, "View Booking", editBooking.tutor, true);
+    await editBookingEmail(tutor.email, editBooking._id, false);
 
     res.redirect('/student/viewBooking.html?message=Booking edited successfully.&type=success');
   } catch (error) {
@@ -182,7 +182,7 @@ exports.payLesson = async (req, res) => {
     if (sessionUrl === "Payment completed" || sessionUrl === "Payment not processed"){                                    
       return res.redirect(`/student/${returnUrl}.html?message=${sessionUrl}.&type=success`);
     } else {
-      return res.redirect(`/student/paymentConfirmation.html?session_id=${sessionUrl}?return_page=${returnUrl}`);
+      return res.redirect(sessionUrl);
     }
   } catch (error) {
     console.error(error);

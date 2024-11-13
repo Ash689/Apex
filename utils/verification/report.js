@@ -20,9 +20,7 @@ async function verifyReport(details) {
     to: process.env.EMAIL2,
     subject: subject2,
     html: `
-      ${header()}
-      
-      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
+      ${await header()}
         <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Account Profile</h2>
         <p><strong>${details.tutor ? 'Student: ' : 'Tutor: '} ID:</strong> ${details.receiver}</p>
         <p><strong>Content:</strong> ${details.topic}</p>
@@ -37,8 +35,7 @@ async function verifyReport(details) {
         <h3 style="color: #dc143c; font-family: Arial, sans-serif;">Report Picture</h3>
         <img src="cid:ReportPicture" alt="Report Picture" style="width: 200px; height: auto;"/>
 
-      </div>
-      ${footer()}
+      ${await footer()}
     `,
 
     attachments: [

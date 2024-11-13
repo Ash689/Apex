@@ -8,6 +8,9 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cron = require('node-cron');
+const offSessionPayment = require('./utils/offSessionPayment');
+const getLessonsScheduledIn24Hours = require('./utils/getLessonsScheduledin24Hours');
 // const csrf = require('csrf');
 
 const app = express();
@@ -99,6 +102,17 @@ app.use('/tutor', require('./routes/tutor/viewProfileRoutes'));
 
 app.use('/', require('./routes/bookingRoutes'));
 
+cron.schedule('0 * * * *', async () => {
+  try {
+    const bookings = await getLessonsScheduledIn24Hours(); // Custom function to fetch relevant lessons
+
+    for (let booking of bookings) {
+      await offSessionPayment(booking._id);
+    }
+  } catch (error) {
+    console.error('Error scheduling payment:', error);
+  }
+});
 
 app.use('/uploads', express.static('uploads'));
 

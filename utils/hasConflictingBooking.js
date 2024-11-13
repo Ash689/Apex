@@ -4,6 +4,7 @@ const Booking = require('../models/booking');
 async function hasConflictingBooking(tutorID, studentID, startDateTime, endDateTime, bookID){
     return await Booking.findOne({
       _id: { $ne: bookID? bookID: null },
+      cancelled: false,
       $or: [
           {
               tutor: tutorID,

@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const result = await response.json();
 
       if (!result.success) {
-        messageElement.textContent = "Payment Details not saved";
+        messageElement.textContent = "Payment details not saved";
       }
     } catch (error) {
       console.log(error);

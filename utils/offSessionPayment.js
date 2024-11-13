@@ -39,8 +39,8 @@ async function offSessionPayment(bookingId){
         }
         charity.currentAmount = booking.price*100*0.9*0.1;
         await charity.save();
-        paymentEmailStudent(user.email, booking._id);
-        paymentEmailTutor(user.email, booking._id);
+        await paymentEmailStudent(user.email, booking._id);
+        await paymentEmailTutor(user.email, booking._id);
 
         return "Payment completed";
     } else {

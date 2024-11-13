@@ -3,6 +3,7 @@ require('dotenv').config();
 const {header, footer, button} = require('../emailStandardScript');
 const Booking = require('../../models/booking');
 const tempBookingData = require('../../models/tempBookingData');
+const formatDate = require('../../utils/bookingDateFormat');
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -20,18 +21,14 @@ async function newBookingEmail(recipientEmail, bookingId) {
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,
-      subject: `New ${booking.recurringID? "recurring": ""} booking request - ${booking.tutorName}`,
+      subject: `New ${booking.recurringID? "recurring": ""} booking request - ${booking.tutorName.split(" ")[0]}`,
       html: `
-        ${header()}        
-        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-
-            <p>${booking.studentName},</p> 
-            <p><strong>New booking request</strong></p>
-            <h2 style="color: #dc143c; font-family: Arial, sans-serif;">${booking.recurringID? "Recurring": ""} booking with ${booking.tutorName} at ${booking.date}, ${booking.subject}</h2>
-            ${button("View Bookings", "/student/viewBooking.html")}
+        ${await header()}        
+            <h2 style="color: #dc143c; font-family: Arial, sans-serif;">New ${booking.recurringID? "Recurring": ""} Booking with ${booking.tutorName.split(" ")[0]}</h2>
+            <p><strong>at ${ await formatDate(booking.date)} ${booking.time}, ${booking.subject}</strong></p>
+            ${await button("View Bookings", "/student/viewBooking.html")}
             <p> Ref: ${bookingId}</p>
-        </div>
-        ${footer()}
+        ${await footer()}
       `,
     };
   
@@ -57,34 +54,27 @@ async function editBookingEmail(recipientEmail, bookingId, toStudent) {
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,
-      subject: `Booking edited - ${toStudent? booking.tutorName: booking.studentName}`,
+      subject: `Booking edited - ${toStudent? booking.tutorName.split(" ")[0]: booking.studentName.split(" ")[0]}`,
       html: `
-        ${header()}
+        ${await header()}
 
-        
-        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-            <p>${toStudent? booking.studentName: booking.tutorName}</p>
-            <h2 style="color: #dc143c; font-family: Arial, sans-serif;"> Booking Edited: ${booking.tutorName} with ${booking.studentName}</h2>
+            <h2 style="color: #dc143c; font-family: Arial, sans-serif;"> Booking Edited: ${booking.tutorName.split(" ")[0]} with ${booking.studentName.split(" ")[0]}</h2>
             <p><strong>Original booking:</strong></p>
-            <p>${tempBooking.subject}</p>
-            <p>${tempBooking.date}</p>
-            <p>${tempBooking.time}</p>
-            <p>${tempBooking.duration}</p>
-            <p>${tempBooking.price}</p>
+            <p>Subject: ${tempBooking.subject}</p>
+            <p>Date: ${await formatDate(tempBooking.date)} ${booking.time} for ${tempBooking.duration}minutes</p>
+            <p>Price: ${tempBooking.price}</p>
+            <br><br>
         
 
             <p><strong>New booking:</strong></p>
-            <p>${booking.subject}</p>
-            <p>${booking.date}</p>
-            <p>${booking.time}</p>
-            <p>${booking.duration}</p>
-            <p>${booking.price}</p>
+            <p>Subject: ${booking.subject}</p>
+            <p>Date: ${await formatDate(booking.date)} ${booking.time} for ${booking.duration}minutes</p>
+            <p>Price: ${booking.price}</p>
 
 
-            ${toStudent? button("Confirm Booking", "student/viewBooking.html"): button("Confirm Booking", "tutor/viewBooking.html")}
+            ${toStudent? await button("Confirm Booking", "student/viewBooking.html"): await button("Confirm Booking", "tutor/viewBooking.html")}
             <p> Ref: ${bookingId}</p>
-        </div>
-        ${footer()}
+        ${await footer()}
       `,
     };
   
@@ -107,24 +97,19 @@ async function confirmBookingEmail(recipientEmail, bookingId, toStudent) {
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,
-      subject: `Booking confirmed - ${toStudent? booking.tutorName: booking.studentName}`,
+      subject: `Booking confirmed - ${toStudent? booking.tutorName.split(" ")[0]: booking.studentName.split(" ")[0]}`,
       html: `
-        ${header()}
-
-        
-        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #dc143c; font-family: Arial, sans-serif;"> ${booking.recurringID? "Regular bookings confirmed": " Booking confirmed"}: ${booking.tutorName} with ${booking.studentName}</h2>
+        ${await header()}
+            <h2 style="color: #dc143c; font-family: Arial, sans-serif;"> ${booking.recurringID? "Regular bookings confirmed": " Booking confirmed"}: ${booking.tutorName.split(" ")[0]} with ${booking.studentName.split(" ")[0]}</h2>
         
             <p>${booking.subject}</p>
-            <p>Next lesson: ${booking.date} @ ${booking.time}</p>
-            <p>${booking.duration}minutes</p>
-            <p>${booking.price}</p>
+            <p>Next lesson: ${await formatDate(booking.date)} ${booking.time} for ${booking.duration}minutes</p>
+            <p>Price: £${booking.price}</p>
 
 
-            ${toStudent? button("View Bookings", "student/viewBooking.html"): button("View Bookings", "tutor/viewBooking.html")}
+            ${toStudent? await button("View Bookings", "student/viewBooking.html"): await button("View Bookings", "tutor/viewBooking.html")}
             <p> Ref: ${bookingId}</p>
-        </div>
-        ${footer()}
+        ${await footer()}
       `,
     };
   
@@ -149,17 +134,15 @@ async function cancelBookingEmail(recipientEmail, bookingId, toStudent, refund) 
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,
-      subject: `Booking cancelled - ${date}`,
+      subject: `Booking cancelled - ${await formatDate(booking.date)}`,
       html: `
-        ${header()} 
-
-        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #dc143c; font-family: Arial, sans-serif;"> Booking cancelled with ${toStudent? booking.tutorName: booking.studentName} at ${booking.date}</h2>
+        ${await header()} 
+            <h2 style="color: #dc143c; font-family: Arial, sans-serif;"> Booking cancelled with ${toStudent? booking.tutorName.split(" ")[0]: booking.studentName.split(" ")[0]} at ${await formatDate(booking.date)} ${booking.time}</h2>
             <p><strong>${toStudent? ( refund ? "Refund processed": ""): ""}</strong></p>
-            ${toStudent? button("View Bookings", "student/viewBooking.html"): button("View Bookings", "tutor/viewBooking.html")}
+            ${toStudent? await button("View Bookings", "student/viewBooking.html"): await button("View Bookings", "tutor/viewBooking.html")}
             <p> Ref: ${bookingId}</p>
         </div>
-        ${footer()}
+        ${await footer()}
       `,
     };
   
@@ -182,17 +165,14 @@ async function cancelRecurringBookingEmail(recipientEmail, bookingId, toStudent,
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,
-      subject: `Recurring bookings cancelled - ${toStudent? booking.tutorName: booking.studentName}`,
+      subject: `Recurring bookings cancelled - ${toStudent? booking.tutorName.split(" ")[0]: booking.studentName.split(" ")[0]}`,
       html: `
-        ${header()} 
-
-        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #dc143c; font-family: Arial, sans-serif;"> Booking cancelled with ${toStudent? booking.tutorName: booking.studentName}</h2>
+        ${await header()} 
+            <h2 style="color: #dc143c; font-family: Arial, sans-serif;"> Booking cancelled with ${toStudent? booking.tutorName.split(" ")[0]: booking.studentName.split(" ")[0]}, ${booking.subject}</h2>
             <p><strong>${toStudent? ( refund ? "Refunds processed": ""): ""}</strong></p>
-            ${toStudent? button("View Bookings", "student/viewBooking.html"): button("View Bookings", "tutor/viewBooking.html")}
+            ${toStudent? await button("View Bookings", "student/viewBooking.html"): await button("View Bookings", "tutor/viewBooking.html")}
             <p> Ref: ${booking.recurringID}</p>
-        </div>
-        ${footer()}
+        ${await footer()}
       `,
     };
   

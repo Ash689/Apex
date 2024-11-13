@@ -18,21 +18,17 @@ async function sendMessageEmail(recipientEmail, message, recipientName, senderNa
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,
-      subject: `New message ${senderName}`,
+      subject: `New message from ${senderName}`,
       html: `
-        ${header()}
-
-        
-        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-          <p>Hi ${recipientName},</p> 
-          <p>New message from <strong>${recipientName}</strong></p>
-          <h2 style="color: #dc143c; font-family: Arial, sans-serif;">${message}</h2>
+        ${await header()}
+          <p></strong></p>
+          <h2 style="color: #dc143c; font-family: Arial, sans-serif;">New message from ${recipientName}</h2>
+          <p><strong>${message}</strong></p>
 
           
-          ${isStudent? button("View Messages", "student/viewMessenger.html"): button("View Messages", "tutor/viewMessenger.html")}
+          ${isStudent? await button("View Messages", "student/viewMessenger.html"): await button("View Messages", "tutor/viewMessenger.html")}
           <p> Ref: ${messageRef}</p>
-        </div>
-        ${footer()}
+        ${await footer()}
       `,
     };
   

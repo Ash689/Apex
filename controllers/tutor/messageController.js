@@ -36,7 +36,7 @@ exports.sendMessage = async (req, res) => {
 
     // Save the message
     await message.save();
-    await sendMessageEmail(recipient.email, content, recipient.fullName.split(" ")[0], user.fullName.split(" ")[0], message._id);
+    await sendMessageEmail(recipient.email, content, recipient.fullName.split(" ")[0], user.fullName.split(" ")[0], message.id);
     // res.status(200).json({ message: 'Message sent successfully.' });
     res.redirect('/tutor/viewMessage.html');
   } catch (error) {

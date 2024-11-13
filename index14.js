@@ -8,7 +8,6 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const cron = require('node-cron');
-const stripe = require('stripe')(process.env.STRIPE_TOKEN);
 const offSessionPayment = require('./utils/offSessionPayment');
 const getLessonsScheduledIn24Hours = require('./utils/getLessonsScheduledin24Hours');
 // const csrf = require('csrf');

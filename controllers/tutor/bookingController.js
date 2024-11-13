@@ -34,8 +34,8 @@ exports.confirmLesson = async(req, res) => {
       booking.tutorConfirmed = true;
       await booking.save();
     }
-    let student = findUser(req, res, "View Booking", booking.student, true);
-    confirmBookingEmail(student.email, booking._id, true);
+    let student = await findUser(req, res, "View Booking", booking.student, true);
+    await confirmBookingEmail(student.email, booking._id, true);
 
     res.redirect(`/tutor/${returnUrl}.html?message=Booking confirmed!&type=success`);
   } catch (error) {
@@ -101,8 +101,8 @@ exports.editBooking = async(req, res) => {
     // Save the booking
     await editBooking.save();
 
-    let student = findUser(req, res, "View Booking", editBooking._id, true);
-    editBookingEmail(student.email, editBooking._id, true);
+    let student = await findUser(req, res, "View Booking", editBooking.student, true);
+    await editBookingEmail(student.email, editBooking._id, true);
     
 
     res.redirect('/tutor/viewBooking.html?message=Booking edited successfully.&type=success');
@@ -385,7 +385,7 @@ exports.newBooking = async(req, res) => {
 
     let booking = await Booking.find({})
 
-    newBookingEmail(recipient.email, bookingId, true);
+    await  newBookingEmail(recipient.email, bookingId, true);
 
     res.redirect('/tutor/viewMessage.html?message=Booking created successfully.&type=success');
   } catch(error){

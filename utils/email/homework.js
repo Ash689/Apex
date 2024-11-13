@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 const {header, footer, button} = require('../emailStandardScript');
+const formatDate = require('../../utils/bookingDateFormat');
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -18,20 +19,15 @@ async function sendHomeworkEmail(recipientEmail, topic, recipientName, senderNam
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,
-      subject: `Homework Sent - ${senderName}`,
+      subject: `Homework sent - ${senderName.split(" ")[0]}`,
       html: `
-        ${header()}
-
-        
-        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-          <p>${recipientName},</p> 
-          <p><strong>New homework sent from ${senderName}</strong></p>
-          <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Topic: ${topic}</h2>
-          <p><strong>Homework deadline: ${deadline}</strong></p>
+        ${await header()}
+          <h2 style="color: #dc143c; font-family: Arial, sans-serif;">New homework sent from ${senderName.split(" ")[0]}</h2>
+          <p><strong>Complete the homework on ${topic}.</strong></p>
+          <p><strong>Homework deadline: ${await formatDate(deadline)}</strong></p>
           
-          ${button("View Homework", "student/viewHomework.html")}
-        </div>
-        ${footer()}
+          ${await button("View Homework", "student/viewHomework.html")}
+        ${await footer()}
       `,
     };
   
@@ -53,22 +49,18 @@ async function sendSubmissionEmail(recipientEmail, topic, recipientName, senderN
   const mailOptions = {
     from: process.env.EMAIL,
     to: recipientEmail,
-    subject: `Submission Given - ${senderName}`,
+    subject: `Submission Given - ${senderName.split(" ")[0]}`,
     html: `
-      <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
-        <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
-      </div>
+
+      ${await header()}
 
       
-      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-        <p>${recipientName},</p> 
-        <p><strong>New homework submission sent from ${senderName}</strong></p>
-        <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Topic: ${topic}</h2>
-        <p><strong>Homework deadline: ${deadline}</strong></p>
-        <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Apex Tuition</p>
-        </footer>
-      </div>
+        <h2 style="color: #dc143c; font-family: Arial, sans-serif;">New homework submission sent from ${senderName.split(" ")[0]}</h2>
+        <p><strong>Topic: ${topic}</strong></p>
+        <p><strong>Homework deadline: ${await formatDate(deadline)}</strong></p>
+
+        ${await button("View Homework", "tutor/viewHomework.html")}
+      ${await footer()}
     `,
   };
 

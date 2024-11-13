@@ -20,14 +20,11 @@ async function sendResetEmail(userEmail, token, isStudent) {
       to: userEmail,
       subject: 'Password Reset',
       html: `
-        ${header()}
-        
-        <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
+        ${await header()}
           <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Password Reset</h2>
           <p>Your password reset token is <strong>${token}</strong></p>
-          ${isStudent? button("Apex Tuition", "student/forgotPassword.html"): button("Apex Tuition", "tutor/forgotPassword.html")}
-        </div>
-        ${footer}
+          ${isStudent? await button("Apex Tuition", "student/forgotPassword.html"): await button("Apex Tuition", "tutor/forgotPassword.html")}
+        ${await footer()}
       `,
     };
   
@@ -53,18 +50,11 @@ async function sendVerifyEmail(userEmail, token) {
     text: `Your verification token is ${token}. It will expire in 15 mins.`,
 
     html: `
-      <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
-        <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
-      </div>
-      
-      <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
+      ${await header()}
         <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Password Reset</h2>
         <p>Your verification token is: <strong>${token}</strong></p>
-
-        <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Apex Tuition</p>
-        </footer>
-      </div>
+        ${await button("Apex Tuition", "welcome.html")}
+      ${await footer()}
     `,
   };
 
