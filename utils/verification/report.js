@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const {header, footer} = require('../emailStandardScript');
 require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
@@ -19,9 +20,7 @@ async function verifyReport(details) {
     to: process.env.EMAIL2,
     subject: subject2,
     html: `
-      <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
-        <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
-      </div>
+      ${header()}
       
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Account Profile</h2>
@@ -38,10 +37,8 @@ async function verifyReport(details) {
         <h3 style="color: #dc143c; font-family: Arial, sans-serif;">Report Picture</h3>
         <img src="cid:ReportPicture" alt="Report Picture" style="width: 200px; height: auto;"/>
 
-        <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Apex Tuition</p>
-        </footer>
       </div>
+      ${footer()}
     `,
 
     attachments: [

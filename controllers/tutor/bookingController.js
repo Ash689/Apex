@@ -10,6 +10,7 @@ const { body, validationResult } = require('express-validator');
 const hasConflictingBooking = require('../../utils/hasConflictingBooking');
 const { v4: uuidv4 } = require('uuid');
 const formatInput = require('../../utils/formatInput');
+const {newBookingEmail, editBookingEmail, confirmBookingEmail} = require('../../utils/email/booking');
 
 exports.confirmLesson = async(req, res) => {
   const { bookingId, returnUrl } = req.body;
@@ -33,6 +34,8 @@ exports.confirmLesson = async(req, res) => {
       booking.tutorConfirmed = true;
       await booking.save();
     }
+    let student = findUser(req, res, "View Booking", booking.student, true);
+    confirmBookingEmail(student.email, booking._id, true);
 
     res.redirect(`/tutor/${returnUrl}.html?message=Booking confirmed!&type=success`);
   } catch (error) {
@@ -97,6 +100,9 @@ exports.editBooking = async(req, res) => {
     editBooking.revisionSession = (revision === "yes");
     // Save the booking
     await editBooking.save();
+
+    let student = findUser(req, res, "View Booking", editBooking._id, true);
+    editBookingEmail(student.email, editBooking._id, true);
     
 
     res.redirect('/tutor/viewBooking.html?message=Booking edited successfully.&type=success');
@@ -334,9 +340,10 @@ exports.newBooking = async(req, res) => {
     let recurringChoice = (recurring === "Yes");
     let revisionChoice = (revision === "yes");
     const recurringID = uuidv4();
+    let bookingId;
     // Function to create a booking
     let formatted_subject = await formatInput(subject);
-    const createBooking = async (startDateTime) => {
+    const createBooking = async (startDateTime, firstBooking = false) => {
       let booking = new Booking({
         tutor: req.session.user._id,
         student: recipient._id,
@@ -352,11 +359,14 @@ exports.newBooking = async(req, res) => {
       });
 
       await booking.save();
+      if (firstBooking){
+        bookingId = booking._id;
+      }
       // await createBooking.save();
     };
 
     // Create the initial booking
-    await createBooking(bookingStartDateTime);
+    await createBooking(bookingStartDateTime, true);
 
     // If recurring, create bookings for the next 6 months (approximately 26 weeks)
     if (recurringChoice) {
@@ -372,6 +382,10 @@ exports.newBooking = async(req, res) => {
         }
       }
     }
+
+    let booking = await Booking.find({})
+
+    newBookingEmail(recipient.email, bookingId, true);
 
     res.redirect('/tutor/viewMessage.html?message=Booking created successfully.&type=success');
   } catch(error){

@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const {header, footer, button} = require('../emailStandardScript');
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -19,9 +20,7 @@ async function sendHomeworkEmail(recipientEmail, topic, recipientName, senderNam
       to: recipientEmail,
       subject: `Homework Sent - ${senderName}`,
       html: `
-        <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
-          <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
-        </div>
+        ${header()}
 
         
         <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
@@ -29,10 +28,10 @@ async function sendHomeworkEmail(recipientEmail, topic, recipientName, senderNam
           <p><strong>New homework sent from ${senderName}</strong></p>
           <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Topic: ${topic}</h2>
           <p><strong>Homework deadline: ${deadline}</strong></p>
-          <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-            <p>Apex Tuition</p>
-          </footer>
+          
+          ${button("View Homework", "student/viewHomework.html")}
         </div>
+        ${footer()}
       `,
     };
   

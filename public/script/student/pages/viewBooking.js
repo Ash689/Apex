@@ -53,7 +53,6 @@ fetch('/viewBookings')
                         </td>
                     `;
                     bookingTableBody.appendChild(row);
-                    payLesson(booking, "viewBooking");
                 });
             });
         }

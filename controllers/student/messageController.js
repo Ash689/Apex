@@ -3,8 +3,8 @@ const findUser = require('../../utils/findUser');
 const tutorUser = require('../../models/tutorUser');
 const Message = require('../../models/message');
 const Report = require('../../models/report');
-const verifyReport = require('../../utils/verifyReport');
-const sendMessageEmail = require('../../utils/sendMessageEmail');
+const verifyReport = require('../../utils/verification/report');
+const sendMessageEmail = require('../../utils/email/message');
 
 exports.sendMessage = async (req, res) => {
   const errors = validationResult(req);
@@ -36,7 +36,7 @@ exports.sendMessage = async (req, res) => {
     // Save the message
     await message.save();
     // res.status(200).json({ message: 'Message sent successfully.' });
-    await sendMessageEmail(recipient.email, content, recipient.fullName.split(" ")[0], user.fullName.split(" ")[0]);
+    await sendMessageEmail(recipient.email, content, recipient.fullName.split(" ")[0], user.fullName.split(" ")[0], message._id);
     res.redirect('/student/viewMessage.html');
   } catch (error) {
     console.error(error);

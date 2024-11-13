@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const {header, footer, button} = require('../emailStandardScript');
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -13,26 +14,25 @@ const transporter = nodemailer.createTransport({
 });
   
   
-async function sendMessageEmail(recipientEmail, message, recipientName, senderName) {
+async function sendMessageEmail(recipientEmail, message, recipientName, senderName, isStudent, messageRef) {
     const mailOptions = {
       from: process.env.EMAIL,
       to: recipientEmail,
       subject: `New message ${senderName}`,
       html: `
-        <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
-          <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
-        </div>
+        ${header()}
 
         
         <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
-          <p>${recipientName},</p> 
-          <p><strong>New message from ${recipientName}</strong></p>
-          <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Message from ${message}</h2>
+          <p>Hi ${recipientName},</p> 
+          <p>New message from <strong>${recipientName}</strong></p>
+          <h2 style="color: #dc143c; font-family: Arial, sans-serif;">${message}</h2>
 
-          <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-            <p>Apex Tuition</p>
-          </footer>
+          
+          ${isStudent? button("View Messages", "student/viewMessenger.html"): button("View Messages", "tutor/viewMessenger.html")}
+          <p> Ref: ${messageRef}</p>
         </div>
+        ${footer()}
       `,
     };
   

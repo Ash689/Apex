@@ -2,7 +2,7 @@ const { body, validationResult } = require('express-validator');
 const validateDateOfBirth = require('../../utils/validateDateOfBirth'); 
 const findUser = require('../../utils/findUser');
 const formatInput = require('../../utils/formatInput');
-const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verifyUploads');
+const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verification/uploads');
 const fs = require('fs');
 
 exports.config = async (req, res) => {

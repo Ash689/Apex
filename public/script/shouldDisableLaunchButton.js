@@ -6,7 +6,7 @@ function enableLaunchButton(bookingDate, bookingDuration) {
     const bookingYear = bookingDateTime.getUTCFullYear();
     const bookingMonth = bookingDateTime.getUTCMonth();
     const bookingDay = bookingDateTime.getUTCDate();
-    const bookingTime = 60*(bookingDateTime.getUTCHours() -1) + bookingDateTime.getUTCMinutes();
+    const bookingTime = 60*(bookingDateTime.getUTCHours()) + bookingDateTime.getUTCMinutes();
 
     const nowYear = now.getUTCFullYear();
     const nowMonth = now.getUTCMonth();

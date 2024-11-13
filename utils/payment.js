@@ -1,8 +1,10 @@
 require('dotenv').config();
 const Booking = require('../models/booking');
+const Charity = require('../models/charity');
 const stripe = require('stripe')(process.env.STRIPE_TOKEN);
 const studentUser = require('../models/studentUser');
 const tutorUser = require('../models/tutorUser');
+const offSessionPayment = require('../utils/offSessionPayment');
 
 async function payment(bookingId, returnUrl){
     let booking = await Booking.findById(bookingId);
@@ -47,28 +49,7 @@ async function payment(bookingId, returnUrl){
         return session.url;
     } else {
 
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount: booking.price * 100,
-            currency: 'gbp',
-            customer: user.stripeAccount,
-            payment_method: user.defaultPaymentMethod,
-            off_session: true,
-            confirm: true,
-            transfer_data: {
-                destination: tutorUser2.stripeAccount,
-            },
-            application_fee_amount: applicationFeeAmount,
-        });
-
-        if (paymentIntent.status === 'succeeded') {
-            booking.stripeIntent = paymentIntent.id;
-            booking.paymentGiven = true;
-            await booking.save();
-            return "Payment completed";
-        } else {
-        return "Payment not processed";
-        }
-    
+        return offSessionPayment(bookingId);
     }
 };
 

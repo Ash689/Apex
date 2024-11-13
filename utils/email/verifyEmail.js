@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const {header, footer, button} = require('../emailStandardScript');
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -13,24 +14,20 @@ const transporter = nodemailer.createTransport({
 });
   
   
-async function sendResetEmail(userEmail, token) {
+async function sendResetEmail(userEmail, token, isStudent) {
     const mailOptions = {
       from: process.env.EMAIL,
       to: userEmail,
       subject: 'Password Reset',
       html: `
-        <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
-          <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
-        </div>
+        ${header()}
         
         <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #dc143c; font-family: Arial, sans-serif;">Password Reset</h2>
           <p>Your password reset token is <strong>${token}</strong></p>
-
-          <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-            <p>Apex Tuition</p>
-          </footer>
+          ${isStudent? button("Apex Tuition", "student/forgotPassword.html"): button("Apex Tuition", "tutor/forgotPassword.html")}
         </div>
+        ${footer}
       `,
     };
   
@@ -52,7 +49,7 @@ async function sendVerifyEmail(userEmail, token) {
   const mailOptions = {
     from: process.env.EMAIL, // Replace with your email
     to: userEmail,
-    subject: 'Verify User',
+    subject: 'Apex Tuition Email Verification',
     text: `Your verification token is ${token}. It will expire in 15 mins.`,
 
     html: `

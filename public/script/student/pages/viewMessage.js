@@ -134,7 +134,7 @@ fetch('/viewIndividualBookings')
                     ${generateBookingHTML(booking, "viewMessage")}
                 `;
                 bookingElement.appendChild(individualBookingElement);
-                payLesson(booking, "viewMessage");
+//
             });
         }
     }

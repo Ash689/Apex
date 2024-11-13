@@ -2,8 +2,8 @@ const { body, validationResult } = require('express-validator');
 const findUser = require('../../utils/findUser'); 
 const Message = require('../../models/message');
 const studentUser= require('../../models/studentUser');
-const verifyReport = require('../../utils/verifyReport');
-const sendMessageEmail = require('../../utils/sendMessageEmail');
+const verifyReport = require('../../utils/verification/report');
+const sendMessageEmail = require('../../utils/email/message');
 
 const Report = require('../../models/report');
 
@@ -36,7 +36,7 @@ exports.sendMessage = async (req, res) => {
 
     // Save the message
     await message.save();
-    await sendMessageEmail(recipient.email, content, recipient.fullName.split(" ")[0], user.fullName.split(" ")[0]);
+    await sendMessageEmail(recipient.email, content, recipient.fullName.split(" ")[0], user.fullName.split(" ")[0], message._id);
     // res.status(200).json({ message: 'Message sent successfully.' });
     res.redirect('/tutor/viewMessage.html');
   } catch (error) {

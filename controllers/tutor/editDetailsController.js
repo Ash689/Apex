@@ -5,7 +5,7 @@ const validateDateOfBirth = require('../../utils/validateDateOfBirth');
 const findUser = require('../../utils/findUser');
 const formatInput = require('../../utils/formatInput');
 const fs = require('fs');
-const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verifyUploads');
+const {verifyIDAdmin, verifyProfilePicAdmin} = require('../../utils/verification/uploads');
 const updateBankEmail = require('../../utils/updateBankDetails');
 const { trusted } = require('mongoose');
 const stripe = require('stripe')(process.env.STRIPE_TOKEN)
@@ -222,18 +222,22 @@ exports.bankStatus = async (req, res) => {
 exports.completeBankingSetup = async (req, res) => {
   const { accountId } = req.body;
   try {
+    success = false;
     let user = await findUser(req, res, "configBanking", req.session.user._id);
     if (user.stripeAccount){
       res.redirect('/tutor/configBanking.html?message=Error, account already created.&type=error');
     }
 
     let id = await stripe.accounts.retrieve(accountId);
-    user.stripeAccount = accountId;
 
-    await user.save();
+    if (id) {    
+      user.stripeAccount = accountId;
 
+      await user.save();
+      success = true;
+    }
     return res.json({
-      success: true
+      success: success
     });
   } catch(error) {
     console.log(error);

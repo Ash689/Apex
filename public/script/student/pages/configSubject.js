@@ -12,7 +12,7 @@ fetch('/student/userName')
         if (data.subjects && data.subjects.length > 0) {
             profile3Element.innerHTML = `
                 <div class="subject-count">
-                    <p>Subjects:</p>
+                    <h3>Subjects:</h3>
                 </div>
                 <div class="subject-list">
                     <div class="subject-list-inner">
@@ -27,7 +27,7 @@ fetch('/student/userName')
                 subjectElement.innerHTML = `
                     <p>${subject.examBoard} ${subject.qualification} ${subject.subject}</p>
                     <p>Expected: ${subject.expectedGrade} Desired: ${subject.desiredGrade}</p>
-                    <p>${subject.learningApproach}</p>
+                    <p><i>${subject.learningApproach}</i></p>
 
                     <form action="/student/cancelSubject" method="POST">
                         <input type="hidden" name="subject" value="${subject.subject}">

@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const {header, footer} = require('../emailStandardScript');
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -18,9 +19,7 @@ async function verifyIDAdmin(details) {
     to: process.env.EMAIL2,
     subject: 'Verify User',
     html: `
-      <div style="background-color: #ffffff; border-bottom: 2px solid #cccccc; text-align: center; width: 100%; max-width: 600px; margin: 0 auto;">
-        <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #dc143c; margin: 20px 0;">Apex Tuition</h1>
-      </div>
+      ${header()}
       
       <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5; padding: 20px; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #dc143c; font-family: Arial, sans-serif;">User Profile</h2>
@@ -38,11 +37,8 @@ async function verifyIDAdmin(details) {
         
         <h3 style="color: #dc143c; font-family: Arial, sans-serif;">ID Picture</h3>
         <img src="cid:IDPicture" alt="ID Picture" style="width: 200px; height: auto;"/>
-
-        <footer style="margin-top: 20px; font-size: 14px; color: #888;">
-          <p>Apex Tuition</p>
-        </footer>
       </div>
+      ${footer()}
     `,
 
     attachments: [

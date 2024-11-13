@@ -5,7 +5,7 @@ const OpenAI = require('openai');
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
 require('dotenv').config();
-const {sendHomeworkEmail, sendSubmissionEmail} = require('../../utils/sendHomeworkEmail');
+const {sendHomeworkEmail, sendSubmissionEmail} = require('../../utils/email/homework');
 
 exports.getHomework = async(req, res) => {
   try{

@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const data = await response.json();
             if (data.pageAvailable){
-                window.location.href = "/error.html?access=denied";
+                window.location.href = "/tutor/home.html?access=denied";
             }
 
         } catch (error) {
@@ -44,7 +44,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         .then(response => response.json())
         .then(data => {
             if (data.success){
-                window.location.href = '/tutor/configSubject.html';  
+                let notice = document.getElementById('upload-notice');
+                notice.textContent = `Banking details added`;
+                let idButton = document.getElementById('id-button');
+                idButton.textContent = `Continue`;
+                window.location.href = '/tutor/introduction.html';  
             } else {
                 fetch('/tutor/createStripeAccount')
                 .then(response => response.json())

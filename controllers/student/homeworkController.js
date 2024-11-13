@@ -3,7 +3,7 @@ const Homework = require('../../models/homework');
 const HomeworkFile = require('../../models/homeworkFile');
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
-const {sendHomeworkEmail, sendSubmissionEmail} = require('../../utils/sendHomeworkEmail');
+const {sendHomeworkEmail, sendSubmissionEmail} = require('../../utils/email/homework');
 
 exports.getHomework = async(req, res) => {
   try {

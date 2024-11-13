@@ -11,7 +11,7 @@ fetch('/student/getVerifyID')
                 <h2>Upload Documents</h2>
                 <h3>ID Verified</h3>
                 <button id="id-button" class = "secondary-button">Re-Upload Images</button>
-                <form id="subjectForm" action="/student/configSubject.html" method="GET">
+                <form id="subjectForm" action="/student/introduction.html" method="GET">
                     <button type="submit">Continue</button>
                 </form>
             

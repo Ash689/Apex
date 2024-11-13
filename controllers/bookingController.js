@@ -4,7 +4,9 @@ const Booking = require('../models/booking');
 const studentUser = require('../models/studentUser');
 const tutorUser = require('../models/tutorUser');
 const tempBookingData = require('../models/tempBookingData');
+const { cancelBookingEmail } = require('../utils/email/booking');
 const stripe = require('stripe')(process.env.STRIPE_TOKEN);
+const {cancelBookingEmail, cancelRecurringBookingEmail} = require('../utils/email/booking');
 
 
 exports.getBookingProfile = async(req,res) => {
@@ -308,9 +310,10 @@ exports.cancelOneBooking = async (req, res) => {
         reverse_transfer:true,
       });
     }
-
     deletedBooking.cancelled = true;
     await deletedBooking.save();
+    let user = await findUser(req, res, "viewBooking", req.session.user._id);
+    cancelBookingEmail(user.email, deletedBooking.id, (req.session.user.role==="tutor"? true: false),true);
 
     return res.redirect(`${linkPage}viewBooking.html?message=Booking canceled successfully.&type=success`);
   } catch (error) {
@@ -364,6 +367,10 @@ exports.cancelRecurringBooking = async(req, res) => {
     if (!deletedBookings.matchedCount) {
       return res.redirect(`${linkPage}editBooking.html?message=No recurring bookings found to cancel.&type=error`);
     }
+
+    
+    let user = await findUser(req, res, "viewBooking", req.session.user._id);
+    cancelRecurringBookingEmail(user.email, booking.id, (req.session.user.role==="tutor"? true: false),true);
 
     return res.redirect(`${linkPage}editBooking.html?message=Recurring bookings canceled successfully.&type=success`);
   } catch (error) {

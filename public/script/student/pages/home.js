@@ -99,7 +99,6 @@ fetch('/viewDayBookings')
                     </td>
                 `;
                 bookingTableBody.appendChild(row);
-                payLesson(booking, "home");
             });
         }
     }

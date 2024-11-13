@@ -3,7 +3,7 @@ const studentUser = require('../../models/studentUser');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const generateToken = require('../../utils/generateToken'); 
-const {sendResetEmail, sendVerifyEmail} = require('../../utils/verifyEmail');
+const {sendResetEmail, sendVerifyEmail} = require('../../utils/email/verifyEmail');
 require('dotenv').config();
 
 const formatInput = require('../../utils/formatInput');

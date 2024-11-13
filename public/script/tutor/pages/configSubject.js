@@ -36,7 +36,7 @@ fetch('/tutor/userName')
                         <br>
                     </tr>
                     <tr>
-                        <td>Learning Approach: ${subject.learningApproach}</td>
+                        <td><i>${subject.learningApproach}</i></td>
                     </tr>
                     <tr>
                         <form action="/tutor/cancelSubject" method="POST">
