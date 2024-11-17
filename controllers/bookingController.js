@@ -305,10 +305,12 @@ exports.cancelOneBooking = async (req, res) => {
 
     if (deletedBooking.paymentGiven) {
       const refund = await stripe.refunds.create({
+        refund_application_fee: true,
         payment_intent: deletedBooking.stripeIntent,
         reverse_transfer:true,
       });
     }
+    
     deletedBooking.cancelled = true;
     await deletedBooking.save();
     let user = await findUser(req, res, "viewBooking", req.session.user._id);
@@ -340,25 +342,26 @@ exports.cancelRecurringBooking = async(req, res) => {
 
     const futureBookings = await Booking.find({
       recurringID: booking.recurringID,
-      date: { $gte: new Date() },
+      date: { $gte: booking.date },
       paymentGiven: true,
       cancelled: false
     });
 
     if (futureBookings.length != 0) {
       for (const futureBooking of futureBookings) {
-        if (futureBooking.paymentGiven) {
-          const refund = await stripe.refunds.create({
-            payment_intent: futureBooking.stripeIntent,
-            refund_application_fee: true,
-          });
-        }
+        const refund = await stripe.refunds.create({
+          payment_intent: futureBooking.stripeIntent,
+          refund_application_fee: true,
+          reverse_transfer: true,
+        });
       }
     }
 
 
     const deletedBookings = await Booking.updateMany(
-      { recurringID: booking.recurringID },
+      { recurringID: booking.recurringID,
+        date: {$gte: booking.date}
+      },
       { $set: { 
         cancelled: true, 
     }});
